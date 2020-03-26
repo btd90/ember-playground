@@ -2,7 +2,8 @@
 
 module.exports = function(environment) {
   let ENV = {
-    modulePrefix: 'ember-quickstart',
+    modulePrefix: 'ember-playground',
+    podModulePrefix: 'ember-playground/pods',
     environment,
     rootURL: '/',
     locationType: 'auto',

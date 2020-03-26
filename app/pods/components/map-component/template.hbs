@@ -1,0 +1,93 @@
+{{!-- Draw Plugin --}}
+{{#if drawEnabled}}
+  {{map-component/draw-control showDrawLayer=false
+    onDrawCreated=(action "drawCreated")
+    onDrawEdited=(action "drawEdited")
+    onDrawDeleted=(action "drawDeleted")
+  }}
+{{/if}}
+
+{{!-- Basemaps --}}
+{{#layer-group name="Basemap" baselayer=true default=true}}
+  {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+{{/layer-group}}
+
+{{!-- Points --}}
+{{#if points.length}}
+  {{#layer-group name="Points" default=true}}
+    {{#marker-cluster-layer}}
+      {{#each points as |point|}}
+        {{#marker-layer location=point.location onMouseover=(action "mouseOverObject" point)}}
+          {{#popup-layer popupOpen=(readonly (eq point.name hoveredObject.name))}}
+            <h2>{{point.name}}</h2>
+          {{/popup-layer}}
+        {{/marker-layer}}
+      {{/each}}
+    {{/marker-cluster-layer}}
+  {{/layer-group}}
+{{/if}}
+
+{{!-- GeoJSON --}}
+{{#if geojson.length}}
+  {{#layer-group name="GeoJSON" default=true}}
+    {{#each geojson as |geo|}}
+      {{#geojson-layer geoJSON=geo opacity=0.1 onMouseover=(action "mouseOverObject" geo)}}
+        {{#popup-layer popupOpen=(readonly (eq geo.properties.name hoveredObject.properties.name))}}
+          <h2>{{geo.properties.name}}</h2> 
+        {{/popup-layer}}
+      {{/geojson-layer}}
+    {{/each}}
+  {{/layer-group}}
+{{/if}}
+
+{{!-- DynamicLayer --}}
+{{#if dynamicPoints.length}}
+  {{log "GGG"}}
+  {{#layer-group name="DynamicPoints" default=false}}
+    {{log "HHH"}}
+    {{#each dynamicPoints as |dynamic|}}
+      {{log "III"}}
+      {{#marker-layer location=dynamic.location onMouseover=(action "mouseOverObject" dynamic)}}
+          {{log "JJJ"}}
+          {{#popup-layer popupOpen=(readonly (eq dynamic.name hoveredObject.name))}}
+            <h2>{{dynamic.name}}</h2>
+          {{/popup-layer}}
+        {{/marker-layer}}
+    {{/each}}
+  {{/layer-group}}
+{{/if}}
+
+{{!-- Draw Objects --}}
+{{#layer-group name="Draw" default=false}}
+  {{#each drawObjects as |obj|}}
+    {{map-component/drawObject object=obj}}
+  {{/each}}
+{{/layer-group}}
+
+{{!-- Menu options --}}
+{{#leaflet-contextmenu}}
+  {{leaflet-contextmenu-item text="Add New Point" action=(action "addPoint")}}
+  {{leaflet-contextmenu-item text="Enable Leaflet Draw" action=(action "enableDraw")}}
+  {{leaflet-contextmenu-item text="Fly to Melbourne" action=(action "goMelbourne")}}
+  {{leaflet-contextmenu-item text="Fly to Sydney" action=(action "goSydney")}}
+{{/leaflet-contextmenu}}
+
+{{!-- Layercontrol Plugin --}}
+{{map-component/layer-control handler=(action "layerControlEvent")}}
+
+{{!-- Fullscreen Plugin --}}
+{{!-- {{pm-control}} --}}
+<leaflet-fullscreen-control position="topleft"/>
+{{!-- {{#leaflet-fullscreen-control position="topleft"}}
+{{/leaflet-fullscreen-control}} --}}
+
+{{!-- Old approach to handle hover/click (had issues with marker) --}}
+{{!-- {{#geojson-layer geoJSON=geo opacity=0.1 onClick=(action 'clickObject' geo) 
+  onMouseover=(action 'mouseOverObject' geo) onMouseout=(action 'mouseOutObject')}}
+  {{#popup-layer popupOpen=(readonly (or (eq geo.properties.name hoveredObject.properties.name) 
+    (eq geo.properties.name clickedObject.properties.name)))}}
+      <h2>{{geo.properties.name}}</h2> 
+    {{/popup-layer}}
+{{/geojson-layer}} --}}
+
+{{yield}}

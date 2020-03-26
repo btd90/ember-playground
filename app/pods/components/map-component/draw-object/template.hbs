@@ -1,0 +1,35 @@
+{{#if (eq object.type "marker")}}
+  {{#marker-layer location=object.latlng}}
+    {{#popup-layer}}
+      <h2>{{object.name}}</h2>
+    {{/popup-layer}}
+  {{/marker-layer}}
+{{/if}}
+{{#if (eq object.type "circlemarker")}}
+  {{#circle-marker-layer location=object.latlng radius=object.radius}}
+    {{#popup-layer}}
+      <h2>{{object.name}}</h2>
+    {{/popup-layer}}
+  {{/circle-marker-layer}}
+{{/if}}
+{{#if (eq object.type "circle")}}
+  {{#circle-layer location=object.latlng radius=object.mRadius}}
+    {{#popup-layer}}
+      <h2>{{object.name}}</h2>
+    {{/popup-layer}}
+  {{/circle-layer}}
+{{/if}}
+{{#if (eq object.type "polyline")}}
+  {{#polyline-layer locations=object.latlngs}}
+    {{#popup-layer}}
+      <h2>{{object.name}}</h2>
+    {{/popup-layer}}
+  {{/polyline-layer}}
+{{/if}}
+{{#if (eq object.type "polygon")}}
+  {{#polygon-layer locations=object.latlngs}}
+    {{#popup-layer}}
+      <h2>{{object.name}}</h2>
+    {{/popup-layer}}
+  {{/polygon-layer}}
+{{/if}}

@@ -1,0 +1,10 @@
+<h3>Home Page</h3>
+
+<h2><button {{action "toggleSave"}}>Save</button></h2>
+
+{{map-component class="leaflet-container" lat="46" lng="-122" zoom=5 geojson=geojson points=points saveEvent=saveEvent}}
+
+<br />
+{{#power-select options=names onchange=(action "foo") as |name|}}
+  {{name}}
+{{/power-select}}

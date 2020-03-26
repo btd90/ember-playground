@@ -1,0 +1,6 @@
+{
+  "name": "ember-playground",
+  "dependencies": {
+    "Leaflet.MultiOptionsPolyline": "https://github.com/mjanda/Leaflet.MultiOptionsPolyline.git#master"
+  }
+}
