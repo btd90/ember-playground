@@ -14,6 +14,7 @@ export default EmberLeaflet.extend({
   layerGroups: A(),
   dynamicPoints: A(),
   drawEnabled: false,
+  enabledBase: false,
   hoveredObject: '',
   clickedObject: '',
 
@@ -70,6 +71,9 @@ export default EmberLeaflet.extend({
         name: 'Point: ' + lat + ', ' + lng,
         location: [lat, lng]
       })
+    },
+    addBaseLayer(event) {
+      this.set('enabledBase', true);
     },
   },
 

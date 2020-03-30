@@ -12,6 +12,12 @@
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 {{/layer-group}}
 
+{{#if enabledBase}}
+  {{#layer-group name="Basemap2" baselayer=true default=true}}
+    {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+  {{/layer-group}}
+{{/if}}
+
 {{!-- Points --}}
 {{#if points.length}}
   {{#layer-group name="Points" default=true}}
@@ -42,13 +48,9 @@
 
 {{!-- DynamicLayer --}}
 {{#if dynamicPoints.length}}
-  {{log "GGG"}}
   {{#layer-group name="DynamicPoints" default=false}}
-    {{log "HHH"}}
     {{#each dynamicPoints as |dynamic|}}
-      {{log "III"}}
       {{#marker-layer location=dynamic.location onMouseover=(action "mouseOverObject" dynamic)}}
-          {{log "JJJ"}}
           {{#popup-layer popupOpen=(readonly (eq dynamic.name hoveredObject.name))}}
             <h2>{{dynamic.name}}</h2>
           {{/popup-layer}}
@@ -67,6 +69,7 @@
 {{!-- Menu options --}}
 {{#leaflet-contextmenu}}
   {{leaflet-contextmenu-item text="Add New Point" action=(action "addPoint")}}
+  {{leaflet-contextmenu-item text="Add Basemap" action=(action "addBaseLayer")}}
   {{leaflet-contextmenu-item text="Enable Leaflet Draw" action=(action "enableDraw")}}
   {{leaflet-contextmenu-item text="Fly to Melbourne" action=(action "goMelbourne")}}
   {{leaflet-contextmenu-item text="Fly to Sydney" action=(action "goSydney")}}
