@@ -8,13 +8,18 @@
 {{/if}}
 
 {{!-- Basemaps --}}
-{{#layer-group name="Basemap" baselayer=true default=true}}
+{{#layer-group name="Voyager" baselayer=true default=true}}
+  {{tile-layer url="http://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"}}
+{{/layer-group}}
+{{#layer-group name="Spotify Dark" baselayer=true default=false}}
+  {{tile-layer url="http://{s}.basemaps.cartocdn.com/spotify_dark/{z}/{x}/{y}.png"}}
+{{/layer-group}}
+{{#layer-group name="Light All" baselayer=true default=false}}
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 {{/layer-group}}
-
 {{#if enabledBase}}
-  {{#layer-group name="Basemap2" baselayer=true default=true}}
-    {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+  {{#layer-group name="Dark All" baselayer=true default=false}}
+    {{tile-layer url="http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"}}
   {{/layer-group}}
 {{/if}}
 
@@ -48,7 +53,7 @@
 
 {{!-- DynamicLayer --}}
 {{#if dynamicPoints.length}}
-  {{#layer-group name="DynamicPoints" default=false}}
+  {{#layer-group name="Dynamic Points" default=false}}
     {{#each dynamicPoints as |dynamic|}}
       {{#marker-layer location=dynamic.location onMouseover=(action "mouseOverObject" dynamic)}}
           {{#popup-layer popupOpen=(readonly (eq dynamic.name hoveredObject.name))}}
@@ -68,8 +73,10 @@
 
 {{!-- Menu options --}}
 {{#leaflet-contextmenu}}
-  {{leaflet-contextmenu-item text="Add New Point" action=(action "addPoint")}}
+  {{leaflet-contextmenu-item text="Add Dynamic Point" action=(action "addPoint")}}
+  {{leaflet-contextmenu-item text="Remove Dynamic Points" action=(action "removePoints")}}
   {{leaflet-contextmenu-item text="Add Basemap" action=(action "addBaseLayer")}}
+  {{leaflet-contextmenu-item text="Remove Basemap" action=(action "removeBaseLayer")}}
   {{leaflet-contextmenu-item text="Enable Leaflet Draw" action=(action "enableDraw")}}
   {{leaflet-contextmenu-item text="Fly to Melbourne" action=(action "goMelbourne")}}
   {{leaflet-contextmenu-item text="Fly to Sydney" action=(action "goSydney")}}
@@ -83,14 +90,5 @@
 <leaflet-fullscreen-control position="topleft"/>
 {{!-- {{#leaflet-fullscreen-control position="topleft"}}
 {{/leaflet-fullscreen-control}} --}}
-
-{{!-- Old approach to handle hover/click (had issues with marker) --}}
-{{!-- {{#geojson-layer geoJSON=geo opacity=0.1 onClick=(action 'clickObject' geo) 
-  onMouseover=(action 'mouseOverObject' geo) onMouseout=(action 'mouseOutObject')}}
-  {{#popup-layer popupOpen=(readonly (or (eq geo.properties.name hoveredObject.properties.name) 
-    (eq geo.properties.name clickedObject.properties.name)))}}
-      <h2>{{geo.properties.name}}</h2> 
-    {{/popup-layer}}
-{{/geojson-layer}} --}}
 
 {{yield}}

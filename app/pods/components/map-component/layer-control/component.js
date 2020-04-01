@@ -1,87 +1,104 @@
-import LayerControl from 'ember-leaflet-layer-control/components/layer-control';
-import {
-  computed,
-} from '@ember/object';
-import { A } from '@ember/array';
+import LayerControl from "ember-leaflet-layer-control/components/layer-control";
+import { computed } from "@ember/object";
+import { isEmpty } from '@ember/utils';
+import { A } from "@ember/array";
 
 /**
+ *
  * Override of layer control plugin
- * 
+ *
  */
 export default LayerControl.extend({
-
-  layers: computed.alias('_target.childComponents'),
-  baseLayers: computed.filter('layers', function(layer, index, arry) {
+  layers: computed.alias("_target.childComponents"),
+  baseLayers: computed.filter("layers", function(layer, index, arry) {
     return layer.baselayer;
   }),
-  mapLayers: computed.filter('layers', function(layer, index, arry) {
+  mapLayers: computed.filter("layers", function(layer, index, arry) {
     return !layer.baselayer && layer.attrs.name;
   }),
 
-  computeMapLayers: computed('mapLayers.length', 'baseLayers.length', function() {
-    // Get all current layers and map instance
-    let mapLayers = this.get('mapLayers');
-    let baseLayers = this.get('baseLayers');
-    let instance = this._layer;
+  computeMapLayers: computed(
+    "mapLayers.length",
+    "baseLayers.length",
+    function() {
+      // Get all current layers and map instance
+      let mapLayers = this.get("mapLayers");
+      let baseLayers = this.get("baseLayers");
+      let instance = this._layer;
 
-    // Update them if valid
-    if(instance && mapLayers.length && baseLayers.length) {
-      let currentLayers = instance._layers;
+      // Update them if valid
+      if (instance && mapLayers.length && baseLayers.length) {
+        let currentLayers = instance._layers;
+        let currentBaseLayers = currentLayers
+          .filter(layer => !layer.overlay)
+          .mapBy("name");
+        let currentMapLayers = currentLayers
+          .filter(layer => layer.overlay)
+          .mapBy("name");
 
-      debugger;
-      let map = instance._map;
+        // let missingMapLayers = mapLayers.filter(ml => !currentMapLayers.includes(ml.name));
 
-      // Add all current basemaps
-      let baseMaps = {};
-      baseLayers.forEach(function(value){
-        //baseMaps[value.name] = value._layer._layer
-      });
-      
-      // Add all current layers
-      let overlayMaps = {};
-      mapLayers.forEach(function(value){
-        instance.addOverlay(value._layer, value.name)
-        //overlayMaps[value.name] = value._layer
-      });
+        // Add missing map layers
+        mapLayers.filter(function(value) {
+          if (!currentMapLayers.includes(value.name)) {
+            instance.addOverlay(value._layer, value.name);
+          }
+          //return !v.name.includes(currentMapLayers);
+          //return !currentMapLayers.includes(v.name);
+          //ml => !ml.name.includes(currentMapLayers);
+        });
 
-      // let curr = L.control.layers();
-      // curr.addOverlay(mapLayers.get(0)._layer, "test");
-      //instance.addOverlay(mapLayers.get(0)._layer, "test")
+        // Add missing base layers
+        baseLayers.filter(function(value) {
+          if (!currentBaseLayers.includes(value.name)) {
+            instance.addBaseLayer(value._layer._layer, value.name);
+          }
+        });
 
-      // PARTIALLY REMOVES EXISTING
-      //mainInstance._layersLink.remove()
-      //map._controlCorners.topright.remove()
-      // ADD REPLACEMENT
+        // Remove from layer control if no longer on map
+        currentLayers.filter(function(value) {
+          if (
+            !mapLayers.mapBy("name").includes(value.name) &&
+            !baseLayers.mapBy("name").includes(value.name)
+          ) {
+            instance.removeLayer(value.layer);
+          }
+        });
 
-      // Create new layer control
-      //let testControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-      debugger;
-      
+        // // Clean up any removed map layers
+        // currentMapLayers.filter(function(value) {
+        //   if (!mapLayers.mapBy("name").includes(value)) {
+        //     //let targetLayer = mapLayers.filterBy('name', value);
+        //     debugger;
+        //     // LAYER IS NOW GONE, CANT USE IT TO REMOVE
+        //     // RE-INITIALIZE OVERLAYS INSTEAD??
+        //     //instance.removeLayer(mapLayers.filterBy('name', value)[0]._layer)
+        //     //let curr = currentLayer.filterBy('name', value);
+        //     //instance.removeLayer(curr);
+        //   }
+        // });
+      }
+      return this.get("mapLayers.length");
     }
+  ),
 
-
-    return this.get('mapLayers.length');
-  }),
-
-  computeMapLayers1: computed('mapLayers.length', function() {
-    let mapLayers = this.get('mapLayers');
+  computeMapLayers1: computed("mapLayers.length", function() {
+    let mapLayers = this.get("mapLayers");
 
     //current layers on map
     let mainInstance = this._layer;
-    if(mainInstance && mapLayers.length > 0) {
+    if (mainInstance && mapLayers.length > 0) {
       let mapLayerz = mainInstance._layers;
       let mapIns = mainInstance._map;
       let test1 = A();
-
 
       let obj = {};
 
       // mapLayers.forEach(function(value, key){
       //     obj[key] = value
       // });
-      mapLayers.forEach(function(value, key){
-          obj[value.name] = value._layer
+      mapLayers.forEach(function(value, key) {
+        obj[value.name] = value._layer;
       });
       // for(let i=0; i<mapLayers.length; i++) {
       //   let curr = mapLayers[i];
@@ -92,15 +109,15 @@ export default LayerControl.extend({
       //   test1.push(mapLayerz[i].layer);
       // }
       let overlayMaps = {
-        "a": mapLayers.get(3)._layer,
+        a: mapLayers.get(3)._layer,
         "1": mapLayerz[0].layer,
         "2": mapLayerz[1].layer,
         "3": mapLayerz[2].layer,
-        "4": mapLayerz[3].layer,
+        "4": mapLayerz[3].layer
       };
 
       mainInstance._layerControlInputs.addObject({
-        "a": mapLayerz[1].layer,
+        a: mapLayerz[1].layer
       });
 
       // PARTIALLY REMOVES EXISTING
@@ -110,20 +127,15 @@ export default LayerControl.extend({
       L.control.layers({}, obj).addTo(mapIns);
     }
 
-
-
-
-
     let desired = mapLayers.filter(function(layer) {
-      return layer.attrs.name === 'DynamicPoints';
+      return layer.attrs.name === "DynamicPoints";
     });
 
-    if(desired.length) {
+    if (desired.length) {
       //let map = this.get('_layer');
       //let map = L.map();
       let instance = this._layer;
       let mapInstance = instance._map;
-
 
       ///
       /// TRY FETCHING MAPLAYERS FROM 'map'???
@@ -141,21 +153,17 @@ export default LayerControl.extend({
       //map.addLayer(test);
       //map.addOverlay(overlayMaps);
 
-
       // remove the current control panel
       //mapInstance.removeControl(mapInstance._controlContainer);
       //mapInstance._controlCorners.topright.remove()
       debugger;
       //L.control.layers({}, overlayMaps).addTo(mapInstance);
 
-
-
       // add one with the cities
       //let citiesControl = L.control.layers({}, overlayMaps).addTo(L.map);
-  
+
       //L.control.layers({}, overlayMaps).addTo(map);
       //L.control.layers().addOverlay(desired.get(0));
-
 
       //
       // TO REMOVE CONTROL
@@ -169,12 +177,11 @@ export default LayerControl.extend({
       // this._layer._layersLink.remove()
     }
 
-
-    return this.get('mapLayers.length');
+    return this.get("mapLayers.length");
   }),
 
-  computeBaseLayers: computed('baseLayers.length', function() {
-    return this.get('baseLayers.length');
+  computeBaseLayers: computed("baseLayers.length", function() {
+    return this.get("baseLayers.length");
   }),
 
   init() {
@@ -213,7 +220,6 @@ export default LayerControl.extend({
   },
 
   willDestroy() {
-    debugger;
     this._super(...arguments);
     console.log("willDestroy");
   },
@@ -224,9 +230,7 @@ export default LayerControl.extend({
   },
 
   willUpdate() {
-    debugger;
     this._super(...arguments);
     console.log("willUpdate");
-  },
-
+  }
 });

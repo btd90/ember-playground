@@ -58,22 +58,28 @@ export default EmberLeaflet.extend({
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
-    // LAYER CONTROL EVENTS
-    layerControlEvent(event) {
-      return event;
-    },
-    // NEW LAYER EVENTS
+    // ADD/REMOVE LAYER EVENTS
     addPoint(event) {
       let lat = event.latlng.lat.toFixed(1);
-      let lng = event.latlng.lng.toFixed(1)
+      let lng = event.latlng.lng.toFixed(1);
       let points = this.get('dynamicPoints');
       points.pushObject({
         name: 'Point: ' + lat + ', ' + lng,
         location: [lat, lng]
       })
     },
+    removePoints() {
+      this.set('dynamicPoints', A());
+    },
     addBaseLayer(event) {
       this.set('enabledBase', true);
+    },
+    removeBaseLayer() {
+      this.set('enabledBase', false);
+    },
+    // LAYER CONTROL EVENTS
+    layerControlEvent(event) {
+      return event;
     },
   },
 
@@ -106,7 +112,7 @@ export default EmberLeaflet.extend({
     let drawObjects = this.findDrawObjects(this.get('layerGroups').uniq());
     this.set('drawObjects', drawObjects);
 
-    // Close draw layer
+    // Close draw layer (known bug)
     //this.set('drawEnabled', false);
   }),
 
@@ -117,9 +123,11 @@ export default EmberLeaflet.extend({
 
     // Loop over new layer groups
     layerGroups.forEach(layerGroup => {
+      // Add each to Draw layer
       let builtObjects = this.buildDrawObjects(map._layers[layerGroup]._layers);
       drawObjects.pushObjects(builtObjects);
-      //debugger;
+
+      // Remove from draw plugin (broken)
       //layerGroup.removeFrom(map);
     });
     return drawObjects;
