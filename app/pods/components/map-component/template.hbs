@@ -56,10 +56,10 @@
   {{#layer-group name="Dynamic Points" default=false}}
     {{#each dynamicPoints as |dynamic|}}
       {{#marker-layer location=dynamic.location onMouseover=(action "mouseOverObject" dynamic)}}
-          {{#popup-layer popupOpen=(readonly (eq dynamic.name hoveredObject.name))}}
-            <h2>{{dynamic.name}}</h2>
-          {{/popup-layer}}
-        {{/marker-layer}}
+        {{#popup-layer popupOpen=(readonly (eq dynamic.name hoveredObject.name))}}
+          <h2>{{dynamic.name}}</h2>
+        {{/popup-layer}}
+      {{/marker-layer}}
     {{/each}}
   {{/layer-group}}
 {{/if}}

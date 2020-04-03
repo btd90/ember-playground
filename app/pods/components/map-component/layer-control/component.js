@@ -6,10 +6,10 @@ import { computed } from "@ember/object";
  */
 export default LayerControl.extend({
   layers: computed.alias("_target.childComponents"),
-  baseLayers: computed.filter("layers", function(layer, index, arry) {
+  baseLayers: computed.filter("layers", function(layer) {
     return layer.baselayer;
   }),
-  mapLayers: computed.filter("layers", function(layer, index, arry) {
+  mapLayers: computed.filter("layers", function(layer) {
     return !layer.baselayer && layer.attrs.name;
   }),
 

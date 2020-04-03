@@ -71,7 +71,7 @@ export default EmberLeaflet.extend({
     removePoints() {
       this.set('dynamicPoints', A());
     },
-    addBaseLayer(event) {
+    addBaseLayer() {
       this.set('enabledBase', true);
     },
     removeBaseLayer() {
