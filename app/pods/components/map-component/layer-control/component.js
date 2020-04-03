@@ -1,14 +1,13 @@
 import LayerControl from "ember-leaflet-layer-control/components/layer-control";
-import { computed } from "@ember/object";
+import { computed, observer } from "@ember/object";
 import { isEmpty } from '@ember/utils';
 import { A } from "@ember/array";
 
 /**
- *
  * Override of layer control plugin
- *
  */
 export default LayerControl.extend({
+  renderTrigger: false,
   layers: computed.alias("_target.childComponents"),
   baseLayers: computed.filter("layers", function(layer, index, arry) {
     return layer.baselayer;
@@ -17,7 +16,90 @@ export default LayerControl.extend({
     return !layer.baselayer && layer.attrs.name;
   }),
 
-  computeMapLayers: computed(
+  // testState: computed.mapBy('mapLayers', '_state'),
+
+  // test1: observer('testState', function() {
+  //   debugger;
+  //   let testStates = this.get('testState');
+  //   // return new Date();
+  //   // if(testStates.length) {
+  //     return this.get('mapLayers');
+  //   // }
+  // }),
+
+
+
+  // test111: computed('mapLayers.length', function() {
+  //   let test = A();
+  //   debugger;
+  //   this.get('mapLayers').forEach(map => {
+  //     // let testA = Ember.copy(map);
+  //     // console.info(testA);
+  //     test.push(map);
+  //     // if(map._state === 'inDOM') {
+  //     //   test.push(map);
+  //     // }
+  //   })
+  //   return test;
+  //   // if(this.get('mapLayers').length) {
+      
+  //   //   return this.get('mapLayers').mapBy('_state');
+  //   // }
+  // }),
+
+  // test2: observer('test111', function() {
+  //   console.log(this.get('test111'));
+  // }),
+
+  // layerStates: computed.oneWay('mapLayers.@each._state', function() {
+  //   let mapLayers = this.get('mapLayers');
+
+  //   //filter instead and ensure no results
+  //   let layerCheck = mapLayers.filter(function(layer) {
+  //     if(layer.name && layer._layer) {
+  //       if(layer._state === 'inDOM') {
+  //         console.info(layer._state);
+  //         return true;
+  //       }
+  //     }
+  //  });
+
+  //  debugger;
+
+  //   if(layerCheck.length === mapLayers.length) {
+  //     return mapLayers;
+  //   } else {
+  //     return new Date();
+  //   }
+
+  //   // mapLayers.forEach(layer => {
+  //   // });
+
+  // }),
+
+  //compute all the way down
+  // firstLevel: computed.mapBy('mapLayers._layer', )
+
+
+  // let grandparents = { some complex object }
+ 
+  // _aliveParents: computed.mapBy(‘grandparent.parents’, ‘alive’)
+   
+  // _aliveParentsAge: computed.mapBy(‘_aliveParents’, ‘age’)
+   
+  // finalResults: computed(‘_aliveParentsAge.@each.isDoubleDigits’, function() {}
+
+
+  // test: Ember.observer('computeMapLayers', function(){
+  //   this.get('computeMapLayers');
+  //   console.info("AA");
+  // }).on('willRender'),
+
+  // test22: observer('computeMapLayers', function() {
+  //   console.log(this.get('computeMapLayers'));
+  // }),
+
+  computedLayers: computed(
     "mapLayers.length",
     "baseLayers.length",
     function() {
@@ -36,16 +118,11 @@ export default LayerControl.extend({
           .filter(layer => layer.overlay)
           .mapBy("name");
 
-        // let missingMapLayers = mapLayers.filter(ml => !currentMapLayers.includes(ml.name));
-
         // Add missing map layers
         mapLayers.filter(function(value) {
-          if (!currentMapLayers.includes(value.name)) {
+          if (!currentMapLayers.includes(value.name) && value._layer) {
             instance.addOverlay(value._layer, value.name);
           }
-          //return !v.name.includes(currentMapLayers);
-          //return !currentMapLayers.includes(v.name);
-          //ml => !ml.name.includes(currentMapLayers);
         });
 
         // Add missing base layers
@@ -64,21 +141,8 @@ export default LayerControl.extend({
             instance.removeLayer(value.layer);
           }
         });
-
-        // // Clean up any removed map layers
-        // currentMapLayers.filter(function(value) {
-        //   if (!mapLayers.mapBy("name").includes(value)) {
-        //     //let targetLayer = mapLayers.filterBy('name', value);
-        //     debugger;
-        //     // LAYER IS NOW GONE, CANT USE IT TO REMOVE
-        //     // RE-INITIALIZE OVERLAYS INSTEAD??
-        //     //instance.removeLayer(mapLayers.filterBy('name', value)[0]._layer)
-        //     //let curr = currentLayer.filterBy('name', value);
-        //     //instance.removeLayer(curr);
-        //   }
-        // });
       }
-      return this.get("mapLayers.length");
+      // return this.get("mapLayers.length");
     }
   ),
 
@@ -180,10 +244,6 @@ export default LayerControl.extend({
     return this.get("mapLayers.length");
   }),
 
-  computeBaseLayers: computed("baseLayers.length", function() {
-    return this.get("baseLayers.length");
-  }),
-
   init() {
     this._super(...arguments);
     console.log("init");
@@ -202,11 +262,15 @@ export default LayerControl.extend({
   didRender() {
     this._super(...arguments);
     console.log("didRender");
-  },
+
+    // debugger;
+    // this.get('test111');
+    // this.get('computeMapLayers');
+    },
 
   didUpdate() {
     this._super(...arguments);
-    console.log("didUpdate");
+    console.log("didUpdate"); 
   },
 
   didUpdateAttrs() {
