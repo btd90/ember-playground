@@ -24,7 +24,7 @@ export default EmberLeaflet.extend({
   init() {
     this._super(...arguments);
 
-    this.set('zoom', 4);
+    this.set('zoom', 3);
     this.set('minZoom', 1);
     this.set('maxZoom', 10);
     this.set('lat', -25.3444);

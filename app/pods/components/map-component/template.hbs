@@ -42,7 +42,7 @@
 {{#if geojson.length}}
   {{#layer-group name="GeoJSON" default=true}}
     {{#each geojson as |geo|}}
-      {{#geojson-layer geoJSON=geo opacity=0.1 onMouseover=(action "mouseOverObject" geo) icon=markerIcon}}
+      {{#geojson-layer geoJSON=geo opacity=0.1 onMouseover=(action "mouseOverObject" geo)}}
         {{#popup-layer popupOpen=(readonly (eq geo.properties.name hoveredObject.properties.name))}}
           <h2>{{geo.properties.name}}</h2> 
         {{/popup-layer}}
