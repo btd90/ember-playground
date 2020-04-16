@@ -28,7 +28,7 @@
   {{#layer-group name="Points" default=true}}
     {{#marker-cluster-layer}}
       {{#each points as |point|}}
-        {{#marker-layer location=point.location onMouseover=(action "mouseOverObject" point)}}
+        {{#marker-layer location=point.location onMouseover=(action "mouseOverObject" point) icon=markerIcon}}
           {{#popup-layer popupOpen=(readonly (eq point.name hoveredObject.name))}}
             <h2>{{point.name}}</h2>
           {{/popup-layer}}
@@ -42,7 +42,7 @@
 {{#if geojson.length}}
   {{#layer-group name="GeoJSON" default=true}}
     {{#each geojson as |geo|}}
-      {{#geojson-layer geoJSON=geo opacity=0.1 onMouseover=(action "mouseOverObject" geo)}}
+      {{#geojson-layer geoJSON=geo opacity=0.1 onMouseover=(action "mouseOverObject" geo) icon=markerIcon}}
         {{#popup-layer popupOpen=(readonly (eq geo.properties.name hoveredObject.properties.name))}}
           <h2>{{geo.properties.name}}</h2> 
         {{/popup-layer}}
@@ -55,7 +55,7 @@
 {{#if dynamicPoints.length}}
   {{#layer-group name="Dynamic Points" default=false}}
     {{#each dynamicPoints as |dynamic|}}
-      {{#marker-layer location=dynamic.location onMouseover=(action "mouseOverObject" dynamic)}}
+      {{#marker-layer location=dynamic.location onMouseover=(action "mouseOverObject" dynamic) icon=markerIcon}}
         {{#popup-layer popupOpen=(readonly (eq dynamic.name hoveredObject.name))}}
           <h2>{{dynamic.name}}</h2>
         {{/popup-layer}}
@@ -73,13 +73,15 @@
 
 {{!-- Menu options --}}
 {{#leaflet-contextmenu}}
+  {{leaflet-contextmenu-item text="Fly to Melbourne" action=(action "goMelbourne")}}
+  {{leaflet-contextmenu-item text="Fly to Sydney" action=(action "goSydney")}}
+  {{leaflet-contextmenu-item text="Convert to Building Icons" action=(action "buildingIcons")}}
+  {{leaflet-contextmenu-item text="Revert to Marker Icons" action=(action "markerIcons")}}
   {{leaflet-contextmenu-item text="Add Dynamic Point" action=(action "addPoint")}}
   {{leaflet-contextmenu-item text="Remove Dynamic Points" action=(action "removePoints")}}
   {{leaflet-contextmenu-item text="Add Basemap" action=(action "addBaseLayer")}}
   {{leaflet-contextmenu-item text="Remove Basemap" action=(action "removeBaseLayer")}}
   {{leaflet-contextmenu-item text="Enable Leaflet Draw" action=(action "enableDraw")}}
-  {{leaflet-contextmenu-item text="Fly to Melbourne" action=(action "goMelbourne")}}
-  {{leaflet-contextmenu-item text="Fly to Sydney" action=(action "goSydney")}}
 {{/leaflet-contextmenu}}
 
 {{!-- Layercontrol Plugin --}}

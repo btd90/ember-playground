@@ -1,6 +1,12 @@
 import EmberLeaflet from 'ember-leaflet/components/leaflet-map';
-import { A } from '@ember/array';
-import { observer } from '@ember/object';
+import MarkerIcon from '../../../objects/icons/marker-icon';
+import BuildingIcon from '../../../objects/icons/building-icon';
+import {
+  A
+} from '@ember/array';
+import {
+  observer
+} from '@ember/object';
 
 /**
  * Map display component
@@ -10,9 +16,6 @@ import { observer } from '@ember/object';
  * @argument {Boolean} saveEvent - used to track when save occurs
  */
 export default EmberLeaflet.extend({
-  drawObjects: A(),
-  layerGroups: A(),
-  dynamicPoints: A(),
   drawEnabled: false,
   enabledBase: false,
   hoveredObject: '',
@@ -21,11 +24,17 @@ export default EmberLeaflet.extend({
   init() {
     this._super(...arguments);
 
-    this.set('zoom', 3);
+    this.set('zoom', 4);
     this.set('minZoom', 1);
     this.set('maxZoom', 10);
     this.set('lat', -25.3444);
     this.set('lng', 131.0369);
+
+    this.set('drawObjects', A());
+    this.set('layerGroups', A());
+    this.set('dynamicPoints', A());
+
+    this.set('markerIcon', L.icon(MarkerIcon.create()));
   },
 
   actions: {
@@ -81,10 +90,17 @@ export default EmberLeaflet.extend({
     layerControlEvent(event) {
       return event;
     },
+    // ICON EVENTS
+    buildingIcons() {
+      this.set('markerIcon', L.icon(BuildingIcon.create()));
+    },
+    markerIcons() {
+      this.set('markerIcon', L.icon(MarkerIcon.create()));
+    }
   },
 
   didInsertParent() {
-    this._super(...arguments); 
+    this._super(...arguments);
 
     // Update control 
     let map = this.get('_layer');
@@ -93,7 +109,7 @@ export default EmberLeaflet.extend({
 
     // Override events
     map.addEventListener('mousemove', this.mousemove, this);
-    map.addEventListener('click', this.mouseclick, this); 
+    map.addEventListener('click', this.mouseclick, this);
   },
 
   mousemove(event) {
@@ -108,7 +124,7 @@ export default EmberLeaflet.extend({
   },
 
   /* Track when save clicked */
-  saveObserver: observer('saveEvent', function() {
+  saveObserver: observer('saveEvent', function () {
     let drawObjects = this.findDrawObjects(this.get('layerGroups').uniq());
     this.set('drawObjects', drawObjects);
 
@@ -117,7 +133,7 @@ export default EmberLeaflet.extend({
   }),
 
   /* Locate each object from the layer group */
-  findDrawObjects: function(layerGroups) {
+  findDrawObjects: function (layerGroups) {
     let drawObjects = A();
     let map = this.get('_layer');
 
@@ -134,41 +150,41 @@ export default EmberLeaflet.extend({
   },
 
   /* Construct draw objects for draw-object component */
-  buildDrawObjects: function(newLayers) {
+  buildDrawObjects: function (newLayers) {
     let builtObjects = A();
 
     // Fetch each object
     Object.keys(newLayers).forEach(key => {
       let layer = newLayers[key];
-      if(layer._latlngs) {
-        if(layer._latlngs.length > 1) {
+      if (layer._latlngs) {
+        if (layer._latlngs.length > 1) {
           return builtObjects.pushObject({
-              name: 'polyline',
-              type: 'polyline',
-              latlngs: layer._latlngs
+            name: 'polyline',
+            type: 'polyline',
+            latlngs: layer._latlngs
           });
         } else {
           return builtObjects.pushObject({
-              name: 'polygon',
-              type: 'polygon',
-              latlngs: layer._latlngs
+            name: 'polygon',
+            type: 'polygon',
+            latlngs: layer._latlngs
           });
         }
-      } else if(layer._mRadius) {
+      } else if (layer._mRadius) {
         return builtObjects.pushObject({
           name: 'circle',
           type: 'circle',
           latlng: layer._latlng,
           mRadius: layer._mRadius
         });
-      } else if(layer._radius) {
+      } else if (layer._radius) {
         return builtObjects.pushObject({
           name: 'circlemarker',
           type: 'circlemarker',
           latlng: layer._latlng,
           radius: layer._radius
         });
-      } else if(layer._latlng) {
+      } else if (layer._latlng) {
         return builtObjects.pushObject({
           name: 'marker',
           type: 'marker',

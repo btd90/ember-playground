@@ -43,7 +43,22 @@ export default Controller.extend({
   geojson: computed(function () {
     let geojson = A();
     geojson.pushObject(this.get('nzGeo'));
+    geojson.pushObject(this.get('markerGeo'));
     return geojson
+  }),
+
+  markerGeo: computed(function () {
+    return {
+      "type": "Feature",
+      "properties": {
+        "name": "GeoJSON Marker",
+        "amenity": "Football Stadium",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [151.99404, -26.75621]
+      }
+    }
   }),
 
   nzGeo: computed(function () {
