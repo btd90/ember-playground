@@ -45,7 +45,7 @@
     "ember-leaflet-iiif-tile-layer": "^0.1.0",
     "ember-leaflet-layer-control": "^0.2.1",
     "ember-leaflet-marker-cluster": "^0.3.0",
-    "ember-leaflet-multi-options-polyline": "^0.2.0",
+    "ember-leaflet-multi-options-polyline": "0.2.0",
     "ember-leaflet-pm": "^1.0.1",
     "ember-leaflet-polyline-decorator": "^0.4.0",
     "ember-leaflet-rotated-marker": "^0.1.0",
