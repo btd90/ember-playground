@@ -13,14 +13,6 @@ export default DrawControl.extend({
     this._super(...arguments);
   },
 
-  addToContainer() {
-    this._super(...arguments);
-  },
-
-  didCreateLayer() {
-    this._super(...arguments);
-  },
-
   willDestroy() {
     // remove draw layer from map here?
   },
