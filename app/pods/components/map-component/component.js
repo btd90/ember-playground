@@ -16,8 +16,6 @@ import {
  * @argument {Boolean} saveEvent - used to track when save occurs
  */
 export default EmberLeaflet.extend({
-  drawEnabled: false,
-  enabledBase: false,
   hoveredObject: '',
   clickedObject: '',
 
@@ -35,6 +33,8 @@ export default EmberLeaflet.extend({
     this.set('dynamicPoints', A());
 
     this.set('markerIcon', L.icon(MarkerIcon.create()));
+    this.get('drawEnabled') ? this.set('drawEnabled', true) : this.set('drawEnabled', false);
+    this.set('enabledBase', false);
   },
 
   actions: {

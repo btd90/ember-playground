@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 
 /**
- * Home route file.
+ * Home index route file.
  */
 export default Route.extend({
 });
