@@ -38,6 +38,16 @@
   {{/layer-group}}
 {{/if}}
 
+{{!-- Flight Path --}}
+{{#if flightPaths.length}}
+  {{#layer-group name="Flight Paths" default=true}}
+    {{#each flightPaths as |flightPath|}}
+    {{log flightPath}}
+      {{polyline-decorator latlngs=flightPath.polylineLocations patterns=flightPath.polylinePatterns}}
+      {{/each}}
+  {{/layer-group}}
+{{/if}}
+
 {{!-- GeoJSON --}}
 {{#if geojson.length}}
   {{#layer-group name="GeoJSON" default=true}}

@@ -35,6 +35,36 @@ export default EmberLeaflet.extend({
     this.set('markerIcon', L.icon(MarkerIcon.create()));
     this.get('drawEnabled') ? this.set('drawEnabled', true) : this.set('drawEnabled', false);
     this.set('enabledBase', false);
+
+    let flightPaths = A();
+    flightPaths.push({
+      polylineLocations: [
+        L.latLng(10, 20),
+        L.latLng(20, 30),
+        L.latLng(30, 40),
+        L.latLng(40, 50),
+        L.latLng(50, 60),
+        L.latLng(60, 70),
+        L.latLng(70, 80)
+      ],
+      polylinePatterns: [{
+        offset: 0, 
+        repeat: 50, 
+        symbol: L.Symbol.arrowHead({
+          pixelSize: 15, 
+          headAngle: 30, 
+          pathOptions: {
+            stroke: true, 
+            fillOpacity: 1, 
+            weight: 1, 
+            color: 'purple',
+          }
+        })
+      }]
+    });
+    // stroke-linecap: 'round',
+    // stroke-linejoin: 'round'
+    this.set('flightPaths', flightPaths);
   },
 
   actions: {
