@@ -2,6 +2,12 @@ import EmberLeaflet from 'ember-leaflet/components/leaflet-map';
 import MarkerIcon from '../../../objects/icons/marker-icon';
 import BuildingIcon from '../../../objects/icons/building-icon';
 import {
+  inject as service
+} from '@ember/service';
+import {
+  isEmpty
+} from '@ember/utils';
+import {
   A
 } from '@ember/array';
 import {
@@ -16,13 +22,15 @@ import {
  * @argument {Boolean} saveEvent - used to track when save occurs
  */
 export default EmberLeaflet.extend({
+
+  polylineBuilder: service(),
   hoveredObject: '',
   clickedObject: '',
 
   init() {
     this._super(...arguments);
 
-    this.set('zoom', 3);
+    this.set('zoom', 2);
     this.set('minZoom', 1);
     this.set('maxZoom', 10);
     this.set('lat', -25.3444);
@@ -36,35 +44,13 @@ export default EmberLeaflet.extend({
     this.get('drawEnabled') ? this.set('drawEnabled', true) : this.set('drawEnabled', false);
     this.set('enabledBase', false);
 
-    let flightPaths = A();
-    flightPaths.push({
-      polylineLocations: [
-        L.latLng(10, 20),
-        L.latLng(20, 30),
-        L.latLng(30, 40),
-        L.latLng(40, 50),
-        L.latLng(50, 60),
-        L.latLng(60, 70),
-        L.latLng(70, 80)
-      ],
-      polylinePatterns: [{
-        offset: 0, 
-        repeat: 50, 
-        symbol: L.Symbol.arrowHead({
-          pixelSize: 15, 
-          headAngle: 30, 
-          pathOptions: {
-            stroke: true, 
-            fillOpacity: 1, 
-            weight: 1, 
-            color: 'purple',
-          }
-        })
-      }]
-    });
-    // stroke-linecap: 'round',
-    // stroke-linejoin: 'round'
-    this.set('flightPaths', flightPaths);
+    // Change to occur on external trigger..
+    let polylineArray = this.get('polylineBuilder').convertLineString(true, true, true, true);
+
+    // Construct polyline object
+    if (!isEmpty(polylineArray)) {
+      this.set('flightPaths', this.buildPolyline(polylineArray));
+    }
   },
 
   actions: {
@@ -227,4 +213,38 @@ export default EmberLeaflet.extend({
     return builtObjects;
   },
 
+  /* Construct polyline object for flight paths */
+  buildPolyline: function (polylineArray) {
+    let polylineObject = A();
+
+    // Add a default pattern
+    let defaultPattern = {
+      offset: 0,
+      repeat: 30,
+      symbol: L.Symbol.dash({
+        pixelSize: 10,
+        headAngle: 30,
+        pathOptions: {
+          stroke: true,
+          fillOpacity: 1,
+          weight: 1,
+          color: 'purple',
+        }
+      })
+    };
+
+    // Build polyline object
+    polylineArray.forEach(polyline => {
+      polylineObject.pushObject({
+        polylineLocation: polyline,
+        polylinePattern: [defaultPattern],
+        firstLocation: polyline[0],
+        lastLocation: polyline[polyline.length - 1],
+        popup: 'test'
+      })
+    });
+
+    return polylineObject;
+  },
 });
+
