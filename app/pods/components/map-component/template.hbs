@@ -42,9 +42,17 @@
 {{#if flightPaths.length}}
   {{#layer-group name="Flight Paths" default=true}}
     {{#each flightPaths as |flightPath|}}
-      {{marker-layer location=flightPath.firstLocation}}
+      {{#marker-layer location=flightPath.firstLocation icon=(if flightPath.reverse flightPath.flightIcon slingShotIcon)}}
+        {{#popup-layer popupOpen=(if (and flightPath.popupOpen (not flightPath.reverse)) true false)}}
+          <h2>{{flightPath.flightStatus}}</h2>
+        {{/popup-layer}}
+      {{/marker-layer}}
       {{polyline-decorator latlngs=flightPath.polylineLocation patterns=flightPath.polylinePattern}}
-      {{marker-layer location=flightPath.lastLocation}}
+      {{#marker-layer location=flightPath.lastLocation icon=(if flightPath.reverse slingShotIcon flightPath.flightIcon)}}
+        {{#popup-layer popupOpen=(if (and flightPath.popupOpen flightPath.reverse) true false)}}
+          <h2>{{flightPath.flightStatus}}</h2>
+        {{/popup-layer}}
+      {{/marker-layer}}
     {{/each}}
   {{/layer-group}}
 {{/if}}
@@ -76,11 +84,13 @@
 {{/if}}
 
 {{!-- Draw Objects --}}
-{{#layer-group name="Draw" default=false}}
-  {{#each drawObjects as |obj|}}
-    {{map-component/drawObject object=obj}}
-  {{/each}}
-{{/layer-group}}
+{{#if drawEnabled}}
+  {{#layer-group name="Draw" default=false}}
+    {{#each drawObjects as |obj|}}
+      {{map-component/drawObject object=obj}}
+    {{/each}}
+  {{/layer-group}}
+{{/if}}
 
 {{!-- Menu options --}}
 {{#leaflet-contextmenu}}
@@ -92,7 +102,6 @@
   {{leaflet-contextmenu-item text="Remove Dynamic Points" action=(action "removePoints")}}
   {{leaflet-contextmenu-item text="Add Basemap" action=(action "addBaseLayer")}}
   {{leaflet-contextmenu-item text="Remove Basemap" action=(action "removeBaseLayer")}}
-  {{leaflet-contextmenu-item text="Enable Leaflet Draw" action=(action "enableDraw")}}
 {{/leaflet-contextmenu}}
 
 {{!-- Layercontrol Plugin --}}

@@ -18,7 +18,6 @@ export default Controller.extend({
       this.set('chosenName', selection);
     },
     toggleSave() {
-      // Trigger save
       this.set('saveEvent', !this.get('saveEvent'));
     }
   },

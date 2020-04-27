@@ -11,15 +11,14 @@ import {
  */
 export default Controller.extend({
 
-  saveEvent: false,
+  flightDemo: false,
 
   actions: {
     changeSelection(selection) {
       this.set('chosenName', selection);
     },
-    toggleSave() {
-      // Trigger save
-      this.set('saveEvent', !this.get('saveEvent'));
+    toggleFlightDemo() {
+      this.set('flightDemo', true);
     }
   },
 

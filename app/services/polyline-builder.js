@@ -13,35 +13,68 @@ export default Service.extend({
     },
   
     // Convert linestring to object for polyline
-    convertLineString(africa, antarctica, russia, japan) {
+    convertLineString(mexico, antarctica, russia, india) {
         let polylineArray = A();
 
         // Add flight paths
-        if (africa) {
-            let africaLineString = this.get('africaLineString');
-            polylineArray.pushObject(africaLineString.geometry.coordinates);
+        if (mexico) {
+            let mexicoLineString = this.get('mexicoLineString');
+            polylineArray.pushObject({
+                coordinates: mexicoLineString.geometry.coordinates,
+                flight: mexicoLineString.properties.flight,
+                flightStatus: mexicoLineString.properties.status,
+                invertIcon: mexicoLineString.properties.invertIcon,
+                statusColour: mexicoLineString.properties.statusColour,
+                popupOpen: mexicoLineString.properties.popupOpen,
+            });
         }
         if (antarctica) {
             let antarcticaLineString = this.get('antarcticaLineString');
-            polylineArray.pushObject(antarcticaLineString.geometry.coordinates);
+            polylineArray.pushObject({
+                coordinates: antarcticaLineString.geometry.coordinates,
+                flight: antarcticaLineString.properties.flight,
+                flightStatus: antarcticaLineString.properties.status,
+                invertIcon: antarcticaLineString.properties.invertIcon,
+                statusColour: antarcticaLineString.properties.statusColour,
+                popupOpen: antarcticaLineString.properties.popupOpen,
+            });
         }
         if (russia) {
             let russiaLineString = this.get('russiaLineString');
-            polylineArray.pushObject(russiaLineString.geometry.coordinates);
+            polylineArray.pushObject({
+                coordinates: russiaLineString.geometry.coordinates,
+                flight: russiaLineString.properties.flight,
+                flightStatus: russiaLineString.properties.status,
+                invertIcon: russiaLineString.properties.invertIcon,
+                statusColour: russiaLineString.properties.statusColour,
+                popupOpen: russiaLineString.properties.popupOpen,
+            });
         }
-        if (japan) {
-            let japanLineString = this.get('japanLineString');
-            polylineArray.pushObject(japanLineString.geometry.coordinates);
+        if (india) {
+            let indiaLineString = this.get('indiaLineString');
+            polylineArray.pushObject({
+                coordinates: indiaLineString.geometry.coordinates,
+                flight: indiaLineString.properties.flight,
+                flightStatus: indiaLineString.properties.status,
+                invertIcon: indiaLineString.properties.invertIcon,
+                statusColour: indiaLineString.properties.statusColour,
+                popupOpen: indiaLineString.properties.popupOpen,
+            });
         }
-
         return polylineArray;
     },
 
-    africaLineString: computed(function() {
+    mexicoLineString: computed(function() {
         return {
             "type": "Feature",
             "properties": {
-                "name": "Africa Flight Path",
+                "name": "Mexico Flight Path",
+                "flight": "mexico",
+                "status": "Awaiting Departure..",
+                "statusColour": "grey",
+                "invertIcon": false,
+                "reverse": false,
+                "popupOpen": false,
             },
             "geometry": {
                 "type": "LineString",
@@ -69,6 +102,12 @@ export default Service.extend({
             "type": "Feature",
             "properties": {
                 "name": "Antarctica Flight Path",
+                "flight": "antarctica",
+                "status": "In The Air..",
+                "statusColour": "orange",
+                "invertIcon": false,
+                "reverse": false,
+                "popupOpen": false,
             },
             "geometry": {
                 "type": "LineString",
@@ -88,6 +127,12 @@ export default Service.extend({
             "type": "Feature",
             "properties": {
                 "name": "Russia Flight Path",
+                "flight": "russia",
+                "status": "Awaiting Departure..",
+                "statusColour": "grey",
+                "invertIcon": true,
+                "reverse": false,
+                "popupOpen": false,
             },
             "geometry": {
                 "type": "LineString",
@@ -104,11 +149,17 @@ export default Service.extend({
         };
     }),
 
-    japanLineString: computed(function() {
+    indiaLineString: computed(function() {
         return {
             "type": "Feature",
             "properties": {
-                "name": "Japan Flight Path",
+                "name": "India Flight Path",
+                "flight": "india",
+                "status": "Arrived!!",
+                "statusColour": "green",
+                "invertIcon": false,
+                "reverse": false,
+                "popupOpen": false,
             },
             "geometry": {
                 "type": "LineString",
