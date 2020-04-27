@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 
 /**
- * Paper plane left icon for Ember Leaflet.
+ * Slingshot icon for Ember Leaflet.
  */
 export default EmberObject.extend({
   init() {
