@@ -4,6 +4,10 @@ import BuildingIcon from '../../../objects/icons/building-icon';
 import PlaneRightIcon from '../../../objects/icons/plane-right-icon';
 import PlaneLeftIcon from '../../../objects/icons/plane-left-icon';
 import SlingShotIcon from '../../../objects/icons/sling-shot-icon';
+import EmberObject from '@ember/object';
+import {
+  later
+} from '@ember/runloop';
 import {
   inject as service
 } from '@ember/service';
@@ -154,7 +158,7 @@ export default EmberLeaflet.extend({
   /* Track when flight demo triggered */
   flightObserver: observer('flightDemo', function () {
     if (this.get('flightDemo')) {
-      this.set('timer', Ember.Object.create({
+      this.set('timer', EmberObject.create({
         time: 0
       }));
       this.flightTimer();
@@ -302,7 +306,7 @@ export default EmberLeaflet.extend({
         set(updateToInFlight, 'invertIcon', !updateToInFlight.invertIcon);
         break;
       default:
-        console.info('Invalid flight status!');
+        // Invalid flight status
         break;
     }
 
@@ -313,7 +317,7 @@ export default EmberLeaflet.extend({
     let timer = this.get('timer');
     timer.set('time', timer.get('time') + 1);
     if (timer.get('time') < 10) {
-      Ember.run.later(this, this.flightTimer, 1000);
+      later(this, this.flightTimer, 1000);
     } else {
       this.set('flightDemo', false)
     }

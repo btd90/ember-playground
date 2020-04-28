@@ -11,7 +11,13 @@ module.exports = function(defaults) {
         'images/layers.png',
         'images/marker-icon-2x.png',
         'images/marker-icon.png',
-        'images/marker-shadow.png'
+        'images/marker-shadow.png',
+        'images/building.png',
+        'images/building-shadow.png',
+        'images/plane-left.png',
+        'images/plane-right.png',
+        'images/sling.png',
+        'images/sling-shadow.png'
       ]
     }
   });
