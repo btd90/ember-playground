@@ -1,10 +1,22 @@
 <h2>Index Page</h2>
 
-<h2><button {{action "toggleSave"}}>Save</button></h2>
+<h2>
+  <button disabled={{if flightDemo true false}} {{action "toggleFlightDemo"}}>Start Flight Demo</button>
+</h2>
 
-{{map-component class="leaflet-container" lat="46" lng="-122" zoom=5 geojson=geojson points=points saveEvent=saveEvent}}
+{{map-component 
+    class="leaflet-container" 
+    lat="-25.3444"
+    lng="131.0369" 
+    zoom="1"
+    geojson=geojson 
+    points=points 
+    saveEvent=saveEvent 
+    flightDemo=flightDemo}}
 
-<br />
-{{#power-select options=names selected=chosenName onchange=(action "changeSelection") as |name|}}
+{{#power-select
+    options=names 
+    selected=chosenName 
+    onchange=(action "changeSelection") as |name|}}
   {{name}}
 {{/power-select}}
