@@ -11,5 +11,8 @@ export default Controller.extend({
     indexRoute() {
       this.transitionToRoute('home.index');
     },
+    aboutPage() {
+      this.transitionToRoute('about');
+    },
   },
 });

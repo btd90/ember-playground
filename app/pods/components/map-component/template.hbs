@@ -21,6 +21,9 @@
   {{#layer-group name="Dark All" baselayer=true default=false}}
     {{tile-layer url="http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"}}
   {{/layer-group}}
+  {{#layer-group name="Local Map" baselayer=true default=false}}
+    {{tile-layer url="http://localhost:8080/geoserver/gwc/service/wmts/rest/cite:BlueMarbleNG-TB_2004-12-01_rgb_3600x1800/raster/EPSG:900913/EPSG:900913:{z}/{y}/{x}?format=image/png"}}
+  {{/layer-group}}
 {{/if}}
 
 {{!-- Points --}}
@@ -100,8 +103,8 @@
   {{leaflet-contextmenu-item text="Revert to Marker Icons" action=(action "markerIcons")}}
   {{leaflet-contextmenu-item text="Add Dynamic Point" action=(action "addPoint")}}
   {{leaflet-contextmenu-item text="Remove Dynamic Points" action=(action "removePoints")}}
-  {{leaflet-contextmenu-item text="Add Basemap" action=(action "addBaseLayer")}}
-  {{leaflet-contextmenu-item text="Remove Basemap" action=(action "removeBaseLayer")}}
+  {{leaflet-contextmenu-item text="Add Other Basemaps" action=(action "addBaseLayer")}}
+  {{leaflet-contextmenu-item text="Remove Other Basemaps" action=(action "removeBaseLayer")}}
 {{/leaflet-contextmenu}}
 
 {{!-- Layercontrol Plugin --}}
