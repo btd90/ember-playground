@@ -196,9 +196,7 @@ export default EmberLeaflet.extend({
     let overlay = L.imageOverlay(
       'assets/images/building.png', 
       [[lowerLat, lowerLng], [upperLat, upperLng]]);
-    // if (!imageOverlaysGroup.hasLayer(overlay)) {
     overlay.addTo(imageOverlaysGroup);
-    // }
 
     // Add updated layer group to map, and update imageOverlays object
     map.addLayer(imageOverlaysGroup);
@@ -223,6 +221,10 @@ export default EmberLeaflet.extend({
     
     // Add takeoff to videos layer
     // VIDEO STOPS LOOPING WHEN LAYER DISABLED/ENABLED!
+    // Add popups/opacity via options??
+    // Ability to maintain fixed size??
+    // Other file types???
+    // Seem to end up with duplicate Img/Vid layers when adding/removing to map
     let overlay = L.videoOverlay(
       'assets/images/takeoff.webm', 
       [[lowerLat, lowerLng], [upperLat, upperLng]]);

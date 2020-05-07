@@ -1,22 +1,10 @@
 import LayerControl from "ember-leaflet-layer-control/components/layer-control";
 import { computed } from "@ember/object";
-import {
-  A
-} from '@ember/array';
 
 /**
  * Override of layer control plugin to handle updating layer/basemap list
  */
 export default LayerControl.extend({
-
-  init() {
-    this._super(...arguments);
-    // this.set('imageLayerName', 'Images');
-    // this.set('videoLayerName', 'Videos');
-    // this.set('imageOverlaysGroup', L.layerGroup());
-    // this.set('videoOverlaysGroup', L.layerGroup());
-  },
-
   layers: computed.alias("_target.childComponents"),
   baseLayers: computed.filter("layers", function(layer) {
     return layer.baselayer;
@@ -72,29 +60,12 @@ export default LayerControl.extend({
           }
         });
 
-        // Image overlays
+        // Add Image overlays
         if (imageOverlays.count > 0) {
-          let imageOverlaysGroup = imageOverlays.overlayGroup;
-          let layerName = imageOverlays.overlayName;
-
-          // Add missing images to overlay
-          // imageOverlays.forEach(overlay => {
-          //   if (!imageOverlaysGroup.hasLayer(overlay)) {
-          //     overlay.addTo(imageOverlaysGroup);
-          //   }
-          // });
-
-          // Add Image overlay if not present 
-          // if (!currentLayers.mapBy('name').includes(layerName)) {
-            // debugger;
           instance.addOverlay(imageOverlays.overlayGroup, imageOverlays.overlayName);
-          // }
-          // debugger;
-          // instance.addBaseLayer(imageOverlaysGroup);
-          // imageOverlaysGroup.addTo(instance);
         }
 
-        // Video overlays
+        // Add Video overlays
         if (videoOverlays.count > 0) {
             instance.addOverlay(videoOverlays.overlayGroup, videoOverlays.overlayName);
         }
