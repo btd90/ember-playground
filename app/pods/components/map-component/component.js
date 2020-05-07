@@ -56,6 +56,14 @@ export default EmberLeaflet.extend({
     this.get('drawEnabled') ? this.set('drawEnabled', true) : this.set('drawEnabled', false);
     this.set('enabledBase', false);
 
+    // Image/Video Overlays
+    this.set('imageOverlays', A());
+    this.set('imageOverlaysGroup', L.layerGroup());
+    this.set('imageOverlaysName', 'Images');
+    this.set('videoOverlays', A());
+    this.set('videoOverlaysGroup', L.layerGroup());
+    this.set('videoOverlaysName', 'Videos');
+
     // Construct polyline object
     if (isPresent(this.get('flightDemo'))) this.set('polylineArray', this.get('polylineBuilder').convertLineString(true, true, true, true));
     if (!isEmpty(this.get('polylineArray'))) {
@@ -120,6 +128,15 @@ export default EmberLeaflet.extend({
     markerIcons() {
       this.set('markerIcon', L.icon(MarkerIcon.create()));
     },
+    placeBuilding(event) {
+      this.imageOverlay(event.latlng.lat, event.latlng.lng);
+    },
+    takeoff(event) {
+      console.info(event.latlng.lat);
+      console.info(event.latlng.lng);
+
+      this.videoOverlay(event.latlng.lat, event.latlng.lng);
+    },
   },
 
   didInsertParent() {
@@ -164,6 +181,61 @@ export default EmberLeaflet.extend({
       this.flightTimer();
     }
   }),
+
+  imageOverlay: function(lat, lng) {
+    let map = this.get('_layer');
+    let imageOverlaysName = this.get('imageOverlaysName');
+    let imageOverlaysGroup = this.get('imageOverlaysGroup');
+
+    let lowerLat = lat.toFixed(1);
+    let lowerLng = lng.toFixed(1);
+    let upperLat = (lat + 30).toFixed(1);
+    let upperLng = (lng + 30).toFixed(1);
+
+    // Add building to images layer
+    let overlay = L.imageOverlay(
+      'assets/images/building.png', 
+      [[lowerLat, lowerLng], [upperLat, upperLng]]);
+    // if (!imageOverlaysGroup.hasLayer(overlay)) {
+    overlay.addTo(imageOverlaysGroup);
+    // }
+
+    // Add updated layer group to map, and update imageOverlays object
+    map.addLayer(imageOverlaysGroup);
+    this.set('imageOverlays', {
+      overlayGroup: imageOverlaysGroup,
+      overlayName: imageOverlaysName,
+      count: imageOverlaysGroup.getLayers().length
+    });
+  },
+
+  videoOverlay: function(lat, lng) {
+    let map = this.get('_layer');
+    let videoOverlaysName = this.get('videoOverlaysName');
+    let videoOverlaysGroup = this.get('videoOverlaysGroup');
+
+    let lowerLat = lat.toFixed(1);
+    let lowerLng = lng.toFixed(1);
+    let upperLat = (lat + 40).toFixed(1);
+    let upperLng = (lng + 40).toFixed(1);
+    console.info(lowerLat);
+    console.info(lowerLng);
+    
+    // Add takeoff to videos layer
+    // VIDEO STOPS LOOPING WHEN LAYER DISABLED/ENABLED!
+    let overlay = L.videoOverlay(
+      'assets/images/takeoff.webm', 
+      [[lowerLat, lowerLng], [upperLat, upperLng]]);
+    overlay.addTo(videoOverlaysGroup);
+
+    // Add updated layer group to map, and update videoOverlays object
+    map.addLayer(videoOverlaysGroup);
+    this.set('videoOverlays', {
+      overlayGroup: videoOverlaysGroup,
+      overlayName: videoOverlaysName,
+      count: videoOverlaysGroup.getLayers().length
+    });
+  },
 
   /* Locate each object from the layer group */
   findDrawObjects: function (layerGroups) {
