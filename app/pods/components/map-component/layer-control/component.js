@@ -62,12 +62,14 @@ export default LayerControl.extend({
 
         // Add Image overlays
         if (imageOverlays.count > 0) {
-          instance.addOverlay(imageOverlays.overlayGroup, imageOverlays.overlayName);
+          let existing = currentLayers.filterBy("name", imageOverlays.overlayName).get(0);
+          if (!existing) instance.addOverlay(imageOverlays.overlayGroup, imageOverlays.overlayName);
         }
 
         // Add Video overlays
         if (videoOverlays.count > 0) {
-            instance.addOverlay(videoOverlays.overlayGroup, videoOverlays.overlayName);
+          let existing = currentLayers.filterBy("name", videoOverlays.overlayName).get(0);
+          if (!existing) instance.addOverlay(videoOverlays.overlayGroup, videoOverlays.overlayName);
         }
       }
     }
