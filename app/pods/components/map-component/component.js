@@ -134,7 +134,6 @@ export default EmberLeaflet.extend({
     takeoff(event) {
       console.info(event.latlng.lat);
       console.info(event.latlng.lng);
-
       this.videoOverlay(event.latlng.lat, event.latlng.lng);
     },
   },
