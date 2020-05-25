@@ -128,13 +128,19 @@ export default EmberLeaflet.extend({
     markerIcons() {
       this.set('markerIcon', L.icon(MarkerIcon.create()));
     },
+    // IMAGE OVERLAY EVENTS
     placeBuilding(event) {
-      this.imageOverlay(event.latlng.lat, event.latlng.lng);
+      let buildingX = 36;
+      let buildingY = -36;
+      let url = 'assets/images/building.png';
+      this.imageOverlay(url, event.latlng, buildingX, buildingY);
     },
+    // VIDEO OVERLAY EVENTS
     takeoff(event) {
       console.info(event.latlng.lat);
       console.info(event.latlng.lng);
-      this.videoOverlay(event.latlng.lat, event.latlng.lng);
+      let url = 'assets/images/takeoff.webm';
+      this.videoOverlay(url, event.latlng.lat, event.latlng.lng);
     },
   },
 
@@ -158,7 +164,7 @@ export default EmberLeaflet.extend({
     map.attributionControl.setPrefix("Lat: " + latVal + " Long: " + lngVal);
   },
 
-  mouseclick(event) {
+  mouseclick(/* event */) {
     // unused
   },
 
@@ -181,24 +187,56 @@ export default EmberLeaflet.extend({
     }
   }),
 
-  imageOverlay: function(lat, lng) {
+  /* Handle adding image overlays to map */
+  imageOverlay: function(url, originLatLng, xCoOrd, yCoOrd) {
     let map = this.get('_layer');
     let imageOverlaysName = this.get('imageOverlaysName');
     let imageOverlaysGroup = this.get('imageOverlaysGroup');
 
-    let lowerLat = lat.toFixed(1);
-    let lowerLng = lng.toFixed(1);
-    let upperLat = (lat + 30).toFixed(1);
-    let upperLng = (lng + 30).toFixed(1);
+    // Convert LatLng into container pixel position
+    let originPoint = map.latLngToContainerPoint(originLatLng);
+    console.info(originPoint);
 
+    // Add image pixel dimensions
+    let nextCornerPoint = originPoint.add({x: xCoOrd, y: yCoOrd});
+    console.info(nextCornerPoint);
+
+    // Convert back into LatLng
+    let nextCornerLatLng = map.containerPointToLatLng(nextCornerPoint);
+    console.info(nextCornerLatLng);
+
+    let lowerLat = originLatLng.lat.toFixed(1);
+    let lowerLng = originLatLng.lng.toFixed(1);
+    let upperLat = (originLatLng.lat + 30).toFixed(1);
+    let upperLng = (originLatLng.lat + 30).toFixed(1);
+
+    //
+    // Maintains image size even when zooming
+    //
     // Add building to images layer
+    debugger;
+    let zoomVal = this.get('_layer._zoom');
+    console.info(this.get('_layer._zoom'));
     let overlay = L.imageOverlay(
-      'assets/images/building.png', 
-      [[lowerLat, lowerLng], [upperLat, upperLng]]);
+      url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], {interactive: true});
     overlay.addTo(imageOverlaysGroup);
 
-    // Add updated layer group to map, and update imageOverlays object
+    //
+    // Scales image but with varing dimensions
+    //
+    // // Add building to images layer
+    // let overlay = L.imageOverlay(
+    //   url, [[lowerLat, lowerLng], [upperLat, upperLng]]);
+    // overlay.addTo(imageOverlaysGroup);
+
+    // Add updated layer group to map
     map.addLayer(imageOverlaysGroup);
+
+    // Add click handler to overlay
+    let imageElement = overlay.getElement();
+    imageElement.addEventListener('click', this.imageClick, this);
+
+    // Update imageOverlays object
     this.set('imageOverlays', {
       overlayGroup: imageOverlaysGroup,
       overlayName: imageOverlaysName,
@@ -206,12 +244,18 @@ export default EmberLeaflet.extend({
     });
   },
 
-  videoOverlay: function(lat, lng) {
+  /* Click action for image overlays */
+  imageClick: function(/* image */) {
+    // unused
+  },
+
+  /* Handle adding video overlays to map */
+  videoOverlay: function(url, lat, lng) {
     let map = this.get('_layer');
     let videoOverlaysName = this.get('videoOverlaysName');
     let videoOverlaysGroup = this.get('videoOverlaysGroup');
 
-    let lowerLat = lat.toFixed(1);
+    let lowerLat = (lat - 10).toFixed(1);
     let lowerLng = lng.toFixed(1);
     let upperLat = (lat + 40).toFixed(1);
     let upperLng = (lng + 40).toFixed(1);
@@ -223,19 +267,28 @@ export default EmberLeaflet.extend({
     // Add popups/opacity via options??
     // Ability to maintain fixed size??
     // Other file types???
-    // Seem to end up with duplicate Img/Vid layers when adding/removing to map
     let overlay = L.videoOverlay(
-      'assets/images/takeoff.webm', 
-      [[lowerLat, lowerLng], [upperLat, upperLng]]);
+      url, [[lowerLat, lowerLng], [upperLat, upperLng]], { autoplay: true, loop: true, interactive: true });
     overlay.addTo(videoOverlaysGroup);
 
     // Add updated layer group to map, and update videoOverlays object
     map.addLayer(videoOverlaysGroup);
+
+    // Add click handler to overlay
+    let videoElement = overlay.getElement();
+    videoElement.addEventListener('click', this.videoClick, this);
+
+    // Update videoOverlays object
     this.set('videoOverlays', {
       overlayGroup: videoOverlaysGroup,
       overlayName: videoOverlaysName,
       count: videoOverlaysGroup.getLayers().length
     });
+  },
+
+  /* Click action for video overlays */
+  videoClick: function(video) {
+    video.target.play();
   },
 
   /* Locate each object from the layer group */
@@ -346,7 +399,7 @@ export default EmberLeaflet.extend({
     return polylineObject;
   },
 
-  // Timer for flight demo
+  /* Timer for flight demo */
   flightTimer: function () {
     let polylineArray = this.get('polylineArray');
     let statusArr = ['Awaiting Departure..', 'In The Air..', 'Arrived!!'];
