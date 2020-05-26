@@ -37,6 +37,7 @@ import {
 export default EmberLeaflet.extend({
 
   polylineBuilder: service(),
+  drawService: service(),
   hoveredObject: '',
   clickedObject: '',
   timer: '',
@@ -271,61 +272,13 @@ export default EmberLeaflet.extend({
     // Loop over new layer groups
     layerGroups.forEach(layerGroup => {
       // Add each to Draw layer
-      let builtObjects = this.buildDrawObjects(map._layers[layerGroup]._layers);
+      let builtObjects = this.get('drawService').buildDrawObjects(map._layers[layerGroup]._layers);
       drawObjects.pushObjects(builtObjects);
 
       // Remove from draw plugin (broken)
       //layerGroup.removeFrom(map);
     });
     return drawObjects;
-  },
-
-  /* Construct draw objects for draw-object component */
-  buildDrawObjects: function (newLayers) {
-    let builtObjects = A();
-
-    // Fetch each object
-    Object.keys(newLayers).forEach(key => {
-      let layer = newLayers[key];
-      if (layer._latlngs) {
-        if (layer._latlngs.length > 1) {
-          return builtObjects.pushObject({
-            name: 'polyline',
-            type: 'polyline',
-            latlngs: layer._latlngs
-          });
-        } else {
-          return builtObjects.pushObject({
-            name: 'polygon',
-            type: 'polygon',
-            latlngs: layer._latlngs
-          });
-        }
-      } else if (layer._mRadius) {
-        return builtObjects.pushObject({
-          name: 'circle',
-          type: 'circle',
-          latlng: layer._latlng,
-          mRadius: layer._mRadius
-        });
-      } else if (layer._radius) {
-        return builtObjects.pushObject({
-          name: 'circlemarker',
-          type: 'circlemarker',
-          latlng: layer._latlng,
-          radius: layer._radius
-        });
-      } else if (layer._latlng) {
-        return builtObjects.pushObject({
-          name: 'marker',
-          type: 'marker',
-          latlng: layer._latlng
-        });
-      } else {
-        // Unsupported Shape
-      }
-    });
-    return builtObjects;
   },
 
   /* Construct polyline object for flight paths */
