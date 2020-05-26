@@ -2,9 +2,6 @@ import Service from '@ember/service';
 import {
   A
 } from '@ember/array';
-import {
-  computed
-} from "@ember/object";
 
 /**
  * Service to aid drawing on map.
@@ -62,5 +59,4 @@ export default Service.extend({
     });
     return builtObjects;
   },
-  
 });

@@ -1,8 +1,6 @@
 import EmberLeaflet from 'ember-leaflet/components/leaflet-map';
 import MarkerIcon from '../../../objects/icons/marker-icon';
 import BuildingIcon from '../../../objects/icons/building-icon';
-import PlaneRightIcon from '../../../objects/icons/plane-right-icon';
-import PlaneLeftIcon from '../../../objects/icons/plane-left-icon';
 import SlingShotIcon from '../../../objects/icons/sling-shot-icon';
 import BuildingImage from '../../../objects/images/building-image';
 import TakeoffVideo from '../../../objects/videos/takeoff-video';
@@ -23,7 +21,6 @@ import {
 import {
   observer,
   computed,
-  set
 } from '@ember/object';
 
 /**
@@ -35,9 +32,9 @@ import {
  * @argument {Boolean} flightDemo - trigger for flight path demo on map
  */
 export default EmberLeaflet.extend({
-
-  polylineBuilder: service(),
   drawService: service(),
+  overlayService: service(),
+  polylineService: service(),
   hoveredObject: '',
   clickedObject: '',
   timer: '',
@@ -68,8 +65,8 @@ export default EmberLeaflet.extend({
     this.set('videoOverlaysName', 'Videos');
 
     // Construct polyline object
-    if (isPresent(this.get('flightDemo'))) this.set('polylineArray', this.get('polylineBuilder').convertLineString(true, true, true, true));
-    if (!isEmpty(this.get('polylineArray'))) this.set('flightPaths', this.buildPolyline(this.get('polylineArray')));
+    if (isPresent(this.get('flightDemo'))) this.set('polylineArray', this.get('polylineService').convertLineString(true, true, true, true));
+    if (!isEmpty(this.get('polylineArray'))) this.set('flightPaths', this.get('polylineService').buildPolyline(this.get('polylineArray')));
   },
 
   actions: {
@@ -186,82 +183,40 @@ export default EmberLeaflet.extend({
 
   /* Handle adding image overlays to map */
   imageOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {
-    let map = this.get('_layer');
     let imageOverlaysName = this.get('imageOverlaysName');
-    let imageOverlaysGroup = this.get('imageOverlaysGroup');
-
-    // Convert LatLng into container pixel position
-    let originPoint = map.latLngToContainerPoint(originLatLng);
-
-    // Add image pixel dimensions
-    let nextCornerPoint = originPoint.add({x: xCoOrd, y: yCoOrd});
-
-    // Convert back into LatLng
-    let nextCornerLatLng = map.containerPointToLatLng(nextCornerPoint);
-
-    // Add building to images layer
-    let overlay = L.imageOverlay(
-      url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], {interactive: true});
-    overlay.addTo(imageOverlaysGroup);
-
-    // Add updated layer group to map
-    map.addLayer(imageOverlaysGroup);
-
-    // Add click handler to overlay
-    let imageElement = overlay.getElement();
-    imageElement.addEventListener('click', this.imageClick, this);
+    let updatedImageOverlaysGroup = this.get('overlayService').updateImageOverlay(
+      this.get('_layer'), 
+      this.get('imageOverlaysGroup'),
+      originLatLng,
+      xCoOrd,
+      yCoOrd,
+      url);
 
     // Update imageOverlays object
     this.set('imageOverlays', {
-      overlayGroup: imageOverlaysGroup,
+      overlayGroup: updatedImageOverlaysGroup,
       overlayName: imageOverlaysName,
-      count: imageOverlaysGroup.getLayers().length
+      count: updatedImageOverlaysGroup.getLayers().length
     });
-  },
-
-  /* Click action for image overlays */
-  imageClick: function(/* image */) {
-    // unused
   },
 
   /* Handle adding video overlays to map */
   videoOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {
-    let map = this.get('_layer');
     let videoOverlaysName = this.get('videoOverlaysName');
-    let videoOverlaysGroup = this.get('videoOverlaysGroup');
-
-    // Convert LatLng into container pixel position
-    let originPoint = map.latLngToContainerPoint(originLatLng);
-
-    // Add image pixel dimensions
-    let nextCornerPoint = originPoint.add({x: xCoOrd, y: yCoOrd});
-
-    // Convert back into LatLng
-    let nextCornerLatLng = map.containerPointToLatLng(nextCornerPoint);
-    
-    // Add takeoff to videos layer
-    let overlay = L.videoOverlay(
-      url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], { interactive: true });
-    overlay.addTo(videoOverlaysGroup);
-
-    // Add updated layer group to map, and update videoOverlays object
-    map.addLayer(videoOverlaysGroup);
-
-    // Add click handler to overlay
-    let videoElement = overlay.getElement();
-    videoElement.addEventListener('click', this.videoClick, this);
+    let updatedVideoOverlaysGroup = this.get('overlayService').updateVideoOverlay(
+      this.get('_layer'), 
+      this.get('videoOverlaysGroup'),
+      originLatLng,
+      xCoOrd,
+      yCoOrd,
+      url);
 
     // Update videoOverlays object
     this.set('videoOverlays', {
-      overlayGroup: videoOverlaysGroup,
+      overlayGroup: updatedVideoOverlaysGroup,
       overlayName: videoOverlaysName,
-      count: videoOverlaysGroup.getLayers().length
+      count: updatedVideoOverlaysGroup.getLayers().length
     });
-  },
-
-  /* Click action for video overlays */
-  videoClick: function(video) {
-    video.target.play();
   },
 
   /* Locate each object from the layer group */
@@ -281,88 +236,13 @@ export default EmberLeaflet.extend({
     return drawObjects;
   },
 
-  /* Construct polyline object for flight paths */
-  buildPolyline: function (polylineArray) {
-    let polylineObject = A();
-
-    // Build polyline object
-    polylineArray.forEach(polyline => {
-      // Calculate pattern fields
-      let flightIcon = polyline.invertIcon ? this.get('planeRightIcon') : this.get('planeLeftIcon');
-      let pixelSize = polyline.reverse ? -8 : 8;
-
-      // Add a pattern
-      let pattern = {
-        offset: 5,
-        repeat: 30,
-        symbol: L.Symbol.arrowHead({
-          pixelSize: pixelSize,
-          headAngle: 30,
-          pathOptions: {
-            stroke: true,
-            fillOpacity: 1,
-            weight: 1,
-            color: polyline.statusColour,
-          }
-        })
-      };
-
-      // Create poly object
-      polylineObject.pushObject({
-        polylineLocation: polyline.coordinates,
-        polylinePattern: [pattern],
-        firstLocation: polyline.coordinates[0],
-        lastLocation: polyline.coordinates[polyline.coordinates.length - 1],
-        flight: polyline.flight,
-        flightIcon: flightIcon,
-        flightStatus: polyline.flightStatus,
-        reverse: polyline.reverse,
-        popupOpen: polyline.popupOpen,
-      })
-    });
-
-    return polylineObject;
-  },
-
   /* Timer for flight demo */
   flightTimer: function () {
-    let polylineArray = this.get('polylineArray');
-    let statusArr = ['Awaiting Departure..', 'In The Air..', 'Arrived!!'];
-    let colourArr = ['grey', 'orange', 'green'];
-    let randomPoly = Math.floor(Math.random() * 4);
-
-    // Clear any open popups
-    polylineArray.forEach(flight => {
-      set(flight, 'popupOpen', false);
-    });
-
-    // Identify and update a random flight
-    let updateToInFlight = polylineArray[randomPoly];
-    set(updateToInFlight, 'popupOpen', true);
-    let currentStatus = updateToInFlight.statusColour;
-
-    switch (currentStatus) {
-      case "grey":
-        set(updateToInFlight, 'flightStatus', statusArr[1]);
-        set(updateToInFlight, 'statusColour', colourArr[1]);
-        break;
-      case "orange":
-        set(updateToInFlight, 'flightStatus', statusArr[2]);
-        set(updateToInFlight, 'statusColour', colourArr[2]);
-        break;
-      case "green":
-        set(updateToInFlight, 'flightStatus', statusArr[0]);
-        set(updateToInFlight, 'statusColour', colourArr[0]);
-        set(updateToInFlight, 'reverse', !updateToInFlight.reverse);
-        set(updateToInFlight, 'invertIcon', !updateToInFlight.invertIcon);
-        break;
-      default:
-        // Invalid flight status
-        break;
-    }
+    // Update polyline object with flight path change
+    let polylineArray = this.get('polylineService').updatePolyline(this.get('polylineArray'));
 
     // Apply update
-    this.set('flightPaths', this.buildPolyline(polylineArray));
+    this.set('flightPaths', this.get('polylineService').buildPolyline(polylineArray));
 
     // Update timer (limited to 10 seconds)
     let timer = this.get('timer');
@@ -375,12 +255,6 @@ export default EmberLeaflet.extend({
   },
 
   // Icons
-  planeRightIcon: computed(function () {
-    return L.icon(PlaneRightIcon.create());
-  }),
-  planeLeftIcon: computed(function () {
-    return L.icon(PlaneLeftIcon.create());
-  }),
   slingShotIcon: computed(function () {
     return L.icon(SlingShotIcon.create());
   })

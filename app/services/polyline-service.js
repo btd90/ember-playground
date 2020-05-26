@@ -1,19 +1,104 @@
 import Service from '@ember/service';
+import PlaneRightIcon from '../objects/icons/plane-right-icon';
+import PlaneLeftIcon from '../objects/icons/plane-left-icon';
 import {
   A
 } from '@ember/array';
 import {
-  computed
+  computed,
+  set
 } from "@ember/object";
 
 /**
- * Service for converting Geo LineString (flight paths) to an object that can be 
- * used by polyline layer.  
+ * Service to aid polylines on the map.
  */
 export default Service.extend({
 
   init() {
     this._super(...arguments);
+    this.set('statusArr', ['Awaiting Departure..', 'In The Air..', 'Arrived!!']);
+    this.set('colourArr', ['grey', 'orange', 'green']);
+  },
+
+  /* Construct polyline object for flight paths */
+  buildPolyline: function (polylineArray) {
+    let polylineObject = A();
+
+    // Build polyline object
+    polylineArray.forEach(polyline => {
+      // Calculate pattern fields
+      let flightIcon = polyline.invertIcon ? this.get('planeRightIcon') : this.get('planeLeftIcon');
+      let pixelSize = polyline.reverse ? -8 : 8;
+
+      // Add a pattern
+      let pattern = {
+        offset: 5,
+        repeat: 30,
+        symbol: L.Symbol.arrowHead({
+          pixelSize: pixelSize,
+          headAngle: 30,
+          pathOptions: {
+            stroke: true,
+            fillOpacity: 1,
+            weight: 1,
+            color: polyline.statusColour,
+          }
+        })
+      };
+
+      // Create poly object
+      polylineObject.pushObject({
+        polylineLocation: polyline.coordinates,
+        polylinePattern: [pattern],
+        firstLocation: polyline.coordinates[0],
+        lastLocation: polyline.coordinates[polyline.coordinates.length - 1],
+        flight: polyline.flight,
+        flightIcon: flightIcon,
+        flightStatus: polyline.flightStatus,
+        reverse: polyline.reverse,
+        popupOpen: polyline.popupOpen,
+      })
+    });
+
+    return polylineObject;
+  },
+
+  // Update flight status for polyline demo
+  updatePolyline(polylineArray) {
+    let statusArr = this.get('statusArr');
+    let colourArr = this.get('colourArr');
+    let randomPoly = Math.floor(Math.random() * 4);
+
+    // Clear any open popups
+    polylineArray.forEach(flight => {
+      set(flight, 'popupOpen', false);
+    });
+
+    // Identify and update a random flight
+    let updateToInFlight = polylineArray[randomPoly];
+    set(updateToInFlight, 'popupOpen', true);
+    let currentStatus = updateToInFlight.statusColour;
+
+    switch (currentStatus) {
+      case "grey":
+        set(updateToInFlight, 'flightStatus', statusArr[1]);
+        set(updateToInFlight, 'statusColour', colourArr[1]);
+        break;
+      case "orange":
+        set(updateToInFlight, 'flightStatus', statusArr[2]);
+        set(updateToInFlight, 'statusColour', colourArr[2]);
+        break;
+      case "green":
+        set(updateToInFlight, 'flightStatus', statusArr[0]);
+        set(updateToInFlight, 'statusColour', colourArr[0]);
+        set(updateToInFlight, 'reverse', !updateToInFlight.reverse);
+        set(updateToInFlight, 'invertIcon', !updateToInFlight.invertIcon);
+        break;
+      default:
+        // Invalid flight status
+        break;
+    }
+    return polylineArray;
   },
 
   // Convert linestring to object for polyline
@@ -67,6 +152,13 @@ export default Service.extend({
     }
     return polylineArray;
   },
+
+  planeRightIcon: computed(function () {
+    return L.icon(PlaneRightIcon.create());
+  }),
+  planeLeftIcon: computed(function () {
+    return L.icon(PlaneLeftIcon.create());
+  }),
 
   mexicoLineString: computed(function () {
     return {
