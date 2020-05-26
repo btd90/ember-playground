@@ -4,6 +4,8 @@ import BuildingIcon from '../../../objects/icons/building-icon';
 import PlaneRightIcon from '../../../objects/icons/plane-right-icon';
 import PlaneLeftIcon from '../../../objects/icons/plane-left-icon';
 import SlingShotIcon from '../../../objects/icons/sling-shot-icon';
+import BuildingImage from '../../../objects/images/building-image';
+import TakeoffVideo from '../../../objects/videos/takeoff-video';
 import EmberObject from '@ember/object';
 import {
   later
@@ -66,9 +68,7 @@ export default EmberLeaflet.extend({
 
     // Construct polyline object
     if (isPresent(this.get('flightDemo'))) this.set('polylineArray', this.get('polylineBuilder').convertLineString(true, true, true, true));
-    if (!isEmpty(this.get('polylineArray'))) {
-      this.set('flightPaths', this.buildPolyline(this.get('polylineArray')));
-    }
+    if (!isEmpty(this.get('polylineArray'))) this.set('flightPaths', this.buildPolyline(this.get('polylineArray')));
   },
 
   actions: {
@@ -130,17 +130,13 @@ export default EmberLeaflet.extend({
     },
     // IMAGE OVERLAY EVENTS
     placeBuilding(event) {
-      let buildingX = 36;
-      let buildingY = -36;
-      let url = 'assets/images/building.png';
-      this.imageOverlay(url, event.latlng, buildingX, buildingY);
+      let image = BuildingImage.create();
+      this.imageOverlay(event.latlng, image.get('xCoOrd'), image.get('yCoOrd'), image.get('url'));
     },
     // VIDEO OVERLAY EVENTS
     takeoff(event) {
-      console.info(event.latlng.lat);
-      console.info(event.latlng.lng);
-      let url = 'assets/images/takeoff.webm';
-      this.videoOverlay(url, event.latlng.lat, event.latlng.lng);
+      let video = TakeoffVideo.create();
+      this.videoOverlay(event.latlng, video.get('xCoOrd'), video.get('yCoOrd'), video.get('url'));
     },
   },
 
@@ -188,46 +184,24 @@ export default EmberLeaflet.extend({
   }),
 
   /* Handle adding image overlays to map */
-  imageOverlay: function(url, originLatLng, xCoOrd, yCoOrd) {
+  imageOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {
     let map = this.get('_layer');
     let imageOverlaysName = this.get('imageOverlaysName');
     let imageOverlaysGroup = this.get('imageOverlaysGroup');
 
     // Convert LatLng into container pixel position
     let originPoint = map.latLngToContainerPoint(originLatLng);
-    console.info(originPoint);
 
     // Add image pixel dimensions
     let nextCornerPoint = originPoint.add({x: xCoOrd, y: yCoOrd});
-    console.info(nextCornerPoint);
 
     // Convert back into LatLng
     let nextCornerLatLng = map.containerPointToLatLng(nextCornerPoint);
-    console.info(nextCornerLatLng);
 
-    let lowerLat = originLatLng.lat.toFixed(1);
-    let lowerLng = originLatLng.lng.toFixed(1);
-    let upperLat = (originLatLng.lat + 30).toFixed(1);
-    let upperLng = (originLatLng.lat + 30).toFixed(1);
-
-    //
-    // Maintains image size even when zooming
-    //
     // Add building to images layer
-    debugger;
-    let zoomVal = this.get('_layer._zoom');
-    console.info(this.get('_layer._zoom'));
     let overlay = L.imageOverlay(
       url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], {interactive: true});
     overlay.addTo(imageOverlaysGroup);
-
-    //
-    // Scales image but with varing dimensions
-    //
-    // // Add building to images layer
-    // let overlay = L.imageOverlay(
-    //   url, [[lowerLat, lowerLng], [upperLat, upperLng]]);
-    // overlay.addTo(imageOverlaysGroup);
 
     // Add updated layer group to map
     map.addLayer(imageOverlaysGroup);
@@ -250,25 +224,23 @@ export default EmberLeaflet.extend({
   },
 
   /* Handle adding video overlays to map */
-  videoOverlay: function(url, lat, lng) {
+  videoOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {
     let map = this.get('_layer');
     let videoOverlaysName = this.get('videoOverlaysName');
     let videoOverlaysGroup = this.get('videoOverlaysGroup');
 
-    let lowerLat = (lat - 10).toFixed(1);
-    let lowerLng = lng.toFixed(1);
-    let upperLat = (lat + 40).toFixed(1);
-    let upperLng = (lng + 40).toFixed(1);
-    console.info(lowerLat);
-    console.info(lowerLng);
+    // Convert LatLng into container pixel position
+    let originPoint = map.latLngToContainerPoint(originLatLng);
+
+    // Add image pixel dimensions
+    let nextCornerPoint = originPoint.add({x: xCoOrd, y: yCoOrd});
+
+    // Convert back into LatLng
+    let nextCornerLatLng = map.containerPointToLatLng(nextCornerPoint);
     
     // Add takeoff to videos layer
-    // VIDEO STOPS LOOPING WHEN LAYER DISABLED/ENABLED!
-    // Add popups/opacity via options??
-    // Ability to maintain fixed size??
-    // Other file types???
     let overlay = L.videoOverlay(
-      url, [[lowerLat, lowerLng], [upperLat, upperLng]], { autoplay: true, loop: true, interactive: true });
+      url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], { interactive: true });
     overlay.addTo(videoOverlaysGroup);
 
     // Add updated layer group to map, and update videoOverlays object
