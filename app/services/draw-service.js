@@ -21,34 +21,34 @@ export default Service.extend({
       let layer = newLayers[key];
       if (layer._latlngs) {
         if (layer._latlngs.length > 1) {
-          return builtObjects.pushObject({
+          builtObjects.pushObject({
             name: 'polyline',
             type: 'polyline',
             latlngs: layer._latlngs
           });
         } else {
-          return builtObjects.pushObject({
+          builtObjects.pushObject({
             name: 'polygon',
             type: 'polygon',
             latlngs: layer._latlngs
           });
         }
       } else if (layer._mRadius) {
-        return builtObjects.pushObject({
+        builtObjects.pushObject({
           name: 'circle',
           type: 'circle',
           latlng: layer._latlng,
           mRadius: layer._mRadius
         });
       } else if (layer._radius) {
-        return builtObjects.pushObject({
+        builtObjects.pushObject({
           name: 'circlemarker',
           type: 'circlemarker',
           latlng: layer._latlng,
           radius: layer._radius
         });
       } else if (layer._latlng) {
-        return builtObjects.pushObject({
+        builtObjects.pushObject({
           name: 'marker',
           type: 'marker',
           latlng: layer._latlng
