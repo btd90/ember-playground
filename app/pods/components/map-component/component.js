@@ -88,15 +88,15 @@ export default EmberLeaflet.extend({
       this.set('hoveredObject', obj);
     },
     // DRAW EVENTS
-    drawCreated(event, layerGroup, map) {
+    drawCreated(event, layerGroup /*, map*/) {
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
-    drawEdited(event, layerGroup, map) {
+    drawEdited(event, layerGroup /*, map*/) {
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
-    drawDeleted(event, layerGroup, map) {
+    drawDeleted(event, layerGroup /*, map*/) {
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
