@@ -1,3 +1,30 @@
-<h2>About Page</h2>
-
-{{outlet}}
+<h2>
+  About Page
+</h2>
+{{!-- {{#burger-menu
+  animation="scale-rotate"
+  itemAnimation="stack"
+  dismissOnClick=false as |burger|
+}}
+  {{#burger.outlet}}
+    <button {{action "toggleAction" burger}}>
+      {{if burger.state.open "Close" "Menu"}}
+    </button>
+    {{outlet}}
+  {{/burger.outlet}}
+  {{#burger.menu itemTagName="li" as |menu|}}
+    {{#if show}}
+      {{#ember-wormhole to="burgerWorm" renderInPlace=true}}
+        <ul>
+          {{#menu.item}}"AA"{{/menu.item}}
+          {{#menu.item}}"BB"{{/menu.item}}
+          {{#menu.item}}"CC"{{/menu.item}}
+        </ul>
+      {{/ember-wormhole}}
+    {{/if}}
+  {{/burger.menu}}
+{{/burger-menu}} --}}
+<h2>
+  BB
+</h2>
+{{!-- <div id="burgerWorm" /> --}}

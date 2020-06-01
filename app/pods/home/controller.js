@@ -4,6 +4,9 @@ import Controller from '@ember/controller';
  * Controller for home route.
  */
 export default Controller.extend({
+
+  show: false,
+
   actions: {
     editorRoute() {
       this.transitionToRoute('home.editor');
@@ -13,6 +16,10 @@ export default Controller.extend({
     },
     aboutPage() {
       this.transitionToRoute('about');
+    },
+    toggleAction(burger) {
+      burger.state.actions.toggle();
+      this.set('show', !this.get('show'));
     },
   },
 });

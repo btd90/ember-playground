@@ -10,7 +10,9 @@ import {
  * Controller for home editor route.
  */
 export default Controller.extend({
-
+  queryParams: ['disabled'],
+  
+  disabled: false,
   saveEvent: false,
 
   actions: {

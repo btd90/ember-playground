@@ -1,7 +1,61 @@
-{{outlet}}
+{{!-- {{outlet}}
+
 <h4>
   Transition To: 
   <button {{action "indexRoute"}}>Index Route</button> 
   <button {{action "editorRoute"}}>Editor Route</button>
   <button {{action "aboutPage"}}>About Page</button>
-</h4>
+</h4> --}}
+
+{{#burger-menu 
+  animation="squeeze"
+  itemAnimation="push" as |burger|
+}}
+  {{#burger.menu itemTagName="li" as |menu|}}
+    <button {{action burger.state.actions.close}}>Close</button>
+
+    <ul>
+      {{#menu.item}}
+        <h4><button {{action "indexRoute"}}>Index Route</button></h4>
+      {{/menu.item}}
+
+      {{#menu.item}}
+        <h4><button {{action "editorRoute"}}>Editor Route</button></h4>
+      {{/menu.item}}
+
+      {{#menu.item}}
+        <h4><button {{action "aboutPage"}}>About Page</button></h4>
+      {{/menu.item}}
+    </ul>
+  {{/burger.menu}}
+  {{#burger.outlet}}
+    {{!-- import FA & change to FA icon!!! --}}
+    <button {{action burger.state.actions.toggle}}>Menu</button>
+    {{outlet}}
+  {{/burger.outlet}}
+{{/burger-menu}}
+
+{{!-- {{#burger-menu
+  animation="scale-rotate"
+  itemAnimation="stack"
+  dismissOnClick=true as |burger|
+}}
+  {{#burger.menu itemTagName="li" as |menu|}}
+    {{#if show}}
+      {{#ember-wormhole to="burgerWorm" renderInPlace=false}}
+        <ul>
+          <h4><button {{action "indexRoute"}}>Index Route</button></h4>
+          <h4><button {{action "editorRoute"}}>Editor Route</button></h4>
+          <h4><button {{action "aboutPage"}}>About Page</button></h4>
+        </ul>
+      {{/ember-wormhole}}
+    {{/if}}
+  {{/burger.menu}}
+  {{#burger.outlet}}
+    <button {{action "toggleAction" burger}}>
+      {{if burger.state.open "Close" "Menu"}}
+    </button>
+    {{outlet}}
+  {{/burger.outlet}}
+{{/burger-menu}} --}}
+{{!-- <div id="burgerWorm" class="burgerWorm" /> --}}

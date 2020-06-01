@@ -10,7 +10,9 @@ import {
  * Controller for home index route.
  */
 export default Controller.extend({
-
+  queryParams: ['disabled'],
+  
+  disabled: false,
   flightDemo: false,
 
   actions: {
@@ -21,6 +23,18 @@ export default Controller.extend({
       this.set('flightDemo', true);
     }
   },
+
+  mapDisabled: computed('disabled', function() {
+    let disabled = this.get('disabled');
+
+    if (disabled) {
+      // Disable map here
+      return true;
+    } else {
+      // Enable map here
+      return false;
+    }
+  }),
 
   names: computed(function () {
     return ['Australia', 'Japan', 'Russia', 'New Zealand'];
