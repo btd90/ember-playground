@@ -19,8 +19,7 @@ export default LayerControl.extend({
   computedLayers: computed(
     "mapLayers.length",
     "baseLayers.length",
-    "otherOverlays.@each.imageOverlays",
-    "otherOverlays.@each.videoOverlays",
+    "otherOverlays.@each.{imageOverlays,videoOverlays}",
     function() {
       // Get all current layers and map instance
       let mapLayers = this.get("mapLayers");
