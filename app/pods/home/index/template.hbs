@@ -1,22 +1,30 @@
 <h2>Index Page</h2>
 
-<h2>
-  <button disabled={{if flightDemo true false}} {{action "toggleFlightDemo"}}>Start Flight Demo</button>
-</h2>
+<div class="mainBody">
+  <div class="component">
+    {{playground-button buttonDisabled=flightDemo buttonAction=(action "toggleFlightDemo") text="Start Flight Demo"}}
+  </div>
+  
+  <div class="component">
+    {{map-component 
+        class="leaflet-container" 
+        lat="-25.3444"
+        lng="131.0369" 
+        zoom="1"
+        geojson=geojson 
+        points=points 
+        saveEvent=saveEvent 
+        flightDemo=flightDemo
+        destination=destinationChoice}}
+  </div>
 
-{{map-component 
-    class="leaflet-container" 
-    lat="-25.3444"
-    lng="131.0369" 
-    zoom="1"
-    geojson=geojson 
-    points=points 
-    saveEvent=saveEvent 
-    flightDemo=flightDemo}}
-
-{{#power-select
-    options=names 
-    selected=chosenName 
-    onchange=(action "changeSelection") as |name|}}
-  {{name}}
-{{/power-select}}
+  <div class="component">
+    <h4>Fly to:</h4>
+    {{#power-select
+        options=options 
+        selected=destinationChoice 
+        onchange=(action "changeSelection") as |option|}}
+      {{option}}
+    {{/power-select}}
+  </div>
+</div>

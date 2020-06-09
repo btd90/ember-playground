@@ -30,6 +30,7 @@ import {
  * @argument {Array} points - array of markers.
  * @argument {Boolean} saveEvent - used to track when save occurs
  * @argument {Boolean} flightDemo - trigger for flight path demo on map
+ * @argument {String} destination - flyTo destination
  */
 export default EmberLeaflet.extend({
   drawService: service(),
@@ -75,13 +76,9 @@ export default EmberLeaflet.extend({
       return event;
     },
     // CLICK EVENTS
-    goMelbourne() {
-      let map = this.get('_layer');
-      map.flyTo([-37.8136, 144.9631], 8);
-    },
-    goSydney() {
-      let map = this.get('_layer');
-      map.flyTo([-33.8688, 151.2093], 8);
+    goDestination(destination) {
+      let dest = this.get('polylineService').findDestination(destination);
+      this.flyToDestination(this.get('_layer'), dest.location, dest.zoom);
     },
     // POPUP EVENTS
     mouseOverObject(obj) {
@@ -162,6 +159,11 @@ export default EmberLeaflet.extend({
     // unused
   },
 
+  destinationObserver: observer('destination', function() {
+    let dest = this.get('polylineService').findDestination(this.get('destination'));
+    this.flyToDestination(this.get('_layer'), dest.location, dest.zoom);
+  }),
+
   /* Track when save clicked */
   saveObserver: observer('saveEvent', function () {
     let drawObjects = this.findDrawObjects(this.get('layerGroups').uniq());
@@ -180,6 +182,11 @@ export default EmberLeaflet.extend({
       this.flightTimer();
     }
   }),
+
+  /* Pan map to location */
+  flyToDestination(map, coOrds, zoom) {
+    map.flyTo(coOrds, zoom);
+  },
 
   /* Handle adding image overlays to map */
   imageOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {

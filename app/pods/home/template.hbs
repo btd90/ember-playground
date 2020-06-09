@@ -1,7 +1,38 @@
-{{outlet}}
-<h4>
-  Transition To: 
-  <button {{action "indexRoute"}}>Index Route</button> 
-  <button {{action "editorRoute"}}>Editor Route</button>
-  <button {{action "aboutPage"}}>About Page</button>
-</h4>
+{{#burger-menu 
+  animation="squeeze"
+  itemAnimation="push"
+  translucentOverlay=false
+  dismissOnClick=false as |burger|
+}}
+  {{#burger.menu itemTagName="routeList" as |menu|}}
+    {{playground-button class="close left" buttonAction=(action "closeBurger" burger) faIcon="times"}}
+    <ul>
+      <h2>Menu</h2>
+      {{#menu.item}}
+        <li>
+          {{#link-to "home.index"}} 
+            {{fa-icon "globe"}} Index Page
+          {{/link-to}}
+        </li>
+      {{/menu.item}}
+      {{#menu.item}}
+        <li>
+          {{#link-to "home.editor"}} 
+            {{fa-icon "cog"}} Editor Page
+          {{/link-to}}
+        </li>
+      {{/menu.item}}
+      {{#menu.item}}
+        <li>
+          {{#link-to "home.about"}} 
+            {{fa-icon "info-circle"}} About Page
+          {{/link-to}}
+        </li>
+      {{/menu.item}}
+    </ul>
+  {{/burger.menu}}
+  {{#burger.outlet}}
+    {{playground-button class="hamburger" buttonAction=(action "toggleBurger" burger) faIcon="bars"}}
+    {{outlet}}
+  {{/burger.outlet}}
+{{/burger-menu}}

@@ -10,20 +10,34 @@ import {
  * Controller for home index route.
  */
 export default Controller.extend({
-
+  queryParams: ['disabled'],
+  
+  disabled: false,
   flightDemo: false,
 
   actions: {
     changeSelection(selection) {
-      this.set('chosenName', selection);
+      this.set('destinationChoice', selection);
     },
     toggleFlightDemo() {
       this.set('flightDemo', true);
     }
   },
 
-  names: computed(function () {
-    return ['Australia', 'Japan', 'Russia', 'New Zealand'];
+  mapDisabled: computed('disabled', function() {
+    let disabled = this.get('disabled');
+
+    if (disabled) {
+      // Disable map here
+      return true;
+    } else {
+      // Enable map here
+      return false;
+    }
+  }),
+
+  options: computed(function () {
+    return ['Melbourne', 'Sydney'];
   }),
 
   points: computed(function () {

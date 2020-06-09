@@ -5,14 +5,11 @@ import Controller from '@ember/controller';
  */
 export default Controller.extend({
   actions: {
-    editorRoute() {
-      this.transitionToRoute('home.editor');
+    closeBurger(burger) {
+      burger.state.actions.close();
     },
-    indexRoute() {
-      this.transitionToRoute('home.index');
-    },
-    aboutPage() {
-      this.transitionToRoute('about');
+    toggleBurger(burger) {
+      burger.state.actions.toggle();
     },
   },
 });
