@@ -16,8 +16,65 @@ export default Service.extend({
 
   init() {
     this._super(...arguments);
+
+    // Flight demo vars
     this.set('statusArr', ['Awaiting Departure..', 'In The Air..', 'Arrived!!']);
     this.set('colourArr', ['grey', 'orange', 'green']);
+
+    // Fly to locations
+    this.set('russia', {
+      location: [65, 98],
+      zoom: 2
+    });
+    this.set('japan', {
+      location: [37, 138],
+      zoom: 4
+    });
+    this.set('newzealand', {
+      location: [-42, 173],
+      zoom: 4
+    });
+    this.set('australia', {
+      location: [-25, 134],
+      zoom: 3
+    });
+    this.set('melbourne', {
+      location: [-37.8136, 144.9631],
+      zoom: 8
+    });
+    this.set('sydney', {
+      location: [-33.8688, 151.2093],
+      zoom: 8
+    });
+  },
+
+  /* Fetch location/zoom for fly to destination */
+  findDestination(destination) {
+    let dest;
+
+    switch(destination) {
+      case "Russia":
+        dest = this.get('russia');
+        break;
+      case "Japan":
+        dest = this.get('japan');
+        break;
+      case "New Zealand":
+        dest = this.get('newzealand');
+        break;
+      case "Australia":
+        dest = this.get('australia');
+        break;
+      case "Melbourne":
+        dest = this.get('melbourne');
+        break;
+      case "Sydney":
+        dest = this.get('sydney');
+        break;
+      default:
+        break;
+    }
+    return dest;
   },
 
   /* Construct polyline object for flight paths */

@@ -1,8 +1,6 @@
 import Component from '@ember/component';
 
 /**
- * Map display component
- * 
- * @argument {Object} object - the geo object.
+ * Draw object component for the map.
  */
 export default Component.extend({})

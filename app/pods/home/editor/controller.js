@@ -17,15 +17,15 @@ export default Controller.extend({
 
   actions: {
     changeSelection(selection) {
-      this.set('chosenName', selection);
+      this.set('destinationChoice', selection);
     },
     toggleSave() {
       this.set('saveEvent', !this.get('saveEvent'));
     }
   },
 
-  names: computed(function () {
-    return A();
+  options: computed(function () {
+    return ['Australia', 'Japan', 'Russia', 'New Zealand'];
   }),
 
   points: computed(function () {

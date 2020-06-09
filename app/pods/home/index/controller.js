@@ -17,7 +17,7 @@ export default Controller.extend({
 
   actions: {
     changeSelection(selection) {
-      this.set('chosenName', selection);
+      this.set('destinationChoice', selection);
     },
     toggleFlightDemo() {
       this.set('flightDemo', true);
@@ -36,8 +36,8 @@ export default Controller.extend({
     }
   }),
 
-  names: computed(function () {
-    return ['Australia', 'Japan', 'Russia', 'New Zealand'];
+  options: computed(function () {
+    return ['Melbourne', 'Sydney'];
   }),
 
   points: computed(function () {

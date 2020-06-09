@@ -4,24 +4,35 @@
   translucentOverlay=false
   dismissOnClick=false as |burger|
 }}
-  {{#burger.menu itemTagName="li" as |menu|}}
-    {{!-- import FA & change to FA x icon!!! --}}
-    <button {{action burger.state.actions.close}}>Close</button>
+  {{#burger.menu itemTagName="routeList" as |menu|}}
+    {{playground-button class="close left" buttonAction=(action "closeBurger" burger) faIcon="times"}}
     <ul>
+      <h2>Menu</h2>
       {{#menu.item}}
-        <h4><button {{action "indexRoute"}}>Index Route</button></h4>
+        <li>
+          {{#link-to "home.index"}} 
+            {{fa-icon "globe"}} Index Page
+          {{/link-to}}
+        </li>
       {{/menu.item}}
       {{#menu.item}}
-        <h4><button {{action "editorRoute"}}>Editor Route</button></h4>
+        <li>
+          {{#link-to "home.editor"}} 
+            {{fa-icon "cog"}} Editor Page
+          {{/link-to}}
+        </li>
       {{/menu.item}}
       {{#menu.item}}
-        <h4><button {{action "aboutPage"}}>About Page</button></h4>
+        <li>
+          {{#link-to "home.about"}} 
+            {{fa-icon "info-circle"}} About Page
+          {{/link-to}}
+        </li>
       {{/menu.item}}
     </ul>
   {{/burger.menu}}
   {{#burger.outlet}}
-    {{!-- import FA & change to FA icon!!! --}}
-    <button {{action burger.state.actions.toggle}}>Menu</button>
+    {{playground-button class="hamburger" buttonAction=(action "toggleBurger" burger) faIcon="bars"}}
     {{outlet}}
   {{/burger.outlet}}
 {{/burger-menu}}

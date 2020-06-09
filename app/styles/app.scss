@@ -1,11 +1,359 @@
 @import 'pod-styles';
 @import 'ember-flex';
+@import "ember-power-select";
 @import 'ember-burger-menu';
 
-.leaflet-container {
-    height: 400px;
+$accent-color: #f5efef;
+$text-color: black;
+$animation-duration: $bm-transition-duration - 0.1s;
+
+@mixin link-color($color) {
+  color: $color;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus,
+  &.active,
+  &.active:hover,
+  &.active:focus {
+    color: $color;
+  }
 }
 
-.burgerWorm {
-    position: fixed;
+html,
+body,
+body > .ember-view {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  font-family: 'Bungee Hairline', cursive;
+  font-weight: 300;
+  color: $text-color;
+}
+
+h1,
+h2 {
+  margin: 0;
+  padding-top: 1em;
+  padding-left: 2px;
+  color: black;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  font-size: 2em;
+  font-family: 'Bungee Hairline', cursive;
+  font-weight: bold;
+  user-select: none;
+
+  > i {
+    padding-right: 10px;
+  }
+}
+h3 {
+  color: black;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  font-size: 1.5em;
+  font-weight: bold;
+  user-select: none;
+
+  > i {
+    padding-right: 10px;
+  }
+}
+h4 {
+  margin: 4px;
+}
+h5,
+label {
+  font-weight: 300;
+}
+
+div.mainBody {
+  margin: 0;
+  padding: 2px;
+  color: black;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  font-family: 'Bungee Hairline', cursive;
+  .component {
+    padding-top: 4px;
+  }
+}
+
+a {
+  color: $accent-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+    color: darken($accent-color, 0.5);
+  }
+
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.leaflet-container {
+  height: 400px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.nav {
+  a {
+    font-size: 16px;
+    margin: 0 10px;
+    padding: 10px;
+    color: $text-color;
+    font-weight: 400;
+
+    &:hover,
+    &.active {
+      border-bottom: 1px solid $accent-color;
+    }
+  }
+
+
+}
+
+.ember-burger-menu {
+  &.multiple {
+    position: absolute;
+    height: 45vh;
+    width: 100%;
+  }
+
+  .bm-menu {
+    border-right: 0.5px solid;
+    border-color: #cecaca;
+    background: $accent-color;
+    overflow: auto;
+
+    .close {
+      position: absolute;
+      top: 0;
+      padding: 2px;
+      color: #000;
+      font-size: 1rem;
+      opacity: 0.2;
+      font-weight: 100;
+
+      &:hover {
+        opacity: 0.5;
+      }
+
+      &.left {
+        right: 0;
+      }
+
+      &.right {
+        left: 0;
+      }
+    }
+
+    h2 {
+      margin: 0;
+      padding: 1em;
+      // color: rgba(0, 0, 0, 0.4);
+      color: black;
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+      font-size: 2em;
+      // text-align: center;
+      font-family: 'Bungee Hairline', cursive;
+      font-weight: bold;
+      user-select: none;
+
+      > i {
+        padding-right: 10px;
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        a {
+          display: block;
+          padding: 1em 1em 1em 1.2em;
+          outline: none;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+          color: $text-color;
+          text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+          letter-spacing: 1px;
+          -webkit-transition: background $animation-duration;
+          transition: background $animation-duration;
+          cursor: pointer;
+
+          > i {
+            margin-right: 20px;
+            font-size: 20px;
+
+            &:before {
+              vertical-align: middle;
+            }
+          }
+
+          &:hover {
+            background: darken($accent-color, 5);
+          }
+        }
+
+        &:first-child a {
+          border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+}
+
+.btn-outline {
+  border-color: $accent-color;
+  box-shadow: none;
+  color: $text-color;
+  font-weight: 300;
+  background: transparent;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus,
+  &.active,
+  &.active:hover,
+  &.active:focus {
+    z-index: 0;
+    outline: 0;
+    box-shadow: none;
+    background: $accent-color;
+    color: $text-color;
+    border-color: darken($accent-color, 5);
+  }
+}
+
+.btn-group > .btn.active {
+  z-index: 0;
+}
+
+.hamburger {
+  position: absolute;
+  top: 0;
+  padding: 2px;
+  color: #000;
+  opacity: 0.5;
+  z-index: 100;
+  transition: opacity $animation-duration;
+  -webkit-transition: opacity $animation-duration;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus,
+  &.active,
+  &.active:hover,
+  &.active:focus {}
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #ccc;
+  }
+}
+
+main {
+  height: 100%;
+  overflow: auto;
+  background: #1d2837;
+
+  .header {
+    background: #233040;
+    padding: 10px;
+    height: 55vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    img {
+      width: 375px;
+      max-width: 80%;
+    }
+
+    h1 {
+      font-family: 'Bungee Hairline', cursive;
+      font-weight: bold;
+    }
+
+    .description {
+      padding: 30px 0 30px;
+      font-size: 16px;
+
+      > p {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }
+  }
+  
+  .content {
+    height: 45vh;
+    position: relative;
+    padding: 2px !important;
+
+    .container {
+      padding-top: 30px;
+
+      .animations {
+        min-height: 310px;
+        border-right: 1px solid #ccc;
+        padding-right: 25px;
+
+        .btn-outline {
+          margin: 0 0 10px 10px;
+        }
+      }
+
+      .options {
+        min-height: 310px;
+        padding-left: 25px;
+
+        .option {
+          line-height: 2.2;
+
+          label {
+            font-size: 15px;
+            width: 160px;
+          }
+          .checkbox {
+            cursor: pointer;
+            display: inline-block;
+            color: $accent-color;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
+    .inspiration {
+      padding: 40px 0;
+    }
+
+    &.multiple {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
 }
