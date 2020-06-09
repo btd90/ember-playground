@@ -105,10 +105,16 @@
   {{leaflet-contextmenu-item text="Remove Dynamic Points" action=(action "removePoints")}}
   {{leaflet-contextmenu-item text="Add Other Basemaps" action=(action "addBaseLayer")}}
   {{leaflet-contextmenu-item text="Remove Other Basemaps" action=(action "removeBaseLayer")}}
+  {{leaflet-contextmenu-item text="Place Building" action=(action "placeBuilding")}}
+  {{leaflet-contextmenu-item text="Takeoff!" action=(action "takeoff")}}
 {{/leaflet-contextmenu}}
 
-{{!-- Layercontrol Plugin --}}
-{{map-component/layer-control handler=(action "layerControlEvent")}}
+{{!-- Layer-Control --}}
+{{map-component/layer-control
+  handler=(action "layerControlEvent")
+  imageOverlays=imageOverlays
+  videoOverlays=videoOverlays
+}}
 
 {{!-- Fullscreen Plugin --}}
 {{!-- {{pm-control}} --}}

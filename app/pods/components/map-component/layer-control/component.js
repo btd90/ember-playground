@@ -12,14 +12,20 @@ export default LayerControl.extend({
   mapLayers: computed.filter("layers", function(layer) {
     return !layer.baselayer && layer.attrs.name;
   }),
+  otherOverlays: computed.filter("layers", function(layer) {
+    return layer.imageOverlays && layer.videoOverlays;
+  }),
 
   computedLayers: computed(
     "mapLayers.length",
     "baseLayers.length",
+    "otherOverlays.@each.imageOverlays",
+    "otherOverlays.@each.videoOverlays",
     function() {
       // Get all current layers and map instance
       let mapLayers = this.get("mapLayers");
       let baseLayers = this.get("baseLayers");
+      let otherOverlays = this.get("otherOverlays");
       let instance = this._layer;
 
       // Update them if valid
@@ -46,11 +52,26 @@ export default LayerControl.extend({
           }
         });
 
+        // Add additional missing overlays to layer control
+        otherOverlays.filter(function(value) {
+          // Add missing image overlay
+          if (value.imageOverlays.count && !currentMapLayers.includes(value.imageOverlays.overlayName)) {
+            instance.addOverlay(value.imageOverlays.overlayGroup, value.imageOverlays.overlayName);
+          }
+
+          // Add missing video overlay
+          if (value.videoOverlays.count && !currentMapLayers.includes(value.videoOverlays.overlayName)) {
+            instance.addOverlay(value.videoOverlays.overlayGroup, value.videoOverlays.overlayName);
+          }
+        });
+
         // Remove from layer control if no longer on map
         currentLayers.filter(function(value) {
           if (
             !mapLayers.mapBy("name").includes(value.name) &&
-            !baseLayers.mapBy("name").includes(value.name)
+            !baseLayers.mapBy("name").includes(value.name) &&
+            !otherOverlays.mapBy('imageOverlays.overlayName').includes(value.name) &&
+            !otherOverlays.mapBy('videoOverlays.overlayName').includes(value.name) 
           ) {
             instance.removeLayer(value.layer);
           }
