@@ -9,16 +9,4 @@ import Component from '@ember/component';
  * @argument {Boolean} buttonDisabled - disable button
  * 
  */
-export default Component.extend({
-    init() {
-        this._super(...arguments);
-        this.set('buttonClass', '');
-    },
-
-    actions: {
-        focus1() {
-            debugger;
-          this.set('buttonClass', 'hover');
-        },
-    },
-})
+export default Component.extend({})
