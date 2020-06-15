@@ -6,23 +6,23 @@
   </div>
 
   <div class="component">
-    {{map-component 
-        class="leaflet-container" 
-        lat="-25.3444"
-        lng="131.0369" 
-        zoom="1" 
-        geojson=geojson 
-        points=points 
-        saveEvent=saveEvent 
+    {{map-component
+        class="leaflet-container"
+        latVal="-25.3444"
+        lngVal="131.0369"
+        zoomVal="1"
+        geojson=geojson
+        points=points
+        saveEvent=saveEvent
         drawEnabled=true
         destination=destinationChoice}}
   </div>
 
   <div class="component">
     <h4>Fly to:</h4>
-    {{#power-select 
-        options=options 
-        selected=destinationChoice 
+    {{#power-select
+        options=options
+        selected=destinationChoice
         onchange=(action "changeSelection") as |option|}}
       {{option}}
     {{/power-select}}

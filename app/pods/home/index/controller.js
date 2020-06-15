@@ -1,4 +1,4 @@
-import Controller from '@ember/controller';
+import HomeController from '../controller';
 import {
   computed
 } from '@ember/object';
@@ -9,7 +9,7 @@ import {
 /**
  * Controller for home index route.
  */
-export default Controller.extend({
+export default HomeController.extend({
   queryParams: ['disabled'],
   
   disabled: false,
@@ -37,7 +37,7 @@ export default Controller.extend({
   }),
 
   options: computed(function () {
-    return ['Melbourne', 'Sydney'];
+    return ['Melbourne', 'Sydney', 'Winterfell'];
   }),
 
   points: computed(function () {

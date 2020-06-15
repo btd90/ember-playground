@@ -1,4 +1,4 @@
-import Controller from '@ember/controller';
+import HomeController from '../controller';
 import {
   computed
 } from '@ember/object';
@@ -9,7 +9,7 @@ import {
 /**
  * Controller for home editor route.
  */
-export default Controller.extend({
+export default HomeController.extend({
   queryParams: ['disabled'],
   
   disabled: false,
@@ -25,7 +25,7 @@ export default Controller.extend({
   },
 
   options: computed(function () {
-    return ['Australia', 'Japan', 'Russia', 'New Zealand'];
+    return ['Australia', 'Japan', 'Russia', 'New Zealand', 'Winterfell'];
   }),
 
   points: computed(function () {
@@ -43,7 +43,6 @@ export default Controller.extend({
       "type": "Feature",
       "properties": {
         "name": "GeoJSON Marker",
-        "amenity": "Football Stadium",
       },
       "geometry": {
         "type": "Point",
