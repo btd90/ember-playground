@@ -1,7 +1,7 @@
-import Controller from '@ember/controller';
+import HomeController from '../controller';
 
 /**
  * Controller for home about route.
  */
-export default Controller.extend({
+export default HomeController.extend({
 });

@@ -99,6 +99,7 @@
 {{#leaflet-contextmenu}}
   {{leaflet-contextmenu-item text="Fly to Melbourne" action=(action "goDestination" "Melbourne")}}
   {{leaflet-contextmenu-item text="Fly to Sydney" action=(action "goDestination" "Sydney")}}
+  {{leaflet-contextmenu-item text="Fly to Winterfell" action=(action "goDestination" "Winterfell")}}
   {{leaflet-contextmenu-item text="Convert to Building Icons" action=(action "buildingIcons")}}
   {{leaflet-contextmenu-item text="Revert to Marker Icons" action=(action "markerIcons")}}
   {{leaflet-contextmenu-item text="Add Dynamic Point" action=(action "addPoint")}}
@@ -116,10 +117,5 @@
   videoOverlays=videoOverlays
 }}
 
-{{!-- Fullscreen Plugin --}}
-{{!-- {{pm-control}} --}}
-<leaflet-fullscreen-control position="topleft"/>
-{{!-- {{#leaflet-fullscreen-control position="topleft"}}
-{{/leaflet-fullscreen-control}} --}}
-
 {{yield}}
+

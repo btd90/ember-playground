@@ -43,11 +43,12 @@ export default EmberLeaflet.extend({
   init() {
     this._super(...arguments);
 
-    this.set('zoom', 1);
-    this.set('minZoom', 1);
-    this.set('maxZoom', 10);
-    this.set('lat', -25.3444);
-    this.set('lng', 131.0369);
+    this.get('zoomVal') ? this.set('zoom', this.get('zoomVal')) : this.set('zoom', 1);
+    this.get('minZoomVal') ? this.set('minZoom', this.get('minZoomVal')) : this.set('minZoom', 1);
+    this.get('maxZoomVal') ? this.set('maxZoom', this.get('maxZoomVal')) : this.set('maxZoom', 10);
+    this.get('maxBoundsVal') ? this.set('maxBounds', this.get('maxBoundsVal')) : this.set('maxBounds', [[90, 540], [-90, -540]]);
+    this.get('latVal') ? this.set('lat', this.get('latVal')) : this.set('lat', -25.3444);
+    this.get('lngVal') ? this.set('lng', this.get('lngVal')) : this.set('lng', 131.0369);
 
     this.set('drawObjects', A());
     this.set('layerGroups', A());
@@ -77,8 +78,12 @@ export default EmberLeaflet.extend({
     },
     // CLICK EVENTS
     goDestination(destination) {
-      let dest = this.get('polylineService').findDestination(destination);
-      this.flyToDestination(this.get('_layer'), dest.location, dest.zoom);
+      if (destination === 'Winterfell') {
+        this.flyToWinterfell(this.get('_layer'));
+      } else {
+        let dest = this.get('polylineService').findDestination(destination);
+        this.flyToDestination(this.get('_layer'), dest.location, dest.zoom);
+      }
     },
     // POPUP EVENTS
     mouseOverObject(obj) {
@@ -143,9 +148,22 @@ export default EmberLeaflet.extend({
     map.attributionControl.setPosition("bottomleft");
     map.attributionControl.setPrefix("Lat: 0 Long: 0");
 
+    // Add fullscreen control
+    map.addControl(new L.control.fullscreen());
+
     // Override events
     map.addEventListener('mousemove', this.mousemove, this);
     map.addEventListener('click', this.mouseclick, this);
+
+    // Work-around for burger menu resize to refresh map
+    let burgerObserver = new ResizeObserver(function(event) {
+      if (event[0].target.map) event[0].target.map.invalidateSize();
+    });
+    let burgetOutlet = document.querySelector('.burgetOutlet');
+    burgetOutlet.map = map;
+    burgerObserver.observe(burgetOutlet, {
+      attributes: true
+    });
   },
 
   mousemove(event) {
@@ -159,9 +177,14 @@ export default EmberLeaflet.extend({
     // unused
   },
 
+  /* Observe external choice for location navigation */
   destinationObserver: observer('destination', function() {
-    let dest = this.get('polylineService').findDestination(this.get('destination'));
-    this.flyToDestination(this.get('_layer'), dest.location, dest.zoom);
+    if (this.get('destination') === 'Winterfell') {
+      this.flyToWinterfell(this.get('_layer'));
+    } else {
+      let dest = this.get('polylineService').findDestination(this.get('destination'));
+      this.flyToDestination(this.get('_layer'), dest.location, dest.zoom);
+    }
   }),
 
   /* Track when save clicked */
@@ -182,6 +205,26 @@ export default EmberLeaflet.extend({
       this.flightTimer();
     }
   }),
+
+  /* Bonus map */
+  flyToWinterfell(map) {
+    let zoomVal = 4;
+    let latVal = 27;
+    let lngVal = 16;
+
+    this.set('zoom', zoomVal);
+    this.set('minZoom', zoomVal);
+    this.set('maxZoom', 8);
+    this.set('lat', latVal);
+    this.set('lng', lngVal);
+    this.set('maxBounds', [[55, 110], [-50, -20]]);
+
+    let got = L.tileLayer('https://cartocdn-gusc.global.ssl.fastly.net//ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
+      zIndex: 1
+    });
+    got.addTo(map);
+    map.flyTo([latVal, lngVal], zoomVal);
+  },
 
   /* Pan map to location */
   flyToDestination(map, coOrds, zoom) {

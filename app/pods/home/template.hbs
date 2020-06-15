@@ -1,4 +1,4 @@
-{{#burger-menu 
+{{#burger-menu
   animation="squeeze"
   itemAnimation="push"
   translucentOverlay=false
@@ -10,14 +10,14 @@
       <h2>Menu</h2>
       {{#menu.item}}
         <li>
-          {{#link-to "home.index"}} 
+          {{#link-to "home.index"}}
             {{fa-icon "globe"}} Index Page
           {{/link-to}}
         </li>
       {{/menu.item}}
       {{#menu.item}}
         <li>
-          {{#link-to "home.editor"}} 
+          {{#link-to "home.editor"}}
             {{fa-icon "cog"}} Editor Page
           {{/link-to}}
         </li>
@@ -31,7 +31,7 @@
       {{/menu.item}}
     </ul>
   {{/burger.menu}}
-  {{#burger.outlet}}
+  {{#burger.outlet class="burgetOutlet"}}
     {{playground-button class="hamburger" buttonAction=(action "toggleBurger" burger) faIcon="bars"}}
     {{outlet}}
   {{/burger.outlet}}
