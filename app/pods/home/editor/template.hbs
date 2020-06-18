@@ -6,7 +6,7 @@
   </div>
 
   <div class="component">
-    {{map-component
+    {{#map-component
         class="leaflet-container"
         latVal="-25.3444"
         lngVal="131.0369"
@@ -15,7 +15,33 @@
         points=points
         saveEvent=saveEvent
         drawEnabled=true
-        destination=destinationChoice}}
+        destination=destinationChoice
+        mapInstance=mapInstance}}
+      {{!-- THIS SHOULD PLACE A BUTTON IN CENTER OF MAP!! --}}
+      {{!-- unlimited display-zones (1 layer group) with unlimited display-areas? --}}
+      {{!-- Could try using ember-wormhole with div id that matches 'layer'?? --}}
+      {{#if mapInstance}}
+        {{#map-component/display-zone 
+            mapInstance=mapInstance 
+            layer="test111" 
+            absolutePosition=true 
+            lat="0" 
+            lng="0"
+            layerReady=layerReady}}
+          
+          {{!-- <div class="bbb">
+            {{playground-button class="aaa" buttonAction=(action "toggleSave") text="222Save222"}}
+          </div> --}}
+
+          {{!-- wormhole --}}
+          {{#if layerReady}}
+            {{#ember-wormhole to="test111"}}
+              {{playground-button class="aaa" buttonAction=(action "toggleSave") text="4444Save444"}}
+            {{/ember-wormhole}}
+          {{/if}}
+        {{/map-component/display-zone}}
+      {{/if}}
+    {{/map-component}}
   </div>
 
   <div class="component">

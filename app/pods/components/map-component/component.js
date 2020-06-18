@@ -164,6 +164,14 @@ export default EmberLeaflet.extend({
     burgerObserver.observe(burgetOutlet, {
       attributes: true
     });
+
+    // Used for adding other components to map
+    this.set('mapInstance', this.get('_layer'));
+  },
+
+  willDestroyElement() {
+    // Clear existing instance
+    this.set('mapInstance', '');
   },
 
   mousemove(event) {
