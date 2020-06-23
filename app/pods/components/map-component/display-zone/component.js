@@ -28,32 +28,15 @@ export default Component.extend({
         this._container.className = layerName;
         this._container.id = layerName;
 
-        // Required to scale correctly on zoom
+        // Required to scale overlay correctly on zoom
         this._container.style.position = "absolute";
 
         // Add container to pane
         pane.appendChild(this._container);
 
-        // this._disableLeafletRounding();
-
-        // Try placing a marker and using that as position???
-
-
         // Calculate initial position of container with `L.Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
         let mapPosition = map.latLngToLayerPoint(position);
-        // let mapPosition = map.project(position, map._zoom);
-        // debugger;
-
-        // let test =  {x: 26.333333333333258, y: 35.4770169430887};
-
-        // let zoom = this._map._zoom;
-        // let layerOrigin = this._map.layerPointToLatLng([0, 0]);
-        // let projectedPoint = this._map.project(L.latLng(position), zoom);
-        // let projectedOrigin = this._map.project(layerOrigin, zoom);
-        // let mapPosition = projectedPoint._subtract(projectedOrigin);
-
-        // this._enableLeafletRounding();
-
+       
         if (maintainComponentSize) {
           L.DomUtil.setPosition(this._container, mapPosition);
         } else {
@@ -77,28 +60,10 @@ export default Component.extend({
       },
 
       _update: function () {
-        // this._disableLeafletRounding();
-        // let test =  {x: 26.333333333333258, y: 35.4770169430887};
-
         // Recalculate position of container
         let mapPosition = this._map.latLngToLayerPoint(position);
-        // console.log(position);
-
-        // IS IT WORTH PERSUEING THIS??
-        // REVISIT ONCE EVERYTHING ELSE IS WORKING?
-        // this._enableLeafletRounding();
-
-
-        // let zoom = this._map._zoom;
-        // let layerOrigin = this._map.layerPointToLatLng([0, 0]);
-        // let projectedPoint = this._map.project(L.latLng(position), zoom);
-        // let projectedOrigin = this._map.project(layerOrigin, zoom);
-        // let mapPosition = projectedPoint._subtract(projectedOrigin);
-        // debugger;
-
+        
         if (maintainComponentSize) {
-          // LAT changes while zooming!!!
-          // SEE COMMENT ABOVE
           L.DomUtil.setPosition(this._container, mapPosition);
         } else {
           // TRY ADDING MULTIPLIER TO ZOOM??
@@ -109,26 +74,7 @@ export default Component.extend({
           );
         }
 
-
-        // // L.DomUtil.setPosition(this._container, mapPosition);
-        // debugger;
-        // L.DomUtil.setTransform(
-        //   this._container, 
-        //   mapPosition, 
-        //   this._map._zoom
-        // );
-        // debugger;
-
         // Add/remove/reposition children elements if needed
-      },
-
-      _disableLeafletRounding: function(){
-        this._leaflet_round = L.Point.prototype._round;
-        L.Point.prototype._round = function(){ return this; };
-      },
-
-      _enableLeafletRounding: function(){
-        L.Point.prototype._round = this._leaflet_round;
       },
     });
 

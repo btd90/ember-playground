@@ -165,8 +165,6 @@ export default EmberLeaflet.extend({
       attributes: true
     });
 
-    // L.Point.prototype._round = function(){ return this; };
-
     // Used for adding other components to map
     this.set('mapInstance', this.get('_layer'));
   },
