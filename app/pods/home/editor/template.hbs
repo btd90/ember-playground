@@ -2,51 +2,72 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonAction=(action "toggleSave") text="Save"}}
+    {{playground-button buttonAction=(action "toggleSave") text=saveButtonText}}
+    {{playground-button buttonAction=(action "enableComponents") text=componentButtonText}}
   </div>
 
   <div class="component">
     {{#map-component
         class="leaflet-container"
-        latVal="-25.3444"
-        lngVal="131.0369"
-        zoomVal="1"
+        latVal=latitude
+        lngVal=longitude
+        zoomVal=zoom
         geojson=geojson
         points=points
         saveEvent=saveEvent
         drawEnabled=true
         destination=destinationChoice
-        mapInstance=mapInstance}}
-      {{!-- unlimited display-zones (1 layer group) with unlimited display-areas? --}}
-      {{#if mapInstance}}
-        {{#map-component/display-zone 
+        mapInstance=mapInstance
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays}}
+      {{#if (and mapInstance componentsEnabled)}}
+        {{!-- Display group to capture a unique layer for display zones --}}
+        {{#map-component/display-group
             mapInstance=mapInstance
-            layer="test111"
-            maintainComponentSize=true
-            lat="0"
-            lng="0"
-            layerReady=layerReady}}
-          {{#if layerReady}}
-            {{#ember-wormhole to="test111"}}
-              {{playground-button buttonAction=(action "toggleSave") text="4444Save444"}}
-            {{/ember-wormhole}}
+            layerGroup=layerGroup
+            layerName=layerGroupName
+            componentOverlays=componentOverlays}}
+          {{#if layerGroup}}
+            {{!-- Display zone to render any child components on the map --}}
+            {{#map-component/display-zone
+                layerId=firstLayerId
+                lat=firstLayerLatitude
+                lng=firstLayerLongitude
+                mapInstance=mapInstance
+                layerGroup=layerGroup
+                maintainComponentSize=true
+                layerReady=layerReady}}
+              {{#if layerReady}}
+                {{#ember-wormhole to=firstLayerId}}
+                  {{playground-button buttonAction=(action "toggleSave") text=firstLayerButtonText}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-zone}}
+            {{#map-component/display-zone
+                layerId=secondLayerId
+                lat=secondLayerLatitude
+                lng=secondLayerLongitude
+                mapInstance=mapInstance
+                layerGroup=layerGroup
+                maintainComponentSize=true
+                layerReady=layerReady}}
+              {{#if layerReady}}
+                {{#ember-wormhole to=secondLayerId}}
+                  {{playground-button buttonAction=(action "toggleSave") text=secondLayerButtonText}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-zone}}
           {{/if}}
-        {{/map-component/display-zone}}
-
-        {{#map-component/display-zone 
-            mapInstance=mapInstance
-            layer="test222"
-            maintainComponentSize=true
-            lat="30"
-            lng="30"
-            layerReady=layerReady}}
-          {{#if layerReady}}
-            {{#ember-wormhole to="test222"}}
-              {{playground-button buttonAction=(action "toggleSave") text="555Save555"}}
-            {{/ember-wormhole}}
-          {{/if}}
-        {{/map-component/display-zone}}
+        {{/map-component/display-group}}
       {{/if}}
+      {{!-- Layer-Control --}}
+      {{map-component/layer-control
+        handler=(action "layerControlEvent")
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays
+      }}
     {{/map-component}}
   </div>
 

@@ -2,20 +2,32 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonDisabled=flightDemo buttonAction=(action "toggleFlightDemo") text="Start Flight Demo"}}
+    {{playground-button buttonDisabled=flightDemo buttonAction=(action "toggleFlightDemo") text=buttonText}}
   </div>
   
   <div class="component">
-    {{map-component
+    {{#map-component
         class="leaflet-container"
-        latVal="-25.3444"
-        lngVal="131.0369"
-        zoomVal="1"
+        latVal=latitude
+        lngVal=longitude
+        zoomVal=zoom
         geojson=geojson
         points=points
         saveEvent=saveEvent
         flightDemo=flightDemo
-        destination=destinationChoice}}
+        destination=destinationChoice
+        mapInstance=mapInstance
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays}}
+      {{!-- Layer-Control --}}
+      {{map-component/layer-control
+        handler=(action "layerControlEvent")
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays
+      }}
+    {{/map-component}}
   </div>
 
   <div class="component">

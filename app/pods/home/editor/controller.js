@@ -14,6 +14,23 @@ export default HomeController.extend({
   
   disabled: false,
   saveEvent: false,
+  componentsEnabled: false,
+  saveButtonText: 'Save',
+  componentButtonText: 'Enable Components on Map',
+  latitude: '-25.3444',
+  longitude: '131.0369',
+  zoom: '1',
+
+  // Change to render svg graph and a button??
+  layerGroupName: 'Components',
+  firstLayerId: 'firstComponentLayer',
+  firstLayerLatitude: '30',
+  firstLayerLongitude: '30',
+  firstLayerButtonText: 'Save1',
+  secondLayerId: 'secondLayer',
+  secondLayerLatitude: '0',
+  secondLayerLongitude: '0',
+  secondLayerButtonText: 'Save2',
 
   actions: {
     changeSelection(selection) {
@@ -21,7 +38,14 @@ export default HomeController.extend({
     },
     toggleSave() {
       this.set('saveEvent', !this.get('saveEvent'));
-    }
+    },
+    enableComponents() {
+      this.set('componentsEnabled', true);
+    },
+    // MAP LAYER CONTROL EVENTS
+    layerControlEvent(event) {
+      return event;
+    },
   },
 
   options: computed(function () {

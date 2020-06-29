@@ -8,84 +8,125 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    //
-    // Update layer-control at some point!!! 
-    //
-
     // Store inputs
-    let map = this.get('mapInstance');
-    let layerName = this.get('layer');
+    let layerId = this.get('layerId');
+    let layerGroup = this.get('layerGroup');
     let absolutePosition = this.get('absolutePosition');
     let position = [this.get('lat'), this.get('lng')];
     let maintainComponentSize = this.get('maintainComponentSize');
-
+    
     // Create new custom map layer
     // TRY SHIFTING THIS TO OUTSIDE COMPONENT DEFINITION
     L.CustomLayer = L.Layer.extend({
-      onAdd: function (map) {
+      onAdd: function(map) {
         let pane = map.getPane(this.options.pane);
-        this._container = L.DomUtil.create('div');
-        this._container.className = layerName;
-        this._container.id = layerName;
+        let childNodes = pane.childNodes;
+        let found = false;
 
-        // Required to scale overlay correctly on zoom
-        this._container.style.position = "absolute";
-
-        // Add container to pane
-        pane.appendChild(this._container);
-
-        // Calculate initial position of container with `L.Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
-        let mapPosition = map.latLngToLayerPoint(position);
-       
-        if (maintainComponentSize) {
-          L.DomUtil.setPosition(this._container, mapPosition);
-        } else {
-          // TRY ADDING MULTIPLIER TO ZOOM??
-          L.DomUtil.setTransform(
-            this._container, 
-            mapPosition, 
-            this._map._zoom
-          );
+        // Check if child elements already exist
+        if(childNodes && !found) {
+          // Update position/visibility if child node exists
+          for(let i=0; i<childNodes.length; i++) {
+            if(childNodes[i].id === layerId) {
+              this._update();
+              found = true;
+            }
+          }
         }
         
-        // Add and position children elements if needed
+        if(!found) {
+          // Create new div for new layer
+          this._container = L.DomUtil.create('div');
+          this._container.className = "leaflet-layer";
+          this._container.id = layerId;
 
-        // CHANGE ABSOLUTE POSITION TO INSTEAD DEAL WITH RESIZING DIV TO MAINTAIN DIV BOUNDS ON ZOOM!!
-        map.on('zoomend viewreset', this._update, this, map);
+          // Required to scale overlay correctly on zoom
+          this._container.style.position = "absolute";
+          this._container.style.visibility = "visible";
+
+          // Add container to pane
+          pane.appendChild(this._container);
+
+          // Calculate initial position of container with `L.Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
+          let mapPosition = map.latLngToLayerPoint(position);
+        
+          if (maintainComponentSize) {
+            L.DomUtil.setPosition(this._container, mapPosition);
+          } else {
+            // TRY ADDING MULTIPLIER TO ZOOM??
+            L.DomUtil.setTransform(
+              this._container, 
+              mapPosition, 
+              this._map._zoom
+            );
+          }
+          
+          // Add events
+          map.on('zoomstart', this._hide, this, map);
+          map.on('zoomend viewreset', this._update, this, map);
+        }
       },
 
-      onRemove: function (map) {
-        L.DomUtil.remove(this._container);
-        map.off('zoomend viewreset', this._update, this, map);
+      onRemove: function() {
+        // Triggered when layer toggled in layer control
+        this._hide();
       },
 
-      _update: function () {
+      _update: function() {
         // Recalculate position of container
-        let mapPosition = this._map.latLngToLayerPoint(position);
-        
-        if (maintainComponentSize) {
-          L.DomUtil.setPosition(this._container, mapPosition);
-        } else {
-          // TRY ADDING MULTIPLIER TO ZOOM??
-          L.DomUtil.setTransform(
-            this._container, 
-            mapPosition, 
-            this._map._zoom
-          );
-        }
+        if(this._map) {
+          let mapPosition = this._map.latLngToLayerPoint(position);
+      
+          if (maintainComponentSize) {
+            L.DomUtil.setPosition(this._container, mapPosition);
+          } else {
+            // TRY ADDING MULTIPLIER TO ZOOM??
+            L.DomUtil.setTransform(
+              this._container, 
+              mapPosition, 
+              this._map._zoom
+            );
+          }
 
-        // Add/remove/reposition children elements if needed
+          // Show the element once position calculated
+          this._container.style.visibility = "visible";
+        }
       },
+
+      _hide: function() {
+        // Hide the element before position calculation
+        this._container.style.visibility = "hidden";
+      }
     });
 
     L.customlayer = function (args) {
       return new L.CustomLayer(args);
     }
 
+    // Add layer to relevant layer group
     L.customlayer({
-      layerName: layerName,
+      layerId: layerId,
       absolutePosition: absolutePosition
-    }).addTo(map);
+    }).addTo(layerGroup);
+
+
+    // layerGroup.addTo(map);
+
+    // Ember.set(map, 'testGroup', layerGroup);
+
+
+    // map.addLayer();
+
+    // let overlays = {
+    //   "Test": layerGroup
+    // };
+
+    // L.Control.Layers().addOverlay(overlays);
+
+
+
+    // layerGroup.addTo(map);
+    // L.control.layers().addOverlay(g, layerId);
   },
 
   didInsertElement() {

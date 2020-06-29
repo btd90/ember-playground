@@ -166,6 +166,7 @@ export default EmberLeaflet.extend({
     });
 
     // Used for adding other components to map
+    this.set('componentOverlays', A());
     this.set('mapInstance', this.get('_layer'));
   },
 
