@@ -1,13 +1,13 @@
 import Component from '@ember/component';
 
 /**
- * Component to enable a location for rendering a component at a given
- * lat/lng on leaflet map.
+ * Component to enable a boundary for rendering a component at given
+ * bounds on leaflet map.
  *
  * @argument {String} layerId - id used when defining parent element on the map
  * @argument {String} layerGroup - the layerGroup object that the display zone is added to
- * @argument {Number} lat - latitude for top-left corner where component will render
- * @argument {Number} lng - longitude for top-left corner where component will render
+ * @argument {Number} upperLeft - the upper left lat/lng for the bounding
+ * @argument {Number} lowerRight - the lower right lat/lng for the bounding
  */
 export default Component.extend({
   init() {
@@ -16,10 +16,10 @@ export default Component.extend({
     // Store inputs
     let layerId = this.get('layerId');
     let layerGroup = this.get('layerGroup');
-    let position = [this.get('lat'), this.get('lng')];
+    let upperLeft = this.get('upperLeft');
+    let lowerRight = this.get('lowerRight');
     
     // Create new custom map layer
-    // TRY SHIFTING THIS TO OUTSIDE COMPONENT DEFINITION
     L.CustomLayer = L.Layer.extend({
       onAdd: function(map) {
         let pane = map.getPane(this.options.pane);
@@ -50,11 +50,18 @@ export default Component.extend({
           // Add container to pane
           pane.appendChild(this._container);
 
-          // Calculate initial position of container
-          let mapPosition = map.latLngToLayerPoint(position);
+          // Calculate initial points of container
+          let mapUpperLeft = map.latLngToLayerPoint(upperLeft);
+          let mapLowerRight = map.latLngToLayerPoint(lowerRight);
+          let containerWidth = Math.abs(mapUpperLeft.x - mapLowerRight.x)
+          let containerHeight = Math.abs(mapUpperLeft.y - mapLowerRight.y);
+
+          // Use above points to calculate width/height of element
+          this._container.style.width = containerWidth.toString() + "px";
+          this._container.style.height = containerHeight.toString() + "px";
         
           // Set the updated position
-          L.DomUtil.setPosition(this._container, mapPosition);
+          L.DomUtil.setPosition(this._container, mapUpperLeft);
           
           // Add events
           map.on('zoomstart', this._hide, this, map);
@@ -69,11 +76,19 @@ export default Component.extend({
 
       _update: function() {
         // Recalculate position of container
-        if(this._map) {
-          let mapPosition = this._map.latLngToLayerPoint(position);
-      
+        if(this._map) {                
+          // Calculate initial points of container
+          let mapUpperLeft = this._map.latLngToLayerPoint(upperLeft);
+          let mapLowerRight = this._map.latLngToLayerPoint(lowerRight);
+          let containerWidth = Math.abs(mapUpperLeft.x - mapLowerRight.x)
+          let containerHeight = Math.abs(mapUpperLeft.y - mapLowerRight.y);
+
+          // Use above points to calculate width/height of element
+          this._container.style.width = containerWidth.toString() + "px";
+          this._container.style.height = containerHeight.toString() + "px";
+
           // Set the updated position
-          L.DomUtil.setPosition(this._container, mapPosition);
+          L.DomUtil.setPosition(this._container, mapUpperLeft);
 
           // Show the element once position calculated
           this._container.style.visibility = "visible";

@@ -27,10 +27,13 @@ export default HomeController.extend({
   firstLayerLatitude: '30',
   firstLayerLongitude: '30',
   firstLayerButtonText: 'Save1',
-  secondLayerId: 'secondLayer',
+  secondLayerId: 'secondComponentLayer',
   secondLayerLatitude: '0',
   secondLayerLongitude: '0',
   secondLayerButtonText: 'Save2',
+  thirdLayerId: 'thirdComponentLayer',
+  upperLeft: L.latLng(30,-200),
+  lowerRight: L.latLng(-30,-50),
 
   actions: {
     changeSelection(selection) {

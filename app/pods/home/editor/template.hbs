@@ -22,21 +22,20 @@
         videoOverlays=videoOverlays
         componentOverlays=componentOverlays}}
       {{#if (and mapInstance componentsEnabled)}}
-        {{!-- Display group to capture a unique layer for display zones --}}
+        {{!-- Display group to capture a unique layer for display boxes/points --}}
         {{#map-component/display-group
             mapInstance=mapInstance
             layerGroup=layerGroup
             layerName=layerGroupName
             componentOverlays=componentOverlays}}
           {{#if layerGroup}}
-            {{!-- Display zone to render any child components on the map --}}
+            {{!-- Display point to render child components on the map at the given lat/lng --}}
             {{#map-component/display-zone
                 layerId=firstLayerId
                 lat=firstLayerLatitude
                 lng=firstLayerLongitude
                 mapInstance=mapInstance
                 layerGroup=layerGroup
-                maintainComponentSize=true
                 layerReady=layerReady}}
               {{#if layerReady}}
                 {{#ember-wormhole to=firstLayerId}}
@@ -44,13 +43,13 @@
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-zone}}
+            {{!-- Display point to render child components on the map at the given lat/lng --}}
             {{#map-component/display-zone
                 layerId=secondLayerId
                 lat=secondLayerLatitude
                 lng=secondLayerLongitude
                 mapInstance=mapInstance
                 layerGroup=layerGroup
-                maintainComponentSize=true
                 layerReady=layerReady}}
               {{#if layerReady}}
                 {{#ember-wormhole to=secondLayerId}}
@@ -58,6 +57,20 @@
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-zone}}
+            {{!-- Display box to render child components on the map within lat/lng bounds --}}
+            {{#map-component/display-box
+                layerId=thirdLayerId
+                upperLeft=upperLeft
+                lowerRight=lowerRight
+                mapInstance=mapInstance
+                layerGroup=layerGroup
+                layerReady=layerReady}}
+              {{#if layerReady}}
+                {{#ember-wormhole to=thirdLayerId}}
+                  {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
           {{/if}}
         {{/map-component/display-group}}
       {{/if}}
