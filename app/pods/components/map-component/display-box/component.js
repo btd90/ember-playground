@@ -5,7 +5,7 @@ import Component from '@ember/component';
  * bounds on leaflet map.
  *
  * @argument {String} layerId - id used when defining parent element on the map
- * @argument {String} layerGroup - the layerGroup object that the display zone is added to
+ * @argument {String} layerGroup - the layerGroup object that the display box is added to
  * @argument {Number} upperLeft - the upper left lat/lng for the bounding
  * @argument {Number} lowerRight - the lower right lat/lng for the bounding
  */

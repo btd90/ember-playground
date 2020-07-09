@@ -5,7 +5,7 @@ import Component from '@ember/component';
  * lat/lng on leaflet map.
  *
  * @argument {String} layerId - id used when defining parent element on the map
- * @argument {String} layerGroup - the layerGroup object that the display zone is added to
+ * @argument {String} layerGroup - the layerGroup object that the display point is added to
  * @argument {Number} lat - latitude for top-left corner where component will render
  * @argument {Number} lng - longitude for top-left corner where component will render
  */

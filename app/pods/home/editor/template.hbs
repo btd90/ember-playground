@@ -30,7 +30,7 @@
             componentOverlays=componentOverlays}}
           {{#if layerGroup}}
             {{!-- Display point to render child components on the map at the given lat/lng --}}
-            {{#map-component/display-zone
+            {{#map-component/display-point
                 layerId=firstLayerId
                 lat=firstLayerLatitude
                 lng=firstLayerLongitude
@@ -42,9 +42,9 @@
                   {{playground-button buttonAction=(action "toggleSave") text=firstLayerButtonText}}
                 {{/ember-wormhole}}
               {{/if}}
-            {{/map-component/display-zone}}
+            {{/map-component/display-point}}
             {{!-- Display point to render child components on the map at the given lat/lng --}}
-            {{#map-component/display-zone
+            {{#map-component/display-point
                 layerId=secondLayerId
                 lat=secondLayerLatitude
                 lng=secondLayerLongitude
@@ -56,7 +56,7 @@
                   {{playground-button buttonAction=(action "toggleSave") text=secondLayerButtonText}}
                 {{/ember-wormhole}}
               {{/if}}
-            {{/map-component/display-zone}}
+            {{/map-component/display-point}}
             {{!-- Display box to render child components on the map within lat/lng bounds --}}
             {{#map-component/display-box
                 layerId=thirdLayerId
