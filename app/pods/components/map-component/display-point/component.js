@@ -19,7 +19,6 @@ export default Component.extend({
     let position = [this.get('lat'), this.get('lng')];
     
     // Create new custom map layer
-    // TRY SHIFTING THIS TO OUTSIDE COMPONENT DEFINITION
     L.CustomLayer = L.Layer.extend({
       onAdd: function(map) {
         let pane = map.getPane(this.options.pane);

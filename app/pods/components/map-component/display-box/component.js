@@ -6,8 +6,8 @@ import Component from '@ember/component';
  *
  * @argument {String} layerId - id used when defining parent element on the map
  * @argument {String} layerGroup - the layerGroup object that the display box is added to
- * @argument {Number} upperLeft - the upper left lat/lng for the bounding
- * @argument {Number} lowerRight - the lower right lat/lng for the bounding
+ * @argument {Object} upperLeft - the upper left lat/lng for the bounding
+ * @argument {Object} lowerRight - the lower right lat/lng for the bounding
  */
 export default Component.extend({
   init() {
@@ -45,24 +45,13 @@ export default Component.extend({
 
           // Required to scale overlay correctly on zoom
           this._container.style.position = "absolute";
-          this._container.style.visibility = "visible";
 
           // Add container to pane
           pane.appendChild(this._container);
 
-          // Calculate initial points of container
-          let mapUpperLeft = map.latLngToLayerPoint(upperLeft);
-          let mapLowerRight = map.latLngToLayerPoint(lowerRight);
-          let containerWidth = Math.abs(mapUpperLeft.x - mapLowerRight.x)
-          let containerHeight = Math.abs(mapUpperLeft.y - mapLowerRight.y);
+          // Position container
+          this._calculateWidthHeightPosition(map, this._container, upperLeft, lowerRight);
 
-          // Use above points to calculate width/height of element
-          this._container.style.width = containerWidth.toString() + "px";
-          this._container.style.height = containerHeight.toString() + "px";
-        
-          // Set the updated position
-          L.DomUtil.setPosition(this._container, mapUpperLeft);
-          
           // Add events
           map.on('zoomstart', this._hide, this, map);
           map.on('zoomend viewreset', this._update, this, map);
@@ -75,29 +64,33 @@ export default Component.extend({
       },
 
       _update: function() {
-        // Recalculate position of container
-        if(this._map) {                
-          // Calculate initial points of container
-          let mapUpperLeft = this._map.latLngToLayerPoint(upperLeft);
-          let mapLowerRight = this._map.latLngToLayerPoint(lowerRight);
-          let containerWidth = Math.abs(mapUpperLeft.x - mapLowerRight.x)
-          let containerHeight = Math.abs(mapUpperLeft.y - mapLowerRight.y);
-
-          // Use above points to calculate width/height of element
-          this._container.style.width = containerWidth.toString() + "px";
-          this._container.style.height = containerHeight.toString() + "px";
-
-          // Set the updated position
-          L.DomUtil.setPosition(this._container, mapUpperLeft);
-
-          // Show the element once position calculated
-          this._container.style.visibility = "visible";
+        if(this._map) {
+          // Re-position container
+          this._calculateWidthHeightPosition(this._map, this._container, upperLeft, lowerRight);
         }
       },
 
       _hide: function() {
         // Hide the element before position calculation
         this._container.style.visibility = "hidden";
+      },
+
+      _calculateWidthHeightPosition(map, container, upperLeft, lowerRight) {
+        // Calculate initial points of container
+        let mapUpperLeft = map.latLngToLayerPoint(upperLeft);
+        let mapLowerRight = map.latLngToLayerPoint(lowerRight);
+        let containerWidth = Math.abs(mapUpperLeft.x - mapLowerRight.x)
+        let containerHeight = Math.abs(mapUpperLeft.y - mapLowerRight.y);
+
+        // Use above points to calculate width/height of element
+        container.style.width = containerWidth.toString() + "px";
+        container.style.height = containerHeight.toString() + "px";
+
+        // Set the updated position
+        L.DomUtil.setPosition(container, mapUpperLeft);
+
+        // Show the element once position calculated
+        container.style.visibility = "visible";
       }
     });
 

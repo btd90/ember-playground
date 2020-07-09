@@ -1,8 +1,14 @@
 import Component from '@ember/component';
+import { set } from '@ember/object';
 
 /**
- * EXPECT LAT/LNG/Bounds???
- * Create new L.control????
+ * Component to construct a new leaflet layer-group enabling components to be displayed
+ * on the map using either display-point or display-box components. Supports leaflet
+ * layer-control for toggling.
+ *
+ * @argument {Object} mapInstance - the parent map instance
+ * @argument {String} layerName - the name assigned to the layer group (used for layer-control)
+ * @argument {Array} componentOverlays - array for adding other components to map
  */
 export default Component.extend({
   init() {
@@ -16,39 +22,14 @@ export default Component.extend({
     // Setup new layer group
     let layerGroupInit = L.layerGroup();
     layerGroupInit.name = layerName;
-    Ember.set(layerGroupInit, 'name', layerName);
+    set(layerGroupInit, 'name', layerName);
 
     // Update overlays
     componentOverlays.pushObject(layerGroupInit);
 
     // Add to map
     layerGroupInit.addTo(map);
-
     this.set('layerGroupInit', layerGroupInit);
-
-    // // debugger;
-    // // map.layerGroups.add(layerGroupInit);
-
-
-    // L.CustomLayerGroup = L.LayerGroup.extend({
-    //   onAdd: function(map) {
-    //     this._super(...arguments);
-    //   },
-
-    //   onRemove: function(map) {
-    //     this._super(...arguments);
-    //   }
-    // });
-
-    // L.customlayergroup = function (args) {
-    //   return new L.CustomLayerGroup(args);
-    // }
-
-    // // Add layer to relevant layer group
-    // L.customlayergroup({
-    // }).addTo(map);
-    // this.set('layerGroupInit', L.customlayergroup);
-
   },
 
   didInsertElement() {
