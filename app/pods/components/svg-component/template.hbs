@@ -1,0 +1,50 @@
+{{!-- WORKING ALSO --}}
+{{!-- <svg height="100%" width="100%"> --}}
+{{!--  --}}
+<svg height="100%" width="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+  {{!-- <svg viewBox="0 0 100% 100%" preserveAspectRatio="none"> --}}
+  {{!-- <circle cx="1%" cy="1%" r="5" stroke="black" stroke-width="3" fill="red"/> --}}
+  <line x1="0" y1="0" x2="100%" y2="0" style="stroke:rgb(255,0,0);stroke-width:2" />
+  <line x1="0" y1="0" x2="0" y2="100%" style="stroke:rgb(0,255,0);stroke-width:2" />
+  {{!-- <line x1="0" y1="0" x2="100%" y2="100%" style="stroke:rgb(0,0,255);stroke-width:2" /> --}}
+
+  {{!-- WORKING --}}
+  {{!-- <path id="test111" d="M 0 0 C 20 20, 40 20, 100 100" stroke="black" opacity="0.5" fill="transparent" /> --}}
+  {{!--  --}}
+  <path class="movingPath" d="M 0 0 C 20 20, 40 20, 100 100" stroke="black" stroke-width="1" opacity="0.5" fill="transparent" />
+
+
+  {{!-- <path id="test111" pathLength="100" d="M 0 0 C 20 20, 40 20" stroke="black" opacity="0.5" fill="transparent" onMouseOver={{action "test11"}} /> --}}
+{{!-- <path id="ni" pathlength="240" d="M0,0c-1.4,6.1-5.5,33.1,2.4,47.5 c1.9,3.4,4.2,6.7,4.8,10.6c2.1,13-14.2,20.7-20.3,32.4c-3.1,6.1-3.7,13.8-8.9,18.2c-7.2,6.1-18,2.1-27.4,3.1c-12.2,1.3-22.4,11.4-34.7,11.8c-6.6,0.2-12.9-2.5-19.4-4.1c-15.8-3.9-33.2-0.8-46.8,8.2"/> --}}
+
+  {{!-- <defs>
+    <marker id="mid" orient="auto"
+      markerWidth="5" markerHeight="4"
+      refX="0.1" refY="2">
+      <!-- triangle pointing right (+x) -->
+      <path d="M0,0 V2 L1,1 Z" fill="orange"/>
+    </marker>
+    <marker id="head" orient="auto"
+      markerWidth="5" markerHeight="4"
+      refX="0.1" refY="2">
+      <!-- triangle pointing right (+x) -->
+      <path d="M0,0 V4 L2,2 Z" fill="red"/>
+    </marker>
+  </defs> --}}
+
+  {{!-- <path
+    id="arrow-line"
+    marker-mid="url(#mid)"
+    marker-end="url(#head)"
+    stroke-width="5"
+    fill="none" stroke="black"  
+    d="M0,0 L20,20 C40,40 40,40 60,20 L80,0"
+    /> --}}
+
+
+  {{!-- <path 
+    id="arrow-line1"
+    marker-mid="url(#mid)"
+    marker-end="url(#head)"
+    d="M 0 0 C 20 20, 40 20, 100 100"  stroke-width="5" stroke="black" fill="transparent"/> --}}
+</svg>

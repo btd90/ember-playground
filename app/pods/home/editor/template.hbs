@@ -67,7 +67,8 @@
                 layerReady=layerReady}}
               {{#if layerReady}}
                 {{#ember-wormhole to=thirdLayerId}}
-                  {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
+                  {{!-- {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}} --}}
+                  {{svg-component}}
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-box}}

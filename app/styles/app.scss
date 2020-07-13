@@ -192,3 +192,18 @@ a {
     color: #ccc;
   }
 }
+
+.movingPath {
+  stroke-dasharray: 150;
+  stroke-dashoffset: 0;
+  animation: dash 3s linear;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 150;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
