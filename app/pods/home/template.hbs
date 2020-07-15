@@ -2,10 +2,10 @@
   animation="squeeze"
   itemAnimation="push"
   translucentOverlay=false
-  dismissOnClick=false as |burger|
+  dismissOnClick=false
+  open=burgermenuService.menuOpen as |burger|
 }}
   {{#burger.menu itemTagName="routeList" as |menu|}}
-    {{playground-button class="close left" buttonAction=(action "closeBurger" burger) faIcon="times"}}
     <ul>
       <h2>Menu</h2>
       {{#menu.item}}
@@ -32,7 +32,7 @@
     </ul>
   {{/burger.menu}}
   {{#burger.outlet class="burgetOutlet"}}
-    {{playground-button class="hamburger" buttonAction=(action "toggleBurger" burger) faIcon="bars"}}
+    {{playground-button class="hamburger" buttonAction=(action "toggleBurger") faIcon="bars"}}
     {{outlet}}
   {{/burger.outlet}}
 {{/burger-menu}}

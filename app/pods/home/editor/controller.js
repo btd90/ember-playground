@@ -15,6 +15,7 @@ export default HomeController.extend({
   disabled: false,
   saveEvent: false,
   componentsEnabled: false,
+  takeOff: false,
   saveButtonText: 'Save',
   componentButtonText: 'Enable Components on Map',
   latitude: '-25.3444',
@@ -24,16 +25,23 @@ export default HomeController.extend({
   // Change to render svg graph and a button??
   layerGroupName: 'Components',
   firstLayerId: 'firstComponentLayer',
-  firstLayerLatitude: '30',
-  firstLayerLongitude: '30',
-  firstLayerButtonText: 'Save1',
+  firstLayerLatitude: '-39',
+  firstLayerLongitude: '54',
+  firstLayerButtonText: 'Toggle Menu',
   secondLayerId: 'secondComponentLayer',
-  secondLayerLatitude: '0',
-  secondLayerLongitude: '0',
-  secondLayerButtonText: 'Save2',
+  secondLayerLatitude: '55',
+  secondLayerLongitude: '-187',
+  secondLayerButtonText: 'Takeoff!',
   thirdLayerId: 'thirdComponentLayer',
-  upperLeft: L.latLng(30,-200),
-  lowerRight: L.latLng(-30,-50),
+  fourthLayerId: 'fourthComponentLayer',
+  upperLeftSVG: L.latLng(30,-245),
+  lowerRightSVG: L.latLng(-30,-65),
+  upperLeft: L.latLng(50,153),
+  lowerRight: L.latLng(3,231),
+
+  init() {
+    this._super(...arguments);
+  },
 
   actions: {
     changeSelection(selection) {
@@ -45,10 +53,16 @@ export default HomeController.extend({
     enableComponents() {
       this.set('componentsEnabled', true);
     },
+    takeOff() {
+      this.set('takeOff', true);
+    },
+    toggleBurger() {
+      this._super();
+    },
     // MAP LAYER CONTROL EVENTS
     layerControlEvent(event) {
       return event;
-    },
+    }
   },
 
   options: computed(function () {

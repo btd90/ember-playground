@@ -234,9 +234,7 @@ export default EmberLeaflet.extend({
       [-50, -20]
     ]);
 
-    let got = L.tileLayer('https://cartocdn-gusc.global.ssl.fastly.net//ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
-      zIndex: 1
-    });
+    let got = this.get('overlayService').got;
     got.addTo(map);
     map.flyTo([latVal, lngVal], zoomVal);
   },

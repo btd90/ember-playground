@@ -39,7 +39,9 @@
                 layerReady=layerReady}}
               {{#if layerReady}}
                 {{#ember-wormhole to=firstLayerId}}
-                  {{playground-button buttonAction=(action "toggleSave") text=firstLayerButtonText}}
+                  {{playground-button
+                    buttonAction=(action "toggleBurger")
+                    text=firstLayerButtonText}}
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-point}}
@@ -53,27 +55,53 @@
                 layerReady=layerReady}}
               {{#if layerReady}}
                 {{#ember-wormhole to=secondLayerId}}
-                  {{playground-button buttonAction=(action "toggleSave") text=secondLayerButtonText}}
+                  {{playground-button
+                    buttonAction=(action "takeOff")
+                    text=secondLayerButtonText
+                    buttonDisabled=takeOff}}
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-point}}
             {{!-- Display box to render child components on the map within lat/lng bounds --}}
             {{#map-component/display-box
                 layerId=thirdLayerId
+                upperLeft=upperLeftSVG
+                lowerRight=lowerRightSVG
+                mapInstance=mapInstance
+                layerGroup=layerGroup
+                layerReady=layerReady}}
+              {{#if (and layerReady takeOff)}}
+                {{#ember-wormhole to=thirdLayerId}}
+                  {{svg-component}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+            {{#map-component/display-box
+                layerId=fourthLayerId
                 upperLeft=upperLeft
                 lowerRight=lowerRight
                 mapInstance=mapInstance
                 layerGroup=layerGroup
                 layerReady=layerReady}}
               {{#if layerReady}}
-                {{#ember-wormhole to=thirdLayerId}}
-                  {{!-- {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}} --}}
-                  {{svg-component}}
+                {{#ember-wormhole to=fourthLayerId}}
+                  {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-box}}
           {{/if}}
         {{/map-component/display-group}}
+        {{!-- Markers for SVG component bounds --}}
+        {{#marker-layer location=upperLeftSVG}}
+          {{#popup-layer}}
+            <h3>Origin</h3>
+          {{/popup-layer}}
+        {{/marker-layer}}
+        {{#marker-layer location=lowerRightSVG}}
+          {{#popup-layer}}
+            <h3>Destination</h3>
+          {{/popup-layer}}
+        {{/marker-layer}}
       {{/if}}
       {{!-- Layer-Control --}}
       {{map-component/layer-control
