@@ -22,7 +22,6 @@ export default HomeController.extend({
   longitude: '131.0369',
   zoom: '1',
 
-  // Change to render svg graph and a button??
   layerGroupName: 'Components',
   firstLayerId: 'firstComponentLayer',
   firstLayerLatitude: '-39',
