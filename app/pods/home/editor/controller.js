@@ -11,35 +11,36 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  
-  disabled: false,
-  saveEvent: false,
-  componentsEnabled: false,
-  takeOff: false,
-  saveButtonText: 'Save',
-  componentButtonText: 'Enable Components on Map',
-  latitude: '-25.3444',
-  longitude: '131.0369',
-  zoom: '1',
-
-  layerGroupName: 'Components',
-  firstLayerId: 'firstComponentLayer',
-  firstLayerLatitude: '-39',
-  firstLayerLongitude: '54',
-  firstLayerButtonText: 'Toggle Menu',
-  secondLayerId: 'secondComponentLayer',
-  secondLayerLatitude: '55',
-  secondLayerLongitude: '-187',
-  secondLayerButtonText: 'Takeoff!',
-  thirdLayerId: 'thirdComponentLayer',
-  fourthLayerId: 'fourthComponentLayer',
-  upperLeftSVG: L.latLng(30,-245),
-  lowerRightSVG: L.latLng(-30,-65),
-  upperLeft: L.latLng(50,153),
-  lowerRight: L.latLng(3,231),
 
   init() {
     this._super(...arguments);
+    let leaflet = window.L;
+  
+    this.set('disabled', false);
+    this.set('saveEvent', false);
+    this.set('componentsEnabled', false);
+    this.set('takeOff', false);
+    this.set('saveButtonText', 'Save');
+    this.set('componentButtonText', 'Enable Components on Map');
+    this.set('latitude', '-25.3444');
+    this.set('longitude', '131.0369');
+    this.set('zoom', '1');
+
+    this.set('layerGroupName', 'Components');
+    this.set('firstLayerId', 'firstComponentLayer');
+    this.set('firstLayerLatitude', '-39');
+    this.set('firstLayerLongitude', '54');
+    this.set('firstLayerButtonText', 'Toggle Menu');
+    this.set('secondLayerId', 'secondComponentLayer');
+    this.set('secondLayerLatitude', '55');
+    this.set('secondLayerLongitude', '-187');
+    this.set('secondLayerButtonText', 'Takeoff!');
+    this.set('thirdLayerId', 'thirdComponentLayer');
+    this.set('fourthLayerId', 'fourthComponentLayer');
+    this.set('upperLeftSVG', leaflet.latLng(30,-245));
+    this.set('lowerRightSVG', leaflet.latLng(-30,-65));
+    this.set('upperLeft', leaflet.latLng(50,153));
+    this.set('lowerRight', leaflet.latLng(3,231));
   },
 
   actions: {

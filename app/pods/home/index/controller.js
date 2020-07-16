@@ -12,12 +12,16 @@ import {
 export default HomeController.extend({
   queryParams: ['disabled'],
   
-  disabled: false,
-  flightDemo: false,
-  buttonText: 'Start Flight Demo',
-  latitude: '-25.3444',
-  longitude: '131.0369',
-  zoom: '1',
+  init() {
+    this._super(...arguments);
+
+    this.set('disabled', false);
+    this.set('flightDemo', false);
+    this.set('buttonText', 'Start Flight Demo');
+    this.set('latitude', '-25.3444');
+    this.set('longitude', '131.0369');
+    this.set('zoom', '1');
+  },
 
   actions: {
     changeSelection(selection) {

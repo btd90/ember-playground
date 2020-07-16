@@ -43,6 +43,7 @@ export default EmberLeaflet.extend({
   init() {
     this._super(...arguments);
 
+    this.set('leaflet', window.L);
     this.get('zoomVal') ? this.set('zoom', this.get('zoomVal')) : this.set('zoom', 1);
     this.get('minZoomVal') ? this.set('minZoom', this.get('minZoomVal')) : this.set('minZoom', 1);
     this.get('maxZoomVal') ? this.set('maxZoom', this.get('maxZoomVal')) : this.set('maxZoom', 10);
@@ -57,16 +58,16 @@ export default EmberLeaflet.extend({
     this.set('layerGroups', A());
     this.set('dynamicPoints', A());
 
-    this.set('markerIcon', L.icon(MarkerIcon.create()));
+    this.set('markerIcon', this.get('leaflet').icon(MarkerIcon.create()));
     this.get('drawEnabled') ? this.set('drawEnabled', true) : this.set('drawEnabled', false);
     this.set('enabledBase', false);
 
     // Image/Video Overlays
     this.set('imageOverlays', A());
-    this.set('imageOverlaysGroup', L.layerGroup());
+    this.set('imageOverlaysGroup', this.get('leaflet').layerGroup());
     this.set('imageOverlaysName', 'Images');
     this.set('videoOverlays', A());
-    this.set('videoOverlaysGroup', L.layerGroup());
+    this.set('videoOverlaysGroup', this.get('leaflet').layerGroup());
     this.set('videoOverlaysName', 'Videos');
 
     // Construct polyline object
@@ -126,10 +127,10 @@ export default EmberLeaflet.extend({
     },
     // ICON EVENTS
     buildingIcons() {
-      this.set('markerIcon', L.icon(BuildingIcon.create()));
+      this.set('markerIcon', this.get('leaflet').icon(BuildingIcon.create()));
     },
     markerIcons() {
-      this.set('markerIcon', L.icon(MarkerIcon.create()));
+      this.set('markerIcon', this.get('leaflet').icon(MarkerIcon.create()));
     },
     // IMAGE OVERLAY EVENTS
     placeBuilding(event) {
@@ -145,6 +146,7 @@ export default EmberLeaflet.extend({
 
   didInsertParent() {
     this._super(...arguments);
+    let leaflet = this.get('leaflet');
 
     // Update control 
     let map = this.get('_layer');
@@ -152,7 +154,7 @@ export default EmberLeaflet.extend({
     map.attributionControl.setPrefix("Lat: 0 Long: 0");
 
     // Add fullscreen control
-    map.addControl(new L.control.fullscreen());
+    map.addControl(new leaflet.control.fullscreen());
 
     // Override events
     map.addEventListener('mousemove', this.mousemove, this);
@@ -319,6 +321,6 @@ export default EmberLeaflet.extend({
 
   // Icons
   slingShotIcon: computed(function () {
-    return L.icon(SlingShotIcon.create());
+    return this.get('leaflet').icon(SlingShotIcon.create());
   })
 });

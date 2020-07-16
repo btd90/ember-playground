@@ -12,6 +12,7 @@ import Component from '@ember/component';
 export default Component.extend({
   init() {
     this._super(...arguments);
+    let leaflet = window.L;
 
     // Store inputs
     let layerId = this.get('layerId');
@@ -19,7 +20,7 @@ export default Component.extend({
     let position = [this.get('lat'), this.get('lng')];
     
     // Create new custom map layer
-    L.CustomLayer = L.Layer.extend({
+    leaflet.CustomLayer = leaflet.Layer.extend({
       onAdd: function(map) {
         let pane = map.getPane(this.options.pane);
         let childNodes = pane.childNodes;
@@ -38,7 +39,7 @@ export default Component.extend({
         
         if(!found) {
           // Create new div for new layer
-          this._container = L.DomUtil.create('div');
+          this._container = leaflet.DomUtil.create('div');
           this._container.className = "leaflet-layer";
           this._container.id = layerId;
 
@@ -53,7 +54,7 @@ export default Component.extend({
           let mapPosition = map.latLngToLayerPoint(position);
         
           // Set the updated position
-          L.DomUtil.setPosition(this._container, mapPosition);
+          leaflet.DomUtil.setPosition(this._container, mapPosition);
           
           // Add events
           map.on('zoomstart', this._hide, this, map);
@@ -72,7 +73,7 @@ export default Component.extend({
           let mapPosition = this._map.latLngToLayerPoint(position);
       
           // Set the updated position
-          L.DomUtil.setPosition(this._container, mapPosition);
+          leaflet.DomUtil.setPosition(this._container, mapPosition);
 
           // Show the element once position calculated
           this._container.style.visibility = "visible";
@@ -85,12 +86,12 @@ export default Component.extend({
       }
     });
 
-    L.customlayer = function (args) {
-      return new L.CustomLayer(args);
+    leaflet.customlayer = function (args) {
+      return new leaflet.CustomLayer(args);
     }
 
     // Add layer to relevant layer group
-    L.customlayer({
+    leaflet.customlayer({
       layerId: layerId
     }).addTo(layerGroup);
   },

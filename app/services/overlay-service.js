@@ -7,9 +7,10 @@ export default Service.extend({
 
   init() {
     this._super(...arguments);
+    this.set('leaflet', window.L)
 
     this.set('got', 
-      L.tileLayer('https://cartocdn-gusc.global.ssl.fastly.net//ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
+      this.get('leaflet').tileLayer('https://cartocdn-gusc.global.ssl.fastly.net//ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
       zIndex: 1
     }));
   },
@@ -35,7 +36,7 @@ export default Service.extend({
     let nextCornerLatLng = this._computeOuterLatLng(map, originLatLng, xCoOrd, yCoOrd);
 
     // Add building to images layer
-    let overlay = L.imageOverlay(
+    let overlay = this.get('leaflet').imageOverlay(
       url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], {
         interactive: true
       });
@@ -62,7 +63,7 @@ export default Service.extend({
     let nextCornerLatLng = this._computeOuterLatLng(map, originLatLng, xCoOrd, yCoOrd);
 
     // Add takeoff to videos layer
-    let overlay = L.videoOverlay(
+    let overlay = this.get('leaflet').videoOverlay(
       url, [originLatLng, [nextCornerLatLng.lat, nextCornerLatLng.lng]], {
         interactive: true
       });
