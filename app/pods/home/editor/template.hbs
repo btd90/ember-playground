@@ -27,17 +27,17 @@
             mapInstance=mapInstance
             layerGroup=layerGroup
             layerName=layerGroupName
-            componentOverlays=componentOverlays}}
-          {{#if layerGroup}}
+            componentOverlays=componentOverlays
+            as |dg|}}
+          {{#if dg}}
             {{!-- Display point to render child components on the map at the given lat/lng --}}
             {{#map-component/display-point
                 layerId=firstLayerId
                 lat=firstLayerLatitude
                 lng=firstLayerLongitude
-                mapInstance=mapInstance
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if layerReady}}
+                as |dp|}}
+              {{#if dp}}
                 {{#ember-wormhole to=firstLayerId}}
                   {{playground-button
                     buttonAction=(action "toggleBurger")
@@ -50,10 +50,9 @@
                 layerId=secondLayerId
                 lat=secondLayerLatitude
                 lng=secondLayerLongitude
-                mapInstance=mapInstance
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if layerReady}}
+                as |dp|}}
+              {{#if dp}}
                 {{#ember-wormhole to=secondLayerId}}
                   {{playground-button
                     buttonAction=(action "takeOff")
@@ -67,10 +66,9 @@
                 layerId=thirdLayerId
                 upperLeft=upperLeftSVG
                 lowerRight=lowerRightSVG
-                mapInstance=mapInstance
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if (and layerReady takeOff)}}
+                as |db|}}
+              {{#if (and db takeOff)}}
                 {{#ember-wormhole to=thirdLayerId}}
                   {{svg-component}}
                 {{/ember-wormhole}}
@@ -80,10 +78,9 @@
                 layerId=fourthLayerId
                 upperLeft=upperLeft
                 lowerRight=lowerRight
-                mapInstance=mapInstance
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if layerReady}}
+                as |db|}}
+              {{#if db}}
                 {{#ember-wormhole to=fourthLayerId}}
                   {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
                 {{/ember-wormhole}}

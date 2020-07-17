@@ -32,6 +32,7 @@ export default Component.extend({
             if(childNodes[i].id === layerId) {
               this._update();
               found = true;
+              break;
             }
           }
         }
