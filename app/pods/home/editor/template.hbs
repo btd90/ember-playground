@@ -27,16 +27,17 @@
             mapInstance=mapInstance
             layerGroup=layerGroup
             layerName=layerGroupName
-            componentOverlays=componentOverlays}}
-          {{#if layerGroup}}
+            componentOverlays=componentOverlays
+            as |dg|}}
+          {{#if dg}}
             {{!-- Display point to render child components on the map at the given lat/lng --}}
             {{#map-component/display-point
                 layerId=firstLayerId
                 lat=firstLayerLatitude
                 lng=firstLayerLongitude
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if layerReady}}
+                as |dp|}}
+              {{#if dp}}
                 {{#ember-wormhole to=firstLayerId}}
                   {{playground-button
                     buttonAction=(action "toggleBurger")
@@ -50,8 +51,8 @@
                 lat=secondLayerLatitude
                 lng=secondLayerLongitude
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if layerReady}}
+                as |dp|}}
+              {{#if dp}}
                 {{#ember-wormhole to=secondLayerId}}
                   {{playground-button
                     buttonAction=(action "takeOff")
@@ -66,8 +67,8 @@
                 upperLeft=upperLeftSVG
                 lowerRight=lowerRightSVG
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if (and layerReady takeOff)}}
+                as |db|}}
+              {{#if (and db takeOff)}}
                 {{#ember-wormhole to=thirdLayerId}}
                   {{svg-component}}
                 {{/ember-wormhole}}
@@ -78,8 +79,8 @@
                 upperLeft=upperLeft
                 lowerRight=lowerRight
                 layerGroup=layerGroup
-                layerReady=layerReady}}
-              {{#if layerReady}}
+                as |db|}}
+              {{#if db}}
                 {{#ember-wormhole to=fourthLayerId}}
                   {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
                 {{/ember-wormhole}}
