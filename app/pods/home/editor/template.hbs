@@ -2,20 +2,112 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonAction=(action "toggleSave") text="Save"}}
+    {{playground-button buttonAction=(action "toggleSave") text=saveButtonText}}
+    {{playground-button buttonAction=(action "enableComponents") text=componentButtonText}}
   </div>
 
   <div class="component">
-    {{map-component
+    {{#map-component
         class="leaflet-container"
-        latVal="-25.3444"
-        lngVal="131.0369"
-        zoomVal="1"
+        latVal=latitude
+        lngVal=longitude
+        zoomVal=zoom
         geojson=geojson
         points=points
         saveEvent=saveEvent
         drawEnabled=true
-        destination=destinationChoice}}
+        destination=destinationChoice
+        mapInstance=mapInstance
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays}}
+      {{#if (and mapInstance componentsEnabled)}}
+        {{!-- Display group to capture a unique layer for display boxes/points --}}
+        {{#map-component/display-group
+            mapInstance=mapInstance
+            layerGroup=layerGroup
+            layerName=layerGroupName
+            componentOverlays=componentOverlays
+            as |dg|}}
+          {{#if dg}}
+            {{!-- Display point to render child components on the map at the given lat/lng --}}
+            {{#map-component/display-point
+                layerId=firstLayerId
+                lat=firstLayerLatitude
+                lng=firstLayerLongitude
+                layerGroup=layerGroup
+                as |dp|}}
+              {{#if dp}}
+                {{#ember-wormhole to=firstLayerId}}
+                  {{playground-button
+                    buttonAction=(action "toggleBurger")
+                    text=firstLayerButtonText}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-point}}
+            {{!-- Display point to render child components on the map at the given lat/lng --}}
+            {{#map-component/display-point
+                layerId=secondLayerId
+                lat=secondLayerLatitude
+                lng=secondLayerLongitude
+                layerGroup=layerGroup
+                as |dp|}}
+              {{#if dp}}
+                {{#ember-wormhole to=secondLayerId}}
+                  {{playground-button
+                    buttonAction=(action "takeOff")
+                    text=secondLayerButtonText
+                    buttonDisabled=takeOff}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-point}}
+            {{!-- Display box to render child components on the map within lat/lng bounds --}}
+            {{#map-component/display-box
+                layerId=thirdLayerId
+                upperLeft=upperLeftSVG
+                lowerRight=lowerRightSVG
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if (and db takeOff)}}
+                {{#ember-wormhole to=thirdLayerId}}
+                  {{svg-component}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+            {{#map-component/display-box
+                layerId=fourthLayerId
+                upperLeft=upperLeft
+                lowerRight=lowerRight
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if db}}
+                {{#ember-wormhole to=fourthLayerId}}
+                  {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+          {{/if}}
+        {{/map-component/display-group}}
+        {{!-- Markers for SVG component bounds --}}
+        {{#marker-layer location=upperLeftSVG}}
+          {{#popup-layer}}
+            <h3>Origin</h3>
+          {{/popup-layer}}
+        {{/marker-layer}}
+        {{#marker-layer location=lowerRightSVG}}
+          {{#popup-layer}}
+            <h3>Destination</h3>
+          {{/popup-layer}}
+        {{/marker-layer}}
+      {{/if}}
+      {{!-- Layer-Control --}}
+      {{map-component/layer-control
+        handler=(action "layerControlEvent")
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays
+      }}
+    {{/map-component}}
   </div>
 
   <div class="component">

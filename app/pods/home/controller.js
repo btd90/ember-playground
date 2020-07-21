@@ -1,19 +1,17 @@
 import Controller from '@ember/controller';
+import {
+  inject as service
+} from '@ember/service';
 
 /**
  * Controller for home route.
  */
 export default Controller.extend({
-  init: function() {
-    this._super(...arguments);
-  },
+  burgermenuService: service(),
 
   actions: {
-    closeBurger(burger) {
-      burger.state.actions.close();
-    },
-    toggleBurger(burger) {
-      burger.state.actions.toggle();
+    toggleBurger() {
+      this.get('burgermenuService').toggleBurger();
     },
   },
 });

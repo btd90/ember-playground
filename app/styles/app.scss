@@ -74,6 +74,7 @@ div.mainBody {
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
   text-align: left;
   font-family: 'Bungee Hairline', cursive;
+
   .component {
     padding-top: 4px;
   }
@@ -189,5 +190,20 @@ a {
   &:focus,
   &:active {
     color: #ccc;
+  }
+}
+
+.movingPath {
+  stroke-dasharray: 150;
+  stroke-dashoffset: 0;
+  animation: dash 3s linear;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 150;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }

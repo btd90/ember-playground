@@ -9,4 +9,6 @@ import Component from '@ember/component';
  * @argument {Boolean} buttonDisabled - disable button
  * 
  */
-export default Component.extend({})
+export default Component.extend({
+    tagName: 'span',
+})

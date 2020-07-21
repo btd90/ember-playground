@@ -14,6 +14,10 @@ export default HomeController.extend({
   
   disabled: false,
   flightDemo: false,
+  buttonText: 'Start Flight Demo',
+  latitude: '-25.3444',
+  longitude: '131.0369',
+  zoom: '1',
 
   actions: {
     changeSelection(selection) {
@@ -21,6 +25,10 @@ export default HomeController.extend({
     },
     toggleFlightDemo() {
       this.set('flightDemo', true);
+    },
+    // MAP LAYER CONTROL EVENTS
+    layerControlEvent(event) {
+      return event;
     }
   },
 

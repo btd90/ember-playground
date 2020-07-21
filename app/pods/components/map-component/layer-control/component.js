@@ -1,11 +1,14 @@
 import LayerControl from "ember-leaflet-layer-control/components/layer-control";
 import { computed } from "@ember/object";
+import {
+  isEmpty,
+} from '@ember/utils';
 
 /**
  * Override of layer control plugin to handle updating layer/basemap list
  */
 export default LayerControl.extend({
-  layers: computed.alias("_target.childComponents"),
+  layers: computed.alias("parentComponent.childComponents"),
   baseLayers: computed.filter("layers", function(layer) {
     return layer.baselayer;
   }),
@@ -19,12 +22,16 @@ export default LayerControl.extend({
   computedLayers: computed(
     "mapLayers.length",
     "baseLayers.length",
-    "otherOverlays.@each.{imageOverlays,videoOverlays}",
+    "componentOverlays.length",
+    "imageOverlays.count",
+    "videoOverlays.count",
     function() {
       // Get all current layers and map instance
       let mapLayers = this.get("mapLayers");
       let baseLayers = this.get("baseLayers");
-      let otherOverlays = this.get("otherOverlays");
+      let componentOverlays = this.get("componentOverlays");
+      let imageOverlays = this.get('imageOverlays');
+      let videoOverlays = this.get('videoOverlays');
       let instance = this._layer;
 
       // Update them if valid
@@ -51,28 +58,34 @@ export default LayerControl.extend({
           }
         });
 
-        // Add additional missing overlays to layer control
-        otherOverlays.filter(function(value) {
-          // Add missing image overlay
-          if (value.imageOverlays.count && !currentMapLayers.includes(value.imageOverlays.overlayName)) {
-            instance.addOverlay(value.imageOverlays.overlayGroup, value.imageOverlays.overlayName);
-          }
-
-          // Add missing video overlay
-          if (value.videoOverlays.count && !currentMapLayers.includes(value.videoOverlays.overlayName)) {
-            instance.addOverlay(value.videoOverlays.overlayGroup, value.videoOverlays.overlayName);
+        // Add additional component overlays to layer control
+        componentOverlays.filter(function(value) {
+          if (value.name && !isEmpty(value._layers) && !currentMapLayers.includes(value.name)) {
+            instance.addOverlay(value, value.name);
           }
         });
 
+        // Add additional image overlays
+        if(imageOverlays && imageOverlays.count > 0 && !currentMapLayers.includes(imageOverlays.overlayName)) {
+          instance.addOverlay(imageOverlays.overlayGroup, imageOverlays.overlayName);
+        }
+        
+        // Add additional video overlays
+        if(videoOverlays && videoOverlays.count > 0 && !currentMapLayers.includes(videoOverlays.overlayName)) {
+          instance.addOverlay(videoOverlays.overlayGroup, videoOverlays.overlayName);
+        }
+
         // Remove from layer control if no longer on map
         currentLayers.filter(function(value) {
+          let currentLayer = value.layer;
           if (
             !mapLayers.mapBy("name").includes(value.name) &&
             !baseLayers.mapBy("name").includes(value.name) &&
-            !otherOverlays.mapBy('imageOverlays.overlayName').includes(value.name) &&
-            !otherOverlays.mapBy('videoOverlays.overlayName').includes(value.name) 
+            !componentOverlays.mapBy("name").includes(value.name) &&
+            !(imageOverlays && imageOverlays.overlayName === value.name) &&
+            !(videoOverlays && videoOverlays.overlayName === value.name)
           ) {
-            instance.removeLayer(value.layer);
+            instance.removeLayer(currentLayer);
           }
         });
       }

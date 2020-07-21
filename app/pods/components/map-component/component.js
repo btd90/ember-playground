@@ -46,7 +46,10 @@ export default EmberLeaflet.extend({
     this.get('zoomVal') ? this.set('zoom', this.get('zoomVal')) : this.set('zoom', 1);
     this.get('minZoomVal') ? this.set('minZoom', this.get('minZoomVal')) : this.set('minZoom', 1);
     this.get('maxZoomVal') ? this.set('maxZoom', this.get('maxZoomVal')) : this.set('maxZoom', 10);
-    this.get('maxBoundsVal') ? this.set('maxBounds', this.get('maxBoundsVal')) : this.set('maxBounds', [[90, 540], [-90, -540]]);
+    this.get('maxBoundsVal') ? this.set('maxBounds', this.get('maxBoundsVal')) : this.set('maxBounds', [
+      [90, 540],
+      [-90, -540]
+    ]);
     this.get('latVal') ? this.set('lat', this.get('latVal')) : this.set('lat', -25.3444);
     this.get('lngVal') ? this.set('lng', this.get('lngVal')) : this.set('lng', 131.0369);
 
@@ -90,15 +93,15 @@ export default EmberLeaflet.extend({
       this.set('hoveredObject', obj);
     },
     // DRAW EVENTS
-    drawCreated(event, layerGroup /*, map*/) {
+    drawCreated(event, layerGroup /*, map*/ ) {
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
-    drawEdited(event, layerGroup /*, map*/) {
+    drawEdited(event, layerGroup /*, map*/ ) {
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
-    drawDeleted(event, layerGroup /*, map*/) {
+    drawDeleted(event, layerGroup /*, map*/ ) {
       let layerGroups = this.get('layerGroups');
       layerGroups.push(layerGroup._leaflet_id);
     },
@@ -156,7 +159,7 @@ export default EmberLeaflet.extend({
     map.addEventListener('click', this.mouseclick, this);
 
     // Work-around for burger menu resize to refresh map
-    let burgerObserver = new ResizeObserver(function(event) {
+    let burgerObserver = new ResizeObserver(function (event) {
       if (event[0].target.map) event[0].target.map.invalidateSize();
     });
     let burgetOutlet = document.querySelector('.burgetOutlet');
@@ -164,6 +167,15 @@ export default EmberLeaflet.extend({
     burgerObserver.observe(burgetOutlet, {
       attributes: true
     });
+
+    // Used for adding other components to map
+    this.set('componentOverlays', A());
+    this.set('mapInstance', this.get('_layer'));
+  },
+
+  willDestroyElement() {
+    // Clear existing instance
+    this.set('mapInstance', '');
   },
 
   mousemove(event) {
@@ -173,12 +185,12 @@ export default EmberLeaflet.extend({
     map.attributionControl.setPrefix("Lat: " + latVal + " Long: " + lngVal);
   },
 
-  mouseclick(/* event */) {
+  mouseclick( /* event */ ) {
     // unused
   },
 
   /* Observe external choice for location navigation */
-  destinationObserver: observer('destination', function() {
+  destinationObserver: observer('destination', function () {
     if (this.get('destination') === 'Winterfell') {
       this.flyToWinterfell(this.get('_layer'));
     } else {
@@ -217,11 +229,12 @@ export default EmberLeaflet.extend({
     this.set('maxZoom', 8);
     this.set('lat', latVal);
     this.set('lng', lngVal);
-    this.set('maxBounds', [[55, 110], [-50, -20]]);
+    this.set('maxBounds', [
+      [55, 110],
+      [-50, -20]
+    ]);
 
-    let got = L.tileLayer('https://cartocdn-gusc.global.ssl.fastly.net//ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
-      zIndex: 1
-    });
+    let got = this.get('overlayService').got;
     got.addTo(map);
     map.flyTo([latVal, lngVal], zoomVal);
   },
@@ -232,10 +245,10 @@ export default EmberLeaflet.extend({
   },
 
   /* Handle adding image overlays to map */
-  imageOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {
+  imageOverlay: function (originLatLng, xCoOrd, yCoOrd, url) {
     let imageOverlaysName = this.get('imageOverlaysName');
     let updatedImageOverlaysGroup = this.get('overlayService').updateImageOverlay(
-      this.get('_layer'), 
+      this.get('_layer'),
       this.get('imageOverlaysGroup'),
       originLatLng,
       xCoOrd,
@@ -251,10 +264,10 @@ export default EmberLeaflet.extend({
   },
 
   /* Handle adding video overlays to map */
-  videoOverlay: function(originLatLng, xCoOrd, yCoOrd, url) {
+  videoOverlay: function (originLatLng, xCoOrd, yCoOrd, url) {
     let videoOverlaysName = this.get('videoOverlaysName');
     let updatedVideoOverlaysGroup = this.get('overlayService').updateVideoOverlay(
-      this.get('_layer'), 
+      this.get('_layer'),
       this.get('videoOverlaysGroup'),
       originLatLng,
       xCoOrd,

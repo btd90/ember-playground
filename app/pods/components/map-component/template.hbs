@@ -110,12 +110,5 @@
   {{leaflet-contextmenu-item text="Takeoff!" action=(action "takeoff")}}
 {{/leaflet-contextmenu}}
 
-{{!-- Layer-Control --}}
-{{map-component/layer-control
-  handler=(action "layerControlEvent")
-  imageOverlays=imageOverlays
-  videoOverlays=videoOverlays
-}}
-
 {{yield}}
 
