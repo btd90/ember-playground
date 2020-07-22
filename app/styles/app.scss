@@ -162,6 +162,10 @@ a {
           &:hover {
             background: darken($accent-color, 5);
           }
+
+          div {
+            padding-left: 10px;
+          }
         }
       }
     }

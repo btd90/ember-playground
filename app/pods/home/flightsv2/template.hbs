@@ -1,10 +1,10 @@
-<h2>Index Page</h2>
+<h2>Flights v2</h2>
 
 <div class="mainBody">
   <div class="component">
     {{playground-button buttonAction=(action "enableComponents") text=componentButtonText}}
   </div>
-  
+
   <div class="component">
     {{#map-component
         class="leaflet-container"
@@ -14,7 +14,7 @@
         geojson=geojson
         points=points
         saveEvent=saveEvent
-        flightDemo=flightDemo
+        drawEnabled=false
         destination=destinationChoice
         mapInstance=mapInstance
         imageOverlays=imageOverlays
@@ -39,26 +39,38 @@
               {{#if dp}}
                 {{#ember-wormhole to=firstLayerId}}
                   {{playground-button
-                    buttonAction=(action "toggleBurger")
-                    text=firstLayerButtonText}}
+                    buttonAction=(action "takeOff")
+                    text=firstLayerButtonText
+                    buttonDisabled=takeOff}}
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-point}}
             {{!-- Display box to render child components on the map within lat/lng bounds --}}
             {{#map-component/display-box
                 layerId=secondLayerId
-                upperLeft=upperLeft
-                lowerRight=lowerRight
+                upperLeft=upperLeftSVG
+                lowerRight=lowerRightSVG
                 layerGroup=layerGroup
                 as |db|}}
-              {{#if db}}
+              {{#if (and db takeOff)}}
                 {{#ember-wormhole to=secondLayerId}}
-                  {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
+                  {{svg-component}}
                 {{/ember-wormhole}}
               {{/if}}
             {{/map-component/display-box}}
           {{/if}}
         {{/map-component/display-group}}
+        {{!-- Markers for SVG component bounds --}}
+        {{#marker-layer location=upperLeftSVG}}
+          {{#popup-layer}}
+            <h3>Origin</h3>
+          {{/popup-layer}}
+        {{/marker-layer}}
+        {{#marker-layer location=lowerRightSVG}}
+          {{#popup-layer}}
+            <h3>Destination</h3>
+          {{/popup-layer}}
+        {{/marker-layer}}
       {{/if}}
       {{!-- Layer-Control --}}
       {{map-component/layer-control
@@ -70,13 +82,4 @@
     {{/map-component}}
   </div>
 
-  <div class="component">
-    <h4>Fly to:</h4>
-    {{#power-select
-        options=options
-        selected=destinationChoice
-        onchange=(action "changeSelection") as |option|}}
-      {{option}}
-    {{/power-select}}
-  </div>
 </div>

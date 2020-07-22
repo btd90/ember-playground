@@ -9,6 +9,8 @@ const Router = EmberRouter.extend({
 Router.map(function() {
   this.route('home', function(){
     this.route('index');
+    this.route('flightsv1');
+    this.route('flightsv2');
     this.route('editor');
     this.route('about');
   });
