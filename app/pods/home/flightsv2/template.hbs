@@ -2,7 +2,7 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonAction=(action "enableComponents") text=componentButtonText}}
+    {{playground-button buttonAction=(action "takeOff") text=componentButtonText}}
   </div>
 
   <div class="component">
@@ -20,7 +20,7 @@
         imageOverlays=imageOverlays
         videoOverlays=videoOverlays
         componentOverlays=componentOverlays}}
-      {{#if (and mapInstance componentsEnabled)}}
+      {{#if mapInstance}}
         {{!-- Display group to capture a unique layer for display boxes/points --}}
         {{#map-component/display-group
             mapInstance=mapInstance
@@ -29,31 +29,15 @@
             componentOverlays=componentOverlays
             as |dg|}}
           {{#if dg}}
-            {{!-- Display point to render child components on the map at the given lat/lng --}}
-            {{#map-component/display-point
-                layerId=firstLayerId
-                lat=firstLayerLatitude
-                lng=firstLayerLongitude
-                layerGroup=layerGroup
-                as |dp|}}
-              {{#if dp}}
-                {{#ember-wormhole to=firstLayerId}}
-                  {{playground-button
-                    buttonAction=(action "takeOff")
-                    text=firstLayerButtonText
-                    buttonDisabled=takeOff}}
-                {{/ember-wormhole}}
-              {{/if}}
-            {{/map-component/display-point}}
             {{!-- Display box to render child components on the map within lat/lng bounds --}}
             {{#map-component/display-box
-                layerId=secondLayerId
+                layerId=firstLayerId
                 upperLeft=upperLeftSVG
                 lowerRight=lowerRightSVG
                 layerGroup=layerGroup
                 as |db|}}
               {{#if (and db takeOff)}}
-                {{#ember-wormhole to=secondLayerId}}
+                {{#ember-wormhole to=firstLayerId}}
                   {{svg-component}}
                 {{/ember-wormhole}}
               {{/if}}
