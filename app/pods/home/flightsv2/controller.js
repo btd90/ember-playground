@@ -5,12 +5,16 @@ import {
 import {
   A
 } from '@ember/array';
+import {
+  inject as service
+} from '@ember/service';
 
 /**
  * Controller for home flights v2 route.
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
+  overlayService: service(),
 
   init() {
     this._super(...arguments);
@@ -18,15 +22,17 @@ export default HomeController.extend({
   
     this.set('disabled', false);
     this.set('takeOff', false);
-    this.set('componentButtonText', 'Start Flight Demo');
     this.set('latitude', '20');
     this.set('longitude', '40');
     this.set('zoom', '1');
-
+    this.set('buttonText', 'Start Flight Demo');
     this.set('layerGroupName', 'Flights');
-    this.set('firstLayerId', 'firstComponentLayer');
-    this.set('upperLeftSVG', leaflet.latLng(30,-245));
-    this.set('lowerRightSVG', leaflet.latLng(-30,-65));
+
+    // Add flights
+    this.set('mexicoSVG', this.get('overlayService').mexicoSVG);
+    this.set('antarcticaSVG', this.get('overlayService').antarcticaSVG);
+    this.set('russiaSVG', this.get('overlayService').russiaSVG);
+    this.set('indiaSVG', this.get('overlayService').indiaSVG);
   },
 
   actions: {
@@ -47,21 +53,6 @@ export default HomeController.extend({
   }),
 
   geojson: computed(function () {
-    let geojson = A();
-    geojson.pushObject(this.get('markerGeo'));
-    return geojson
-  }),
-
-  markerGeo: computed(function () {
-    return {
-      "type": "Feature",
-      "properties": {
-        "name": "GeoJSON Marker",
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [151.99404, -26.75621]
-      }
-    }
+    return A();
   }),
 });

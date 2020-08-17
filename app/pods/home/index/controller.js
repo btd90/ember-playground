@@ -42,9 +42,6 @@ export default HomeController.extend({
     enableComponents() {
       this.set('componentsEnabled', true);
     },
-    takeOff() {
-      this.set('takeOff', true);
-    },
     toggleBurger() {
       this._super();
     },
@@ -87,7 +84,7 @@ export default HomeController.extend({
     let geojson = A();
     geojson.pushObject(this.get('nzGeo'));
     geojson.pushObject(this.get('markerGeo'));
-    return geojson
+    return geojson;
   }),
 
   markerGeo: computed(function () {

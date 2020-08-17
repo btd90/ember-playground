@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-
+import { computed } from "@ember/object";
 /**
  * Service to aid overlays on map.
  */
@@ -83,4 +83,64 @@ export default Service.extend({
   videoClick: function (video) {
     video.target.play();
   },
+
+  mexicoSVG: computed(function() {
+    let leaflet = this.get('leaflet');
+    return {
+      "layerId": "mexicoLayer",
+      "startLocation": "bottomLeft",
+      "endLocation": "topRight",
+      "upperBoundary": leaflet.latLng(71,20),
+      "lowerBoundary": leaflet.latLng(9,83),
+      "upperBoundaryMarker": leaflet.latLng(9,20),
+      "lowerBoundaryMarker": leaflet.latLng(71,83),
+      "stroke": "black",
+      "strokeWidth": "1",
+    }
+  }),
+
+  antarcticaSVG: computed(function() {
+    let leaflet = this.get('leaflet');
+    return {
+      "layerId": "antarcticaLayer",
+      "startLocation": "bottomRight",
+      "endLocation": "topLeft",
+      "upperBoundary": leaflet.latLng(22,-104),
+      "lowerBoundary": leaflet.latLng(-30,23),
+      "upperBoundaryMarker": leaflet.latLng(22,-104),
+      "lowerBoundaryMarker": leaflet.latLng(-30,23),
+      "stroke": "black",
+      "strokeWidth": "1",
+    };
+  }),
+
+  russiaSVG: computed(function() {
+    let leaflet = this.get('leaflet');
+    return {
+      "layerId": "russiaLayer",
+      "startLocation": "topRight",
+      "endLocation": "bottomLeft",
+      "upperBoundary": leaflet.latLng(35,84),
+      "lowerBoundary": leaflet.latLng(20,137),
+      "upperBoundaryMarker": leaflet.latLng(35,137),
+      "lowerBoundaryMarker": leaflet.latLng(20,84),
+      "stroke": "black",
+      "strokeWidth": "2",
+    };
+  }),
+
+  indiaSVG: computed(function() {
+    let leaflet = this.get('leaflet');
+    return {
+      "layerId": "indiaLayer",
+      "startLocation": "topRight",
+      "endLocation": "bottomLeft",
+      "upperBoundary": leaflet.latLng(-31,88),
+      "lowerBoundary": leaflet.latLng(-68,121),
+      "upperBoundaryMarker": leaflet.latLng(-31,121),
+      "lowerBoundaryMarker": leaflet.latLng(-68,88),
+      "stroke": "black",
+      "strokeWidth": "2",
+    };
+  }),
 });

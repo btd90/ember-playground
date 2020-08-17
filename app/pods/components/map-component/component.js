@@ -220,7 +220,7 @@ export default EmberLeaflet.extend({
     }
   }),
 
-  /* Bonus map */
+  /* Bonus maps */
   flyToWinterfell(map) {
     let zoomVal = 4;
     let latVal = 27;
