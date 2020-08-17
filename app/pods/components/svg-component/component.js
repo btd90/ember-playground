@@ -13,14 +13,6 @@ import { computed } from '@ember/object';
 export default Component.extend({
     tagName: '',
 
-    init() {
-        this._super(...arguments);
-
-        if(!this.get('start') || !this.get('end')) {
-            console.error("A start and end point is required");
-        }
-    },
-
     // Build path string based on start/end points
     pathVal: computed('start', 'end', function() {
         let start = this.get('start');
@@ -63,8 +55,8 @@ export default Component.extend({
                 if (end === "bottomRight") endPoint = '40 60, 100 100';
                 break;
             default:
-                console.error("Invalid position specified.");
-        };
+                // Invalid position
+        }
 
         return position + startPoint + positionString + endPoint;
     }),

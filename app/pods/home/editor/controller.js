@@ -14,7 +14,6 @@ export default HomeController.extend({
 
   init() {
     this._super(...arguments);
-    let leaflet = window.L;
   
     this.set('disabled', false);
     this.set('saveEvent', false);
