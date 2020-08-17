@@ -12,19 +12,38 @@ import {
 export default HomeController.extend({
   queryParams: ['disabled'],
   
-  disabled: false,
-  flightDemo: false,
-  buttonText: 'Start Flight Demo',
-  latitude: '-25.3444',
-  longitude: '131.0369',
-  zoom: '1',
+  init() {
+    this._super(...arguments);
+    let leaflet = window.L;
+
+    this.set('disabled', false);
+    this.set('latitude', '-25.3444');
+    this.set('longitude', '131.0369');
+    this.set('zoom', '3');
+  
+    this.set('componentsEnabled', false);
+    this.set('takeOff', false);
+    this.set('componentButtonText', 'Enable Components on Map');
+
+    this.set('layerGroupName', 'Components');
+    this.set('firstLayerId', 'firstComponentLayer');
+    this.set('firstLayerLatitude', '-25');
+    this.set('firstLayerLongitude', '80');
+    this.set('firstLayerButtonText', 'Toggle Menu');
+    this.set('secondLayerId', 'secondComponentLayer');
+    this.set('upperLeft', leaflet.latLng(50,153));
+    this.set('lowerRight', leaflet.latLng(3,231));
+  },
 
   actions: {
     changeSelection(selection) {
       this.set('destinationChoice', selection);
     },
-    toggleFlightDemo() {
-      this.set('flightDemo', true);
+    enableComponents() {
+      this.set('componentsEnabled', true);
+    },
+    toggleBurger() {
+      this._super();
     },
     // MAP LAYER CONTROL EVENTS
     layerControlEvent(event) {
@@ -65,7 +84,7 @@ export default HomeController.extend({
     let geojson = A();
     geojson.pushObject(this.get('nzGeo'));
     geojson.pushObject(this.get('markerGeo'));
-    return geojson
+    return geojson;
   }),
 
   markerGeo: computed(function () {

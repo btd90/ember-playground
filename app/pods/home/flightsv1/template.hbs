@@ -1,20 +1,17 @@
-<h2>Editor Page</h2>
+<h2>Flights v1</h2>
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonAction=(action "toggleSave") text=saveButtonText}}
+    {{playground-button buttonDisabled=flightDemo buttonAction=(action "toggleFlightDemo") text=buttonText}}
   </div>
-
+  
   <div class="component">
     {{#map-component
         class="leaflet-container"
         latVal=latitude
         lngVal=longitude
         zoomVal=zoom
-        geojson=geojson
-        points=points
-        saveEvent=saveEvent
-        drawEnabled=true
+        flightDemo=flightDemo
         destination=destinationChoice
         mapInstance=mapInstance
         imageOverlays=imageOverlays
@@ -30,13 +27,4 @@
     {{/map-component}}
   </div>
 
-  <div class="component">
-    <h4>Fly to:</h4>
-    {{#power-select
-        options=options
-        selected=destinationChoice
-        onchange=(action "changeSelection") as |option|}}
-      {{option}}
-    {{/power-select}}
-  </div>
 </div>

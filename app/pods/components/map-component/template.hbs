@@ -21,6 +21,9 @@
   {{#layer-group name="Dark All" baselayer=true default=false}}
     {{tile-layer url="http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"}}
   {{/layer-group}}
+  {{#layer-group name="Mars" baselayer=true default=false}}
+    {{tile-layer url="https://cartocdn-gusc.global.ssl.fastly.net/opmbuilder/api/v1/map/named/opm-mars-basemap-v0-2/all/{z}/{x}/{y}.png"}}
+  {{/layer-group}}
   {{#layer-group name="Local Map" baselayer=true default=false}}
     {{tile-layer url="http://localhost:8080/geoserver/gwc/service/wmts/rest/cite:BlueMarbleNG-TB_2004-12-01_rgb_3600x1800/raster/EPSG:900913/EPSG:900913:{z}/{y}/{x}?format=image/png"}}
   {{/layer-group}}

@@ -20,13 +20,15 @@ export default DrawControl.extend({
   // Custom create to handle geojson input - not using for now
   // https://github.com/StevenHeinrich/ember-leaflet-draw/pull/9 
   createLayer() {
+    let leaflet = window.L;
+
     let drawingLayerGroup;
     if (this.get('showDrawingLayer')) {
-      drawingLayerGroup = new this.L.FeatureGroup();
+      drawingLayerGroup = new leaflet.FeatureGroup();
       const map = this.get('parentComponent._layer');
 
       // If supplied, draw initial features onto editable feature group
-      let initialFeatures = this.get('initialFeatures'); // L.geoJson()
+      let initialFeatures = this.get('initialFeatures'); // leaflet.geoJson()
       if (initialFeatures) {
         initialFeatures.eachLayer(function (layer) {
           this._applyOptionsToLayer(layer);

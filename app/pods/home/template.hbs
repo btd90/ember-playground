@@ -11,21 +11,50 @@
       {{#menu.item}}
         <li>
           {{#link-to "home.index"}}
-            {{fa-icon "globe"}} Index Page
+            <div class="row">
+              {{fa-icon "globe"}}
+              <div>Index</div>
+            </div>
+          {{/link-to}}
+        </li>
+      {{/menu.item}}
+      {{#menu.item}}
+        <li>
+          {{#link-to "home.flightsv1"}}
+            <div class="row">
+              {{fa-icon "plane"}}
+              <div>Flights v1</div>
+            </div>
+          {{/link-to}}
+        </li>
+      {{/menu.item}}
+      {{#menu.item}}
+        <li>
+          {{#link-to "home.flightsv2"}}
+            <div class="row">
+              {{fa-icon "fighter-jet"}}
+              <div>Flights v2</div>
+            </div>
           {{/link-to}}
         </li>
       {{/menu.item}}
       {{#menu.item}}
         <li>
           {{#link-to "home.editor"}}
-            {{fa-icon "cog"}} Editor Page
+            <div class="row">
+              {{fa-icon "cog"}}
+              <div>Editor</div>
+            </div>
           {{/link-to}}
         </li>
       {{/menu.item}}
       {{#menu.item}}
         <li>
-          {{#link-to "home.about"}} 
-            {{fa-icon "info-circle"}} About Page
+          {{#link-to "home.about"}}
+            <div class="row">
+              {{fa-icon "info-circle"}}
+              <div>About</div>
+            </div>
           {{/link-to}}
         </li>
       {{/menu.item}}

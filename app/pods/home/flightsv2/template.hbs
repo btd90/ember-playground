@@ -1,0 +1,122 @@
+<h2>Flights v2</h2>
+
+<div class="mainBody">
+  <div class="component">
+    {{playground-button buttonAction=(action "takeOff") text=buttonText}}
+  </div>
+
+  <div class="component">
+    {{#map-component
+        class="leaflet-container"
+        latVal=latitude
+        lngVal=longitude
+        zoomVal=zoom
+        geojson=geojson
+        points=points
+        saveEvent=saveEvent
+        drawEnabled=false
+        destination=destinationChoice
+        mapInstance=mapInstance
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays}}
+      {{#if mapInstance}}
+        {{!-- Display group to capture a unique layer for display boxes/points --}}
+        {{#map-component/display-group
+            mapInstance=mapInstance
+            layerGroup=layerGroup
+            layerName=layerGroupName
+            componentOverlays=componentOverlays
+            as |dg|}}
+          {{#if dg}}
+            {{!-- Display box to render child components on the map within lat/lng bounds --}}
+            {{#map-component/display-box
+                layerId=mexicoSVG.layerId
+                upperLeft=mexicoSVG.upperBoundary
+                lowerRight=mexicoSVG.lowerBoundary
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if (and db takeOff)}}
+                {{#ember-wormhole to=mexicoSVG.layerId}}
+                  {{svg-component
+                      start=mexicoSVG.startLocation
+                      end=mexicoSVG.endLocation
+                      stroke=mexicoSVG.stroke
+                      strokeWidth=mexicoSVG.strokeWidth}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+            {{#map-component/display-box
+                layerId=antarcticaSVG.layerId
+                upperLeft=antarcticaSVG.upperBoundary
+                lowerRight=antarcticaSVG.lowerBoundary
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if (and db takeOff)}}
+                {{#ember-wormhole to=antarcticaSVG.layerId}}
+                  {{svg-component
+                      start=antarcticaSVG.startLocation
+                      end=antarcticaSVG.endLocation
+                      stroke=antarcticaSVG.stroke
+                      strokeWidth=antarcticaSVG.strokeWidth}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+            {{#map-component/display-box
+                layerId=russiaSVG.layerId
+                upperLeft=russiaSVG.upperBoundary
+                lowerRight=russiaSVG.lowerBoundary
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if (and db takeOff)}}
+                {{#ember-wormhole to=russiaSVG.layerId}}
+                  {{svg-component
+                      start=russiaSVG.startLocation
+                      end=russiaSVG.endLocation
+                      stroke=russiaSVG.stroke
+                      strokeWidth=russiaSVG.strokeWidth}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+            {{#map-component/display-box
+                layerId=indiaSVG.layerId
+                upperLeft=indiaSVG.upperBoundary
+                lowerRight=indiaSVG.lowerBoundary
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if (and db takeOff)}}
+                {{#ember-wormhole to=indiaSVG.layerId}}
+                  {{svg-component
+                      start=indiaSVG.startLocation
+                      end=indiaSVG.endLocation
+                      stroke=indiaSVG.stroke
+                      strokeWidth=indiaSVG.strokeWidth}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+          {{/if}}
+        {{/map-component/display-group}}
+
+        {{!-- Markers for SVG component bounds --}}
+        {{#layer-group name="Locations" default=false}}
+          {{marker-layer location=mexicoSVG.upperBoundaryMarker}}
+          {{marker-layer location=mexicoSVG.lowerBoundaryMarker}}
+          {{marker-layer location=antarcticaSVG.upperBoundaryMarker}}
+          {{marker-layer location=antarcticaSVG.lowerBoundaryMarker}}
+          {{marker-layer location=russiaSVG.upperBoundaryMarker}}
+          {{marker-layer location=russiaSVG.lowerBoundaryMarker}}
+          {{marker-layer location=indiaSVG.upperBoundaryMarker}}
+          {{marker-layer location=indiaSVG.lowerBoundaryMarker}}
+        {{/layer-group}}
+      {{/if}}
+      {{!-- Layer-Control --}}
+      {{map-component/layer-control
+        handler=(action "layerControlEvent")
+        imageOverlays=imageOverlays
+        videoOverlays=videoOverlays
+        componentOverlays=componentOverlays
+      }}
+    {{/map-component}}
+  </div>
+
+</div>

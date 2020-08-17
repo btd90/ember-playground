@@ -12,6 +12,7 @@ import Component from '@ember/component';
 export default Component.extend({
   init() {
     this._super(...arguments);
+    let leaflet = window.L;
 
     // Store inputs
     let layerId = this.get('layerId');
@@ -20,7 +21,7 @@ export default Component.extend({
     let lowerRight = this.get('lowerRight');
     
     // Create new custom map layer
-    L.CustomLayer = L.Layer.extend({
+    leaflet.CustomLayer = leaflet.Layer.extend({
       onAdd: function(map) {
         let pane = map.getPane(this.options.pane);
         let childNodes = pane.childNodes;
@@ -40,7 +41,7 @@ export default Component.extend({
         
         if(!found) {
           // Create new div for new layer
-          this._container = L.DomUtil.create('div');
+          this._container = leaflet.DomUtil.create('div');
           this._container.className = "leaflet-layer";
           this._container.id = layerId;
 
@@ -88,19 +89,19 @@ export default Component.extend({
         container.style.height = containerHeight.toString() + "px";
 
         // Set the updated position
-        L.DomUtil.setPosition(container, mapUpperLeft);
+        leaflet.DomUtil.setPosition(container, mapUpperLeft);
 
         // Show the element once position calculated
         container.style.visibility = "visible";
       }
     });
 
-    L.customlayer = function (args) {
-      return new L.CustomLayer(args);
+    leaflet.customlayer = function (args) {
+      return new leaflet.CustomLayer(args);
     }
 
     // Add layer to relevant layer group
-    L.customlayer({
+    leaflet.customlayer({
       layerId: layerId
     }).addTo(layerGroup);
   },

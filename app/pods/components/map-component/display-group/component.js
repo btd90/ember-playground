@@ -13,6 +13,7 @@ import { set } from '@ember/object';
 export default Component.extend({
   init() {
     this._super(...arguments);
+    let leaflet = window.L;
 
     // Store inputs
     let map = this.get('mapInstance');
@@ -20,7 +21,7 @@ export default Component.extend({
     let componentOverlays = this.get('componentOverlays');
 
     // Setup new layer group
-    let layerGroupInit = L.layerGroup();
+    let layerGroupInit = leaflet.layerGroup();
     layerGroupInit.name = layerName;
     set(layerGroupInit, 'name', layerName);
 

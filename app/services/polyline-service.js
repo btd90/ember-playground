@@ -16,6 +16,7 @@ export default Service.extend({
 
   init() {
     this._super(...arguments);
+    this.set('leaflet', window.L);
 
     // Flight demo vars
     this.set('statusArr', ['Awaiting Departure..', 'In The Air..', 'Arrived!!']);
@@ -91,7 +92,7 @@ export default Service.extend({
       let pattern = {
         offset: 5,
         repeat: 30,
-        symbol: L.Symbol.arrowHead({
+        symbol: this.get('leaflet').Symbol.arrowHead({
           pixelSize: pixelSize,
           headAngle: 30,
           pathOptions: {
@@ -211,10 +212,10 @@ export default Service.extend({
   },
 
   planeRightIcon: computed(function () {
-    return L.icon(PlaneRightIcon.create());
+    return this.get('leaflet').icon(PlaneRightIcon.create());
   }),
   planeLeftIcon: computed(function () {
-    return L.icon(PlaneLeftIcon.create());
+    return this.get('leaflet').icon(PlaneLeftIcon.create());
   }),
 
   mexicoLineString: computed(function () {

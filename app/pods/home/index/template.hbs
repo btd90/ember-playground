@@ -2,7 +2,7 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonDisabled=flightDemo buttonAction=(action "toggleFlightDemo") text=buttonText}}
+    {{playground-button buttonAction=(action "enableComponents") text=componentButtonText}}
   </div>
   
   <div class="component">
@@ -20,6 +20,46 @@
         imageOverlays=imageOverlays
         videoOverlays=videoOverlays
         componentOverlays=componentOverlays}}
+      {{#if (and mapInstance componentsEnabled)}}
+        {{!-- Display group to capture a unique layer for display boxes/points --}}
+        {{#map-component/display-group
+            mapInstance=mapInstance
+            layerGroup=layerGroup
+            layerName=layerGroupName
+            componentOverlays=componentOverlays
+            as |dg|}}
+          {{#if dg}}
+            {{!-- Display point to render child components on the map at the given lat/lng --}}
+            {{#map-component/display-point
+                layerId=firstLayerId
+                lat=firstLayerLatitude
+                lng=firstLayerLongitude
+                layerGroup=layerGroup
+                as |dp|}}
+              {{#if dp}}
+                {{#ember-wormhole to=firstLayerId}}
+                  {{playground-button
+                    buttonAction=(action "toggleBurger")
+                    text=firstLayerButtonText}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-point}}
+            {{!-- Display box to render child components on the map within lat/lng bounds --}}
+            {{#map-component/display-box
+                layerId=secondLayerId
+                upperLeft=upperLeft
+                lowerRight=lowerRight
+                layerGroup=layerGroup
+                as |db|}}
+              {{#if db}}
+                {{#ember-wormhole to=secondLayerId}}
+                  {{coloured-background upperLeft=upperLeft lowerRight=lowerRight}}
+                {{/ember-wormhole}}
+              {{/if}}
+            {{/map-component/display-box}}
+          {{/if}}
+        {{/map-component/display-group}}
+      {{/if}}
       {{!-- Layer-Control --}}
       {{map-component/layer-control
         handler=(action "layerControlEvent")

@@ -11,35 +11,16 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  
-  disabled: false,
-  saveEvent: false,
-  componentsEnabled: false,
-  takeOff: false,
-  saveButtonText: 'Save',
-  componentButtonText: 'Enable Components on Map',
-  latitude: '-25.3444',
-  longitude: '131.0369',
-  zoom: '1',
-
-  layerGroupName: 'Components',
-  firstLayerId: 'firstComponentLayer',
-  firstLayerLatitude: '-39',
-  firstLayerLongitude: '54',
-  firstLayerButtonText: 'Toggle Menu',
-  secondLayerId: 'secondComponentLayer',
-  secondLayerLatitude: '55',
-  secondLayerLongitude: '-187',
-  secondLayerButtonText: 'Takeoff!',
-  thirdLayerId: 'thirdComponentLayer',
-  fourthLayerId: 'fourthComponentLayer',
-  upperLeftSVG: L.latLng(30,-245),
-  lowerRightSVG: L.latLng(-30,-65),
-  upperLeft: L.latLng(50,153),
-  lowerRight: L.latLng(3,231),
 
   init() {
     this._super(...arguments);
+  
+    this.set('disabled', false);
+    this.set('saveEvent', false);
+    this.set('saveButtonText', 'Save');
+    this.set('latitude', '-25.3444');
+    this.set('longitude', '131.0369');
+    this.set('zoom', '1');
   },
 
   actions: {
@@ -48,15 +29,6 @@ export default HomeController.extend({
     },
     toggleSave() {
       this.set('saveEvent', !this.get('saveEvent'));
-    },
-    enableComponents() {
-      this.set('componentsEnabled', true);
-    },
-    takeOff() {
-      this.set('takeOff', true);
-    },
-    toggleBurger() {
-      this._super();
     },
     // MAP LAYER CONTROL EVENTS
     layerControlEvent(event) {
