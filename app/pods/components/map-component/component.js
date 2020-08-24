@@ -161,7 +161,7 @@ export default EmberLeaflet.extend({
     map.addEventListener('click', this.mouseclick, this);
 
     // Work-around for burger menu resize to refresh map
-    let burgerObserver = new ResizeObserver(function (event) {
+    let burgerObserver = new window.ResizeObserver(function (event) {
       if (event[0].target.map) event[0].target.map.invalidateSize();
     });
     let burgerOutlet = document.querySelector('.burgetOutlet');
