@@ -5,13 +5,6 @@ import SlingShotIcon from '../../../objects/icons/sling-shot-icon';
 import BuildingImage from '../../../objects/images/building-image';
 import TakeoffVideo from '../../../objects/videos/takeoff-video';
 import EmberObject from '@ember/object';
-// import ResizeObservable from 'ember-resize-observer/mixins/resize-observable';
-// import ResizeObserver from '../../../../node-modules/resize-observer-polyfill/src/ResizeObserver.js';
-
-// import ResizeObserver from 'resize-observer-polyfill';
-// import { ResizeObserver } from 'resize-observer';
-// import { ResizeObserver } from 'resize-observer-polyfill';
-// import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.global';
 import {
   later
 } from '@ember/runloop';
@@ -183,10 +176,6 @@ export default EmberLeaflet.extend({
     this.set('componentOverlays', A());
     this.set('mapInstance', this.get('_layer'));
   },
-
-  // observedResize() {
-  //   // console.log("RESIZE");
-  // },
 
   willDestroyElement() {
     // Clear existing instance
