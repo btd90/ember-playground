@@ -5,6 +5,13 @@ import SlingShotIcon from '../../../objects/icons/sling-shot-icon';
 import BuildingImage from '../../../objects/images/building-image';
 import TakeoffVideo from '../../../objects/videos/takeoff-video';
 import EmberObject from '@ember/object';
+// import ResizeObservable from 'ember-resize-observer/mixins/resize-observable';
+// import ResizeObserver from '../../../../node-modules/resize-observer-polyfill/src/ResizeObserver.js';
+
+// import ResizeObserver from 'resize-observer-polyfill';
+// import { ResizeObserver } from 'resize-observer';
+// import { ResizeObserver } from 'resize-observer-polyfill';
+// import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.global';
 import {
   later
 } from '@ember/runloop';
@@ -161,21 +168,25 @@ export default EmberLeaflet.extend({
     map.addEventListener('click', this.mouseclick, this);
 
     // Work-around for burger menu resize to refresh map
-    let burgerObserver = new window.ResizeObserver(function (event) {
-      if (event[0].target.map) event[0].target.map.invalidateSize();
-    });
-    let burgerOutlet = document.querySelector('.burgetOutlet');
-    if (burgerOutlet) {
-      burgerOutlet.map = map;
-      burgerObserver.observe(burgerOutlet, {
-        attributes: true
-      });
-    }
+    // let burgerObserver = new ResizeObserver(function (event) {
+    //   if (event[0].target.map) event[0].target.map.invalidateSize();
+    // });
+    // let burgerOutlet = document.querySelector('.burgetOutlet');
+    // if (burgerOutlet) {
+    //   burgerOutlet.map = map;
+    //   burgerObserver.observe(burgerOutlet, {
+    //     attributes: true
+    //   });
+    // }
 
     // Used for adding other components to map
     this.set('componentOverlays', A());
     this.set('mapInstance', this.get('_layer'));
   },
+
+  // observedResize() {
+  //   // console.log("RESIZE");
+  // },
 
   willDestroyElement() {
     // Clear existing instance
