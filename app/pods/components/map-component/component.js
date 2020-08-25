@@ -164,11 +164,13 @@ export default EmberLeaflet.extend({
     let burgerObserver = new ResizeObserver(function (event) {
       if (event[0].target.map) event[0].target.map.invalidateSize();
     });
-    let burgetOutlet = document.querySelector('.burgetOutlet');
-    burgetOutlet.map = map;
-    burgerObserver.observe(burgetOutlet, {
-      attributes: true
-    });
+    let burgerOutlet = document.querySelector('.burgetOutlet');
+    if (burgerOutlet) {
+      burgerOutlet.map = map;
+      burgerObserver.observe(burgerOutlet, {
+        attributes: true
+      });
+    }
 
     // Used for adding other components to map
     this.set('componentOverlays', A());
