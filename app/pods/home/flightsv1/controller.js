@@ -1,13 +1,20 @@
 import HomeController from '../controller';
+import {
+  inject as service
+} from '@ember/service';
 
 /**
  * Controller for home flights v1 route.
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  
+  flightsv1tourService: service('tours/flightsv1-tour'),
+
   init() {
     this._super(...arguments);
+
+    // Initialize the shepherd tour
+    this.get('flightsv1tourService').setupTour();
 
     this.set('disabled', false);
     this.set('flightDemo', false);

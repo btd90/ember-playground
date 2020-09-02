@@ -1,5 +1,8 @@
 import HomeController from '../controller';
 import {
+  inject as service
+} from '@ember/service';
+import {
   computed
 } from '@ember/object';
 import {
@@ -11,16 +14,21 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  
+  indextourService: service('tours/generic-tour'),
+
   init() {
     this._super(...arguments);
+
+    // Initialize the shepherd tour
+    this.get('indextourService').setupTour();
+
     let leaflet = window.L;
 
     this.set('disabled', false);
     this.set('latitude', '-25.3444');
     this.set('longitude', '131.0369');
     this.set('zoom', '3');
-  
+
     this.set('componentsEnabled', false);
     this.set('takeOff', false);
     this.set('componentButtonText', 'Enable Components on Map');
@@ -31,8 +39,8 @@ export default HomeController.extend({
     this.set('firstLayerLongitude', '80');
     this.set('firstLayerButtonText', 'Toggle Menu');
     this.set('secondLayerId', 'secondComponentLayer');
-    this.set('upperLeft', leaflet.latLng(50,153));
-    this.set('lowerRight', leaflet.latLng(3,231));
+    this.set('upperLeft', leaflet.latLng(50, 153));
+    this.set('lowerRight', leaflet.latLng(3, 231));
   },
 
   actions: {
@@ -51,7 +59,7 @@ export default HomeController.extend({
     }
   },
 
-  mapDisabled: computed('disabled', function() {
+  mapDisabled: computed('disabled', function () {
     let disabled = this.get('disabled');
 
     if (disabled) {
