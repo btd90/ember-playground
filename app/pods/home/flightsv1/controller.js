@@ -8,13 +8,13 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  flightsv1tourService: service('tours/flightsv1-tour'),
+  // tour: service('tours/flightsv1-tour'),
 
   init() {
     this._super(...arguments);
 
     // Initialize the shepherd tour
-    this.get('flightsv1tourService').setupTour();
+    // this.get('tour').setupTour();
 
     this.set('disabled', false);
     this.set('flightDemo', false);

@@ -7,12 +7,12 @@ import {
  * Controller for home about route.
  */
 export default HomeController.extend({
-  abouttourService: service('tours/generic2-tour'),
+  // tour: service('tours/about-tour'),
 
   init() {
     this._super(...arguments);
 
     // Initialize the shepherd tour
-    this.get('abouttourService').setupTour();
+    // this.get('tour').setupTour();
   }
 });

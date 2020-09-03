@@ -1,140 +1,90 @@
-import GenericTour from './generic-tour';
+// import GenericTour from './generic-tour';
 
-/**
- * Flights v2 tour service
- */
-export default GenericTour.extend({
+// /**
+//  * Flights v2 tour service
+//  */
+// export default GenericTour.extend({
 
-  // Setup tour and add steps
-  setupTour: function () {
-    this._super();
+//   // Setup tour and add steps
+//   setupTour: function () {
+//     this._super();
+//     debugger;
+//     if(this.get('tour.tourObject')) {
+//       console.log("AAA");
+//     this.get('tour.tourObject').set('steps', [
+//       {
+//         buttons: [
+//           {
+//             classes: 'shepherd-button-primary',
+//             text: 'Next',
+//             type: 'next'
+//           }
+//         ],
+//         cancelIcon: {
+//           enabled: true
+//         },
+//         classes: 'shepherd shepherd-open shepherd-theme-dark shepherd-transparent-text',
+//         highlightClass: 'highlight',
+//         id: 'aaaa',
+//         scrollTo: false,
+//         title: 'AAAAAAAAAA',
+//         text: 'AAAAAAAAAAAAAAA.',
+//         when: {
+//           show: () => {
+//             console.log('show step');
+//           },
+//           hide: () => {
+//             console.log('hide step');
+//           }
+//         }
+//       }
+//       ]);
+//     }
 
-    let steps = [
-      {
-        // beforeShowPromise: function() {
-        //   return new Promise(function(resolve) {
-        //     Ember.run.scheduleOnce('afterRender', this, function() {
-        //       window.scrollTo(0, 0);
-        //     //   this.get('documents.firstObject').set('isSelected', true);
-        //       resolve();
-        //     });
-        //   });
-        // },
-        buttons: [
-          {
-            classes: 'shepherd-button-primary',
-            text: 'Next',
-            type: 'next'
-          }
-        ],
-        cancelIcon: {
-          enabled: true
-        },
-        classes: 'shepherd shepherd-open shepherd-theme-dark shepherd-transparent-text',
-        highlightClass: 'highlight',
-        id: 'intro',
-        scrollTo: false,
-        title: 'Welcome to the Home Route tour at the Playground!',
-        text: 'This tour will run you through some features of the Home Route.',
-        when: {
-          show: () => {
-            console.log('show step');
-          },
-          hide: () => {
-            console.log('hide step');
-          }
-        }
-      },
-      {
-        attachTo: {
-          element:'.hamburger',
-          on: 'bottom'
-        },
-        // beforeShowPromise: function() {
-        //   return new Promise(function(resolve) {
-        //     Ember.run.scheduleOnce('afterRender', this, function() {
-        //       window.scrollTo(0, 0);
-        //     //   this.get('documents.firstObject').set('isSelected', true);
-        //       resolve();
-        //     });
-        //   });
-        // },
-        buttons: [
-          {
-            classes: 'shepherd-button-primary',
-            text: 'Back',
-            type: 'back'
-          },
-          {
-            classes: 'shepherd-button-primary',
-            text: 'Next',
-            type: 'next'
-          }
-        ],
-        cancelIcon: {
-          enabled: true
-        },
-        classes: 'shepherd shepherd-open shepherd-theme-dark shepherd-transparent-text',
-        highlightClass: 'highlight',
-        id: 'intro3',
-        scrollTo: false,
-        title: 'Navigating around the Playground',
-        text: 'To change routes, toggle the main menu via the hamburger button.',
-        when: {
-          show: () => {
-            console.log('show step');
-          },
-          hide: () => {
-            console.log('hide step');
-          }
-        }
-      },
-      {
-        attachTo: {
-          element:'.hamburger',
-          on: 'bottom'
-        },
-        // beforeShowPromise: function() {
-        //   return new Promise(function(resolve) {
-        //     Ember.run.scheduleOnce('afterRender', this, function() {
-        //       window.scrollTo(0, 0);
-        //       this.get('documents.firstObject').set('isSelected', true);
-        //       resolve();
-        //     });
-        //   });
-        // },
-        buttons: [
-          {
-            classes: 'shepherd-button-primary',
-            text: 'Back',
-            type: 'back'
-          },
-          {
-            classes: 'shepherd-button-primary',
-            text: 'Next',
-            type: 'next'
-          }
-        ],
-        cancelIcon: {
-          enabled: true
-        },
-        classes: 'shepherd shepherd-open shepherd-theme-dark shepherd-transparent-text',
-        highlightClass: 'highlight',
-        id: 'intro2',
-        scrollTo: false,
-        title: 'Second Step!',
-        text: 'This menu can be clicked.',
-        when: {
-          show: () => {
-            console.log('show step');
-          },
-          hide: () => {
-            console.log('hide step');
-          }
-        }
-      }
-    ];
-    this.get('tour').addSteps(steps);
-  }
+//     let steps = [
+//       {
+//         // beforeShowPromise: function() {
+//         //   return new Promise(function(resolve) {
+//         //     Ember.run.scheduleOnce('afterRender', this, function() {
+//         //       window.scrollTo(0, 0);
+//         //     //   this.get('documents.firstObject').set('isSelected', true);
+//         //       resolve();
+//         //     });
+//         //   });
+//         // },
+//         buttons: [
+//           {
+//             classes: 'shepherd-button-primary',
+//             text: 'Next',
+//             type: 'next'
+//           }
+//         ],
+//         cancelIcon: {
+//           enabled: true
+//         },
+//         classes: 'shepherd shepherd-open shepherd-theme-dark shepherd-transparent-text',
+//         highlightClass: 'highlight',
+//         id: 'intro4',
+//         scrollTo: false,
+//         title: 'FLIGHTSV2!',
+//         text: 'FLIGHTSV2.',
+//         showOn: this.checkRoute(),
+//         when: {
+//           show: () => {
+//             console.log('show step');
+//           },
+//           hide: () => {
+//             console.log('hide step');
+//           }
+//         }
+//       }
+//     ];
+//     // this.get('tour').addSteps(steps);
+//   },
 
-})
+//   checkRoute() {
+//     let tourRoute = '/home/flightsv2';
+//     let owner = Ember.getOwner(this);
+//     return owner.lookup('router:main').url === tourRoute;
+//   },
+// })

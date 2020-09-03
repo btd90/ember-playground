@@ -14,13 +14,13 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  indextourService: service('tours/generic-tour'),
+  // tour: service('tours/index-tour'),
 
   init() {
     this._super(...arguments);
 
     // Initialize the shepherd tour
-    this.get('indextourService').setupTour();
+    // this.get('tour').setupTour();
 
     let leaflet = window.L;
 

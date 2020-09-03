@@ -14,13 +14,13 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  editortourService: service('tours/editor-tour'),
+  // tour: service('tours/editor-tour'),
 
   init() {
     this._super(...arguments);
 
     // Initialize the shepherd tour
-    this.get('editortourService').setupTour();
+    // this.get('tour').setupTour();
 
     this.set('disabled', false);
     this.set('saveEvent', false);

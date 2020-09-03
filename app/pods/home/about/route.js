@@ -7,17 +7,25 @@ import {
  * About route file.
  */
 export default Route.extend({
+  tour: service('tours/test-tour'),
 
-  abouttourService: service('tours/generic2-tour'),
+  setupController: async function (controller, model) {
+      this._super(controller, model);
 
-  setupController: function (controller, model) {
-    this._super(controller, model);
-
-    // Set applicable tour for the parent
-    this.get('parentController').set('routeTour', this.get('abouttourService'));
+      // Prepare tour
+      await this.get('tour').preparePlayerTour();
   },
+  
+  // abouttourService: service('tours/generic2-tour'),
 
-  parentController: Ember.computed(function () {
-    return this.controllerFor('home');
-  }),
+  // setupController: function (controller, model) {
+  //   this._super(controller, model);
+
+  //   // Set applicable tour for the parent
+  //   this.get('parentController').set('routeTour', this.get('abouttourService'));
+  // },
+
+  // parentController: Ember.computed(function () {
+  //   return this.controllerFor('home');
+  // }),
 });

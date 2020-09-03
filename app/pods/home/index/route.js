@@ -8,16 +8,25 @@ import {
  */
 export default Route.extend({
 
-  indextourService: service('tours/generic-tour'),
+    tour: service('tours/test-tour'),
 
-  setupController: function (controller, model) {
-    this._super(controller, model);
+    setupController: async function (controller, model) {
+        this._super(controller, model);
 
-    // Set applicable tour for the parent
-    this.get('parentController').set('routeTour', this.get('indextourService'));
-  },
+        // Prepare tour
+        await this.get('tour').prepareCourseDashboardTour();
+    },
+    
+  // indextourService: service('tours/generic-tour'),
 
-  parentController: Ember.computed(function () {
-    return this.controllerFor('home');
-  }),
+  // setupController: function (controller, model) {
+  //   this._super(controller, model);
+
+  //   // Set applicable tour for the parent
+  //   this.get('parentController').set('routeTour', this.get('indextourService'));
+  // },
+
+  // parentController: Ember.computed(function () {
+  //   return this.controllerFor('home');
+  // }),
 });

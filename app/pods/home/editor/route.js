@@ -8,16 +8,16 @@ import {
  */
 export default Route.extend({
 
-  editortourService: service('tours/editor-tour'),
+  // editortourService: service('tours/editor-tour'),
 
-  setupController: function (controller, model) {
-    this._super(controller, model);
+  // setupController: function (controller, model) {
+  //   this._super(controller, model);
 
-    // Set applicable tour for the parent
-    this.get('parentController').set('routeTour', this.get('editortourService'));
-  },
+  //   // Set applicable tour for the parent
+  //   this.get('parentController').set('routeTour', this.get('editortourService'));
+  // },
 
-  parentController: Ember.computed(function () {
-    return this.controllerFor('home');
-  }),
+  // parentController: Ember.computed(function () {
+  //   return this.controllerFor('home');
+  // }),
 });
