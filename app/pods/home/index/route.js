@@ -7,26 +7,12 @@ import {
  * Index route file.
  */
 export default Route.extend({
+  playgroundtourService: service(),
 
-    tour: service('tours/test-tour'),
+  setupController: async function (controller, model) {
+    this._super(controller, model);
 
-    setupController: async function (controller, model) {
-        this._super(controller, model);
-
-        // Prepare tour
-        await this.get('tour').prepareCourseDashboardTour();
-    },
-    
-  // indextourService: service('tours/generic-tour'),
-
-  // setupController: function (controller, model) {
-  //   this._super(controller, model);
-
-  //   // Set applicable tour for the parent
-  //   this.get('parentController').set('routeTour', this.get('indextourService'));
-  // },
-
-  // parentController: Ember.computed(function () {
-  //   return this.controllerFor('home');
-  // }),
+    // Prepare tour
+    await this.get('playgroundtourService').prepareIndexTour();
+  },
 });

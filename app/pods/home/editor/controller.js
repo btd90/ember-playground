@@ -5,22 +5,15 @@ import {
 import {
   A
 } from '@ember/array';
-import {
-  inject as service
-} from '@ember/service';
 
 /**
  * Controller for home editor route.
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  // tour: service('tours/editor-tour'),
 
   init() {
     this._super(...arguments);
-
-    // Initialize the shepherd tour
-    // this.get('tour').setupTour();
 
     this.set('disabled', false);
     this.set('saveEvent', false);

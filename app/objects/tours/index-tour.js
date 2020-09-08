@@ -1,144 +1,199 @@
-// import buttons from './buttons'
+const ifElementExists = id => () => !!document.getElementById(id);
 
-// const ifElementExists = id => () => !!document.getElementById(id)
-
-// const onMobile = window.innerWidth <= 800
-
-// const and = () => [...arguments].reduce((acc, fn) => acc && fn(), true)
-
-export default [
-    {
-      attachTo: {
-        element: '.hamburger',
-        on: 'bottom'
-      },
-      buttons: [
-          {
-              classes: 'shepherd-button-primary',
-              text: 'Next',
-              type: 'next'
-          }
-      ],
-      canClickTarget: false,
-      title: '1111Welcome!!!!!!!!!!!!!!!!!!!!!!!!!!',
-      text: `
-        <p> 1111This is your course dashboard. 
-            You can glance over your progress, track milestones and find all necessary information regarding the course here.
-        </p>
-      `
+export default [{
+    buttons: [{
+      classes: "shepherd-button-primary",
+      text: "Next",
+      type: "next"
+    }],
+    canClickTarget: false,
+    title: "Welcome to the Playground",
+    text: `
+            <p> This is the Index page. </p>
+            <p>
+                From this page you can trigger components on the map and <i>Flyto</i> some pre-defined locations.
+            </p>
+          `
+  },
+  {
+    attachTo: {
+      element: ".enableComponents",
+      on: "right"
     },
-  //   {
-  //     attachTo: {
-  //       element: '#goodies-lock',
-  //       on: onMobile ? 'bottom' : 'right'
-  //     },
-  //     buttons: [
-  //       buttons.back,
-  //       buttons.next
-  //     ],
-  //     showOn: ifElementExists('goodies-lock'),
-  //     title: 'Complete your course - Goodies',
-  //     text: `
-  //       <p> 
-  //         Complete the course to be unlock free goodies!
-  //       </p>
-  //     `,
-  //     highlightClass: 'px-3'
-  //   },
-  //   {
-  //     attachTo: {
-  //       element: '#certificate-lock',
-  //       on: onMobile ? 'bottom' : 'right'
-  //     },
-  //     buttons: [
-  //       buttons.back,
-  //       buttons.next
-  //     ],
-  //     showOn: ifElementExists('certificate-lock'),
-  //     title: 'Complete your course - Certification',
-  //     text: `
-  //       <p> 
-  //         Let's get certified! Unlock your certificate from here
-  //       </p>
-  //     `,
-  //     highlightClass: 'px-3'
-  //   },
-  //   {
-  //     attachTo: {
-  //       element: '#join-whatsapp-card',
-  //       on: onMobile ? 'bottom' : 'right'
-  //     },
-  //     buttons: [
-  //       buttons.back,
-  //       buttons.next
-  //     ],
-  //     showOn: ifElementExists('join-whatsapp-card'),
-  //     title: 'Join the Conversation!',
-  //     text: `
-  //       <p> 
-  //         Tap here join the whatsapp group for this batch.
-  //       </p>
-  //     `,
-  //     highlightClass: 'border-radius-none'
-  //   },
-  //   {
-  //     attachTo: {
-  //       element: '#course-library',
-  //       on: 'top'
-  //     },
-  //     buttons: [
-  //       buttons.back,
-  //       buttons.next
-  //     ],
-  //     title: 'This is the course library',
-  //     text: `
-  //       <p> Click here to manage all your Notes, Bookmarks, Announcements and Doubts at once. </p>
-  //     `
-  //   },
-  //   {
-  //     attachTo: {
-  //       element: '#performance-stats',
-  //       on: 'top'
-  //     },
-  //     buttons: [
-  //       buttons.back,
-  //       buttons.next
-  //     ],
-  //     title: 'These are your stats!',
-  //     text: `
-  //       <p> Take a look at your all-time course progress from here </p>
-  //     `
-  //   },
-  //   {
-  //     attachTo: {
-  //       element: '#course-intro',
-  //       on: 'left'
-  //     },
-  //     buttons: [
-  //       buttons.back,
-  //       buttons.next
-  //     ],
-  //     title: 'Read Me!',
-  //     text: `
-  //       <p>
-  //        Read on to find out what you are going to learn in this course.
-  //       </p>
-  //     `
-  //   },
-  //   {
-  //     attachTo: {
-  //       element: '#start-course-dashboard-tour',
-  //       on: onMobile ? 'bottom' : 'right'
-  //     },
-  //     buttons: [
-  //       buttons.cancel
-  //     ],
-  //     title: 'Restart Tour',
-  //     highlightClass: 'p-3',
-  //     text: `
-  //       <p>
-  //        Click here to restart this tour anytime.
-  //       </p>
-  //     `
-  //   }
-  ]
+    arrow: false,
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: true,
+    title: "Show Components",
+    text: `
+            <p> Components can be rendered on the map via this trigger. </p>
+            <p> Try it out! </p>
+          `
+  },
+  {
+    attachTo: {
+      element: ".menuToggle",
+      on: "top"
+    },
+    arrow: false,
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: true,
+    showOn: ifElementExists("firstComponentLayer"), //need to add beforeShowPromise: function() {
+    title: "Toggle Menu",
+    text: `
+            <p> This button toggles the Main Menu, demonstrating a button can be placed on the map. </p>
+          `
+  },
+  {
+    attachTo: {
+      element: ".leaflet-control-zoom-fullscreen",
+      on: "right"
+    },
+    arrow: true,
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: false,
+    title: "Fullscreen View",
+    text: `
+            <p> Map fullscreen view can be triggered here. </p>
+          `
+  },
+  {
+    attachTo: {
+      element: ".leaflet-right",
+      on: "left"
+    },
+    arrow: true,
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: false,
+    title: "Control Menu",
+    text: `
+            <p> Basemap and layer selections can be made from here. </p>
+          `
+  },
+  {
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: false,
+    title: "Map Menu - Image",
+    text: `
+            <p> Right-clicking on the map will reveal additional actions and options to apply to the display. </p>
+            <img src="/assets/images/building.png" width="150" style="display:block;margin-left:auto;margin-right:auto;width:50%;">
+            <p> The example image above can be placed at any location from this menu using 'Place Building'. </p>
+          `
+  },
+  {
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: false,
+    title: "Map Menu - Video",
+    text: `
+            <p> Furthermore, the example video below can also be placed anywhere on the map. </p>
+            <video width="375" autoplay loop>
+              <source src="/assets/images/takeoff.webm" type="video/webm">
+              Your browser does not support HTML5 video.
+            </video>
+            <p> Selecting 'Takeoff' from the right-click menu will trigger placement. </p>
+          `
+  },
+  {
+    attachTo: {
+      element: ".hamburger",
+      on: "bottom"
+    },
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Next",
+        type: "next"
+      }
+    ],
+    canClickTarget: false,
+    title: "Navigation",
+    text: `
+            <p> You can navigate to other pages by selecting the Burger Menu from anywhere in the playground. </p>
+          `
+  },
+  {
+    attachTo: {
+      element: ".tour",
+      on: "bottom"
+    },
+    buttons: [{
+        classes: "shepherd-button-primary",
+        text: "Back",
+        type: "back"
+      },
+      {
+        classes: "shepherd-button-primary",
+        text: "Close",
+        type: "cancel"
+      }
+    ],
+    canClickTarget: false,
+    title: "Take a Tour",
+    text: `
+            <p> To see this tour again, or any other tour, select the 'i' from anywhere in the playground. </p>
+          `
+  }
+];

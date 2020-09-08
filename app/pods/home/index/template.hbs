@@ -2,7 +2,7 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button buttonAction=(action "enableComponents") text=componentButtonText}}
+    {{playground-button class="enableComponents" buttonAction=(action "enableComponents") text=componentButtonText}}
   </div>
   
   <div class="component">
@@ -39,6 +39,7 @@
               {{#if dp}}
                 {{#ember-wormhole to=firstLayerId}}
                   {{playground-button
+                    class="menuToggle"
                     buttonAction=(action "toggleBurger")
                     text=firstLayerButtonText}}
                 {{/ember-wormhole}}

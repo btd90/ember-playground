@@ -3,10 +3,10 @@ import {
   inject as service
 } from '@ember/service';
 import indexSteps from '../objects/tours/index-tour';
-import editorSteps from '../objects/tours/index-tour';
-import flightsv1Steps from '../objects/tours/index-tour';
-import flightsv2Steps from '../objects/tours/index-tour';
-import aboutSteps from '../objects/tours/index-tour';
+import editorSteps from '../objects/tours/editor-tour';
+import flightsv1Steps from '../objects/tours/flightsv1-tour';
+import flightsv2Steps from '../objects/tours/flightsv2-tour';
+import aboutSteps from '../objects/tours/about-tour';
 
 // Set step defaults
 export const defaultStepOptions = {
@@ -18,7 +18,6 @@ export const defaultStepOptions = {
   cancelIcon: {
     enabled: true
   },
-
   tippyOptions: {
     duration: 500
   }
@@ -82,10 +81,10 @@ export default Service.extend({
     this.set('_loadedTourName', keyName)
   },
 
-  prepareAboutTour: async function() {
+  prepareAboutTour: async function () {
     const keyName = 'about-tour'
     const tour = this.tour
-    resetDefaults(tour) 
+    resetDefaults(tour)
     tour.set("modal", false)
     await tour.addSteps(aboutSteps)
     this.set('_loadedTourName', keyName)

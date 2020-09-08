@@ -7,17 +7,12 @@ import {
  * Flights v2 route file.
  */
 export default Route.extend({
+  playgroundtourService: service(),
 
-  // flightsv2tourService: service('tours/flightsv2-tour'),
+  setupController: async function (controller, model) {
+    this._super(controller, model);
 
-  // setupController: function (controller, model) {
-  //   this._super(controller, model);
-
-  //   // Set applicable tour for the parent
-  //   this.get('parentController').set('routeTour', this.get('flightsv2tourService'));
-  // },
-
-  // parentController: Ember.computed(function () {
-  //   return this.controllerFor('home');
-  // }),
+    // Prepare tour
+    await this.get('playgroundtourService').prepareFlightsv2Tour();
+  },
 });

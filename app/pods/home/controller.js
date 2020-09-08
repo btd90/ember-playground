@@ -8,7 +8,7 @@ import {
  */
 export default Controller.extend({
   burgermenuService: service(),
-  playgroundtour: service(),
+  playgroundtourService: service(),
 
   init() {
     this._super(...arguments);
@@ -19,7 +19,7 @@ export default Controller.extend({
       this.get('burgermenuService').toggleBurger();
     },
     toggleTour() {
-      this.get('tour').start();
+      this.get('playgroundtourService').start();
     },
   },
 });

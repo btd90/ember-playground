@@ -1,8 +1,5 @@
 import HomeController from '../controller';
 import {
-  inject as service
-} from '@ember/service';
-import {
   computed
 } from '@ember/object';
 import {
@@ -14,14 +11,9 @@ import {
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  // tour: service('tours/index-tour'),
 
   init() {
     this._super(...arguments);
-
-    // Initialize the shepherd tour
-    // this.get('tour').setupTour();
-
     let leaflet = window.L;
 
     this.set('disabled', false);

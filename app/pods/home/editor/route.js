@@ -7,17 +7,12 @@ import {
  * Editor route file.
  */
 export default Route.extend({
+  playgroundtourService: service(),
 
-  // editortourService: service('tours/editor-tour'),
+  setupController: async function (controller, model) {
+    this._super(controller, model);
 
-  // setupController: function (controller, model) {
-  //   this._super(controller, model);
-
-  //   // Set applicable tour for the parent
-  //   this.get('parentController').set('routeTour', this.get('editortourService'));
-  // },
-
-  // parentController: Ember.computed(function () {
-  //   return this.controllerFor('home');
-  // }),
+    // Prepare tour
+    await this.get('playgroundtourService').prepareEditorTour();
+  },
 });

@@ -15,13 +15,9 @@ import {
 export default HomeController.extend({
   queryParams: ['disabled'],
   overlayService: service(),
-  // stour: service('tours/flightsv2-tour'),
 
   init() {
     this._super(...arguments);
-
-    // Initialize the shepherd tour
-    // this.get('stour').setupTour();
 
     this.set('disabled', false);
     this.set('takeOff', false);
