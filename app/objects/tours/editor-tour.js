@@ -1,4 +1,31 @@
-export default [{
+// shift to tour service?
+function findElementByHook(identifier) {
+  let elem = document.querySelector(identifier);
+
+  if (elem) {
+    let elemId = "#" + elem.id;
+    console.log(elem)
+    return elemId;
+  }
+  // return document.currentTourElement;
+}
+
+function waitForElementToDisplay(selector) {
+  return new Promise(function (resolve) {
+      (function checkIfElementExists() {
+          // if (false) {
+          //   console.log("ABC");
+          if (document.querySelector(selector) !== null) {
+              resolve(document.querySelector(selector).id);
+          } else {
+              setTimeout(checkIfElementExists, 500);
+          }
+      })();
+  })
+}
+
+export default [
+  {
     buttons: [{
       classes: 'shepherd-button-primary',
       text: 'Next',
@@ -11,6 +38,81 @@ export default [{
             <p>
                 From this page you can place shapes on the map and <i>Flyto</i> some pre-defined locations.
             </p>
+          `
+  },
+  {
+    attachTo: {
+      // element: waitForElementToDisplay('.saveShapes').then((result) => {
+      //   debugger;
+      //   return result;
+      // }),
+      element: findElementByHook('.saveShapes'),
+      on: 'right'
+    },
+    beforeShowPromise: function() {
+      // Good for checking element exists but doesn't help attachTo
+      return new Promise(async function (resolve) {
+
+        const selector = '.saveShapes';
+        console.log(selector);
+
+        let bb = await waitForElementToDisplay(selector).then((res) => {
+          debugger;
+
+          Ember.set(document, 'aa', res);
+            return resolve(res);
+        });
+
+        console.log(bb);
+        debugger;
+      })
+    },
+    // beforeShowPromise: function() {
+    //   return new Promise(function(resolve) {
+    //     let aa = document.querySelector('.saveShapes');
+    //     debugger;
+    //     Ember.set(document, 'currentTourElement', '#123');
+    //     resolve();
+    //     // Ember.run.scheduleOnce('afterRender', this, function() {
+    //     //   // console.log(findElementByHook('.saveShapes'));
+    //     //   // currentElem = findElementByHook('.saveShapes');
+    //     //   // debugger;
+    //     //   // window.scrollTo(0, 0);
+    //     //   // this.get('documents.firstObject').set('isSelected', true);
+    //     //   let aa = document.querySelector('.saveShapes');
+    //     //   resolve(aa.id);
+    //     // });
+    //   });
+    // },
+    // showOn: !!findElementByHook('.saveShapes'),
+  // attachTo: {
+  //   element: testServ.test111(),
+  //   on: 'right'
+  // },
+  // {
+  //   attachTo: {
+  //     element: testServ.test111('test111'),
+  //     on: 'right'
+  //   },
+  // attachTo: {
+  //   element: '#test111',
+  //   on: 'right'
+  // },
+    buttons: [{
+        classes: 'shepherd-button-primary',
+        text: 'Back',
+        type: 'back'
+      },
+      {
+        classes: 'shepherd-button-primary',
+        text: 'Next',
+        type: 'next'
+      }
+    ],
+    canClickTarget: true,
+    title: 'TEST',
+    text: `
+            <p> TEST </p>
           `
   },
   {
