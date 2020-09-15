@@ -2,6 +2,7 @@ import Service from '@ember/service'
 import {
   inject as service
 } from '@ember/service';
+import { scheduleOnce } from '@ember/runloop';
 
 // Set step defaults
 export const defaultStepOptions = {
@@ -57,7 +58,7 @@ export default Service.extend({
     const tour = this.tour;
     this.resetDefaults(tour);
     
-    Ember.run.scheduleOnce('afterRender', this, function() {
+    scheduleOnce('afterRender', this, function() {
       this.get('index').prepareSteps();
       this.get('index').prepareGenericSteps();
     });
@@ -70,7 +71,7 @@ export default Service.extend({
     const tour = this.tour;
     this.resetDefaults(tour);
 
-    Ember.run.scheduleOnce('afterRender', this, function() {
+    scheduleOnce('afterRender', this, function() {
       this.get('editor').prepareSteps();
       this.get('editor').prepareGenericSteps();
     });
@@ -83,7 +84,7 @@ export default Service.extend({
     const tour = this.tour;
     this.resetDefaults(tour);
 
-    Ember.run.scheduleOnce('afterRender', this, function() {
+    scheduleOnce('afterRender', this, function() {
       this.get('flightsv1').prepareSteps();
       this.get('flightsv1').prepareGenericSteps();
     });
@@ -96,7 +97,7 @@ export default Service.extend({
     const tour = this.tour;
     this.resetDefaults(tour);
 
-    Ember.run.scheduleOnce('afterRender', this, function() {
+    scheduleOnce('afterRender', this, function() {
       this.get('flightsv2').prepareSteps();
       this.get('flightsv2').prepareGenericSteps();
     });
@@ -110,7 +111,7 @@ export default Service.extend({
     this.resetDefaults(tour);
     // tour.set("modal", false);
 
-    Ember.run.scheduleOnce('afterRender', this, function() {
+    scheduleOnce('afterRender', this, function() {
       this.get('about').prepareSteps();
     });
 

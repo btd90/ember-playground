@@ -1,20 +1,18 @@
+import { set } from '@ember/object';
+
 // shift to tour service?
 function findElementByHook(identifier) {
   let elem = document.querySelector(identifier);
 
   if (elem) {
     let elemId = "#" + elem.id;
-    console.log(elem)
     return elemId;
   }
-  // return document.currentTourElement;
 }
 
 function waitForElementToDisplay(selector) {
   return new Promise(function (resolve) {
       (function checkIfElementExists() {
-          // if (false) {
-          //   console.log("ABC");
           if (document.querySelector(selector) !== null) {
               resolve(document.querySelector(selector).id);
           } else {
@@ -54,17 +52,10 @@ export default [
       return new Promise(async function (resolve) {
 
         const selector = '.saveShapes';
-        console.log(selector);
-
-        let bb = await waitForElementToDisplay(selector).then((res) => {
-          debugger;
-
-          Ember.set(document, 'aa', res);
+        await waitForElementToDisplay(selector).then((res) => {
+          set(document, 'aa', res);
             return resolve(res);
         });
-
-        console.log(bb);
-        debugger;
       })
     },
     // beforeShowPromise: function() {
