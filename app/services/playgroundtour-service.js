@@ -84,7 +84,7 @@ export default Service.extend({
       this.resetDefaults(tour);
 
       // Ensures a desired identifier exists before rendering
-      if (identifier) await this.get('generic').waitForElementToDisplay(identifier, this);
+      if (identifier) await this.get('generic').waitForElementToDisplay(identifier);
 
       // Add individual step and start tour
       await this.get('generic').prepareNewTourStep();

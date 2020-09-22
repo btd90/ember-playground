@@ -2,7 +2,7 @@
 
 <div class="mainBody">
   <div class="component">
-    {{playground-button class="enableComponents" shepData="enableComponents" buttonAction=(action "enableComponents") text=componentButtonText}}
+    {{playground-button shepData="enableComponents" buttonAction=(action "enableComponents") text=componentButtonText}}
   </div>
   
   <div class="component">
@@ -39,7 +39,6 @@
               {{#if dp}}
                 {{#ember-wormhole to=firstLayerId}}
                   {{playground-button
-                    class="menuToggle"
                     shepData="menuToggle"
                     buttonAction=(action "toggleBurger")
                     text=firstLayerButtonText}}

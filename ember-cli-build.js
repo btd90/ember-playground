@@ -7,9 +7,6 @@ module.exports = function(defaults) {
     sassOptions: {
       extension: 'scss'
     },
-    shepherd: {
-      theme: 'dark'
-    },
     // Add options here
     fingerprint: {
       exclude: [
