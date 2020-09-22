@@ -13,6 +13,6 @@ export default Route.extend({
     this._super(controller, model);
 
     // Prepare tour
-    await this.get('playgroundtourService').prepareFlightsv1Tour();
+    await this.get('playgroundtourService').prepareTour('flightsv1');
   },
 });

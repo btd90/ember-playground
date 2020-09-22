@@ -48,29 +48,6 @@ export default GenericService.extend({
             `
     }, {
       attachTo: {
-        element: this.findElementByAttr('menuToggle'),
-        on: "top"
-      },
-      arrow: false,
-      buttons: [{
-          classes: "shepherd-button-primary",
-          text: "Back",
-          type: "back"
-        },
-        {
-          classes: "shepherd-button-primary",
-          text: "Next",
-          type: "next"
-        }
-      ],
-      canClickTarget: true,
-      showOn: !(!this.findElementByAttr('menuToggle')), //NOT WORKING, need to add beforeShowPromise: ??
-      title: "Toggle Menu",
-      text: `
-              <p> This button toggles the Main Menu, demonstrating a button can be placed on the map. </p>
-            `
-    }, {
-      attachTo: {
         element: ".leaflet-control-zoom-fullscreen",
         on: "right"
       },

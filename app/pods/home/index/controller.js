@@ -41,6 +41,9 @@ export default HomeController.extend({
     },
     enableComponents() {
       this.set('componentsEnabled', true);
+
+      // Trigger for completing an active tour and starting another
+      this.get('playgroundtourService').newTourTrigger('menuToggle');
     },
     toggleBurger() {
       this._super();
