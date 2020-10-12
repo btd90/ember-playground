@@ -5,7 +5,7 @@ import HomeController from '../controller';
  */
 export default HomeController.extend({
   queryParams: ['disabled'],
-  
+
   init() {
     this._super(...arguments);
 

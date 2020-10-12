@@ -197,6 +197,30 @@ a {
   }
 }
 
+.tour {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px;
+  color: #000;
+  opacity: 0.5;
+  z-index: 100;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus,
+  &.active,
+  &.active:hover,
+  &.active:focus {}
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: #ccc;
+  }
+}
+
 .movingPath {
   stroke-dasharray: 150;
   stroke-dashoffset: 0;

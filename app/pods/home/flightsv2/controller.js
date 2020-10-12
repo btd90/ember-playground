@@ -18,7 +18,7 @@ export default HomeController.extend({
 
   init() {
     this._super(...arguments);
-  
+
     this.set('disabled', false);
     this.set('takeOff', false);
     this.set('latitude', '20');

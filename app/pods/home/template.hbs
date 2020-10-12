@@ -61,7 +61,8 @@
     </ul>
   {{/burger.menu}}
   {{#burger.outlet class="burgetOutlet"}}
-    {{playground-button class="hamburger" buttonAction=(action "toggleBurger") faIcon="bars"}}
+    {{playground-button class="hamburger" shepData="hamburger" buttonAction=(action "toggleBurger") faIcon="bars" tooltip="Toggle Menu"}}
+    {{playground-button class="tour" shepData="tour" buttonAction=(action "toggleTour") faIcon="info" tooltip="Take a Tour"}}
     {{outlet}}
   {{/burger.outlet}}
 {{/burger-menu}}

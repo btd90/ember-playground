@@ -14,7 +14,7 @@ export default HomeController.extend({
 
   init() {
     this._super(...arguments);
-  
+
     this.set('disabled', false);
     this.set('saveEvent', false);
     this.set('saveButtonText', 'Save');
